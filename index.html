@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Đại Chiến Đường Đua - Toán 4 & Toàn Bộ 20 Unit Tiếng Anh</title>
+<title>Đại Chiến Đường Đua - Toán 4 & Tiếng Anh</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
   body { background: #070d19; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 12px; }
@@ -21,6 +21,10 @@
   .btn-primary:hover { background: #d97706; }
   .btn-secondary { background: #334155; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 13px; margin: 4px; }
   .btn-secondary:hover { background: #475569; }
+
+  /* Nút dừng thi / thoát khẩn cấp */
+  .btn-exit-race { background: #dc2626; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+  .btn-exit-race:hover { background: #b91c1c; }
 
   /* Thanh thông tin người dùng */
   .user-header-bar { display: flex; justify-content: space-between; align-items: center; background: #0b1222; padding: 10px 16px; border-radius: 8px; margin-bottom: 14px; font-size: 14px; border: 1px solid #1e293b; }
@@ -54,7 +58,7 @@
   .race-car { position: absolute; left: 4px; font-size: 26px; transition: left 0.4s ease-out; z-index: 2; transform: scaleX(-1); display: inline-block; }
 
   /* Bảng trạng thái ván đấu */
-  .stats-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; background: #0b1222; padding: 10px; border-radius: 8px; margin-bottom: 12px; font-weight: bold; font-size: 13px; }
+  .stats-board { display: flex; justify-content: space-between; align-items: center; background: #0b1222; padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; font-weight: bold; font-size: 13px; }
   .timer-highlight { color: #ef4444; font-size: 15px; font-weight: 800; animation: blink 1s infinite alternate; }
   @keyframes blink { from { opacity: 1; } to { opacity: 0.7; } }
 
@@ -141,13 +145,14 @@
     <div class="topics-wrapper" id="topics-list"></div>
   </div>
 
-  <!-- MÀN HÌNH 4: ĐƯỜNG ĐUA TRỰC QUAN -->
+  <!-- MÀN HÌNH 4: ĐƯỜNG ĐUA TRỰC QUAN (ĐÃ BỔ SUNG NÚT DỪNG THI) -->
   <div id="screen-race" class="screen">
     <div class="stats-board">
       <span style="color:#ef4444;">Ván này: <b id="disp-round-score">0</b> đ</span>
-      <span style="color:#38bdf8;">Tích lũy: <b id="disp-cum-score">0</b> đ</span>
       <span class="timer-highlight" id="disp-total-timer">⏱️ 05:00</span>
       <span style="color:#10b981;" id="disp-progress">Câu: 1/10</span>
+      <!-- Nút dừng thi / Thoát ra màn hình trước -->
+      <button class="btn-exit-race" onclick="abortRaceAndExit()">🚪 Dừng thi</button>
     </div>
 
     <div id="arena-track">
@@ -320,14 +325,14 @@ function switchCategory(cat) {
 const MASTER_DATABASE = [
   // --- VIOLYMPIC TOÁN 4 ---
   {
-    subject: 'math', cat: 'vio', id: 'vio_tap1', title: '🏆 ViOlympic: Cấu tạo số & Dãy số',
+    subject: 'math', cat: 'vio', id: 'vio_tap1', title: '🏆 ViOlympic: Cấu tạo số, Dãy số & TBC',
     lang: 'vi-VN',
     pool: [
       { q: "Bài ViO4.01: Khi viết chữ số 5 vào bên trái một số có ba chữ số thì số mới hơn số cũ bao nhiêu đơn vị?", opts: ["500 đơn vị", "5 000 đơn vị", "50 đơn vị", "5 đơn vị"], a: 0 },
       { q: "Bài ViO4.02: Tìm số có ba chữ số có tổng các chữ số bằng 26, khi đổi chỗ hàng trăm và hàng đơn vị cho nhau thì số đó không đổi:", opts: ["989", "899", "998", "889"], a: 0 },
-      { q: "Bài ViO4.73: Hai số có tích bằng 12878. Nếu thừa số thứ nhất tăng thêm 63 đơn vị thì tích mới bằng 21509. Tổng hai số là:", opts: ["228 (Thừa số thứ 2 là (21509-12878):63 = 137, số thứ nhất là 94)", "230", "225", "210"], a: 0 },
-      { q: "Bài ViO4.74: Phân xưởng A có 75 người dệt được 192 áo/người. Phân xưởng B có 120 người dệt bằng số áo xưởng A. Trung bình người xưởng B dệt được:", opts: ["120 cái áo (75 x 192 : 120)", "125 cái áo", "110 cái áo", "130 cái áo"], a: 0 },
-      { q: "Bài ViO4.75: Vòi nước chảy vào bể: 45 phút đầu chảy 84 l/phút, 45 phút sau chảy 100 l/phút. Trung bình mỗi phút vòi chảy được:", opts: ["92 lít nước ((84+100):2)", "90 lít", "95 lít", "88 lít"], a: 0 },
+      { q: "Bài ViO4.73: Hai số có tích bằng 12878. Nếu thừa số thứ nhất tăng thêm 63 đơn vị thì tích mới bằng 21509. Tổng hai số là:", opts: ["228", "230", "225", "210"], a: 0 },
+      { q: "Bài ViO4.74: Phân xưởng A có 75 người dệt được 192 áo/người. Phân xưởng B có 120 người dệt bằng số áo xưởng A. Trung bình người xưởng B dệt được:", opts: ["120 cái áo", "125 cái áo", "110 cái áo", "130 cái áo"], a: 0 },
+      { q: "Bài ViO4.75: Vòi nước chảy vào bể: 45 phút đầu chảy 84 l/phút, 45 phút sau chảy 100 l/phút. Trung bình mỗi phút vòi chảy được:", opts: ["92 lít nước", "90 lít", "95 lít", "88 lít"], a: 0 },
       { q: "ViOlympic: Khi viết thêm chữ số 2 vào bên trái của một số có năm chữ số thì số đó tăng thêm bao nhiêu đơn vị?", opts: ["200 000 đơn vị", "20 000 đơn vị", "2 000 000 đơn vị", "20 đơn vị"], a: 0 },
       { q: "ViOlympic: Dãy số tự nhiên liên tiếp từ 325 đến 796 có tất cả bao nhiêu số lẻ?", opts: ["236 số lẻ", "235 số lẻ", "472 số lẻ", "237 số lẻ"], a: 0 },
       { q: "ViOlympic: Khi viết thêm chữ số 3 vào bên phải số 8723 thì số này tăng thêm bao nhiêu đơn vị?", opts: ["78 510 đơn vị", "30 000 đơn vị", "87 233 đơn vị", "78 500 đơn vị"], a: 0 },
@@ -390,8 +395,7 @@ const MASTER_DATABASE = [
     ]
   },
 
-  // --- TRỌN BỘ 20 UNITS TIẾNG ANH LỚP 4 (GLOBAL SUCCESS) ---
-  // HỌC KỲ 1: UNIT 1 - UNIT 10
+  // --- TRỌN BỘ 20 UNITS TIẾNG ANH LỚP 4 ---
   {
     subject: 'english', cat: 'eng_term1', id: 'eng_u1', title: 'Unit 1: My Friends (Bạn bè của tôi)',
     lang: 'en-US',
@@ -502,8 +506,6 @@ const MASTER_DATABASE = [
       { q: "Past tense of 'go' is: ______", opts: ["went", "goed", "gone", "goes"], a: 0 }
     ]
   },
-
-  // HỌC KỲ 2: UNIT 11 - UNIT 20
   {
     subject: 'english', cat: 'eng_term2', id: 'eng_u11', title: 'Unit 11: My Home (Ngôi nhà của tôi)',
     lang: 'en-US',
@@ -674,7 +676,6 @@ function startTopicRace(topic) {
   document.getElementById('screen-race').classList.add('active');
 
   document.getElementById('disp-round-score').innerText = roundScore;
-  document.getElementById('disp-cum-score').innerText = currentUser.cumScore;
   updatePositionsUI();
 
   // Đếm ngược 5 phút
@@ -703,6 +704,27 @@ function startTopicRace(topic) {
   }, 1000);
 
   loadQuestionUI();
+}
+
+// HÀM DỪNG THI VÀ THOÁT RA MÀN HÌNH GẦN NHẤT
+function abortRaceAndExit() {
+  const confirmExit = confirm("Bạn có chắc chắn muốn dừng thi và thoát ra không?\nKết quả của lượt đua này sẽ không được lưu.");
+  if (confirmExit) {
+    // 1. Dọn dẹp bộ đếm thời gian và tiến trình chạy bot
+    clearInterval(totalGameTimer);
+    clearInterval(botInterval);
+
+    // 2. Dừng giọng đọc nếu đang nói
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+
+    // 3. Quay lại màn hình danh mục nội dung gần nhất
+    document.getElementById('screen-race').classList.remove('active');
+    document.getElementById('screen-topics').classList.add('active');
+    refreshUserHeader();
+    renderTopicCards();
+  }
 }
 
 function updateTimerDisplay() {
