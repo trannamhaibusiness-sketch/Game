@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Đại Chiến Đường Đua Toán 4 - Trọn Bộ 2 Tập</title>
+<title>Đường Đua Toán 4 - Kết Nối Tri Thức & ViOlympic</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-  body { background: #090e1a; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 12px; }
-  #app-card { width: 100%; max-width: 820px; background: #162035; border-radius: 16px; padding: 22px; box-shadow: 0 12px 35px rgba(0,0,0,0.6); border: 1px solid #283756; text-align: center; }
+  body { background: #070d19; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 12px; }
+  #app-card { width: 100%; max-width: 820px; background: #131c31; border-radius: 16px; padding: 22px; box-shadow: 0 12px 35px rgba(0,0,0,0.6); border: 1px solid #233252; text-align: center; }
   .screen { display: none; }
   .active { display: block; }
 
@@ -23,23 +23,24 @@
   .btn-secondary:hover { background: #475569; }
 
   /* Thanh tiêu đề người dùng */
-  .user-header-bar { display: flex; justify-content: space-between; align-items: center; background: #0d1627; padding: 10px 16px; border-radius: 8px; margin-bottom: 14px; font-size: 14px; border: 1px solid #233352; }
+  .user-header-bar { display: flex; justify-content: space-between; align-items: center; background: #0b1222; padding: 10px 16px; border-radius: 8px; margin-bottom: 14px; font-size: 14px; border: 1px solid #1e293b; }
   .user-header-bar span b { color: #f59e0b; }
 
-  /* Nút chuyển đổi Tập 1 & Tập 2 */
-  .tab-container { display: flex; gap: 10px; margin-bottom: 12px; }
-  .tab-btn { flex: 1; padding: 10px; background: #0f172a; border: 2px solid #334e7a; color: #94a3b8; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+  /* Thanh Tab 3 lựa chọn */
+  .tab-container { display: flex; gap: 8px; margin-bottom: 12px; }
+  .tab-btn { flex: 1; padding: 10px 4px; background: #0b1222; border: 2px solid #1e293b; color: #94a3b8; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 12.5px; }
   .tab-btn.active-tab { background: #2563eb; color: #fff; border-color: #60a5fa; }
+  .tab-btn.tab-vio.active-tab { background: #d97706; border-color: #fbbf24; }
 
   /* Danh sách chủ đề */
   .topics-wrapper { display: flex; flex-direction: column; gap: 8px; max-height: 290px; overflow-y: auto; text-align: left; padding-right: 4px; }
-  .topic-card { background: #1f2d4a; border: 1px solid #334e7a; color: #fff; padding: 11px 14px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+  .topic-card { background: #1c2744; border: 1px solid #2d3f66; color: #fff; padding: 12px 15px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
   .topic-card:hover { background: #1d4ed8; border-color: #38bdf8; }
-  .topic-card b { font-size: 13.5px; }
+  .topic-card b { font-size: 14px; }
 
-  /* Đấu trường đua xe - Đầu xe quay về vạch đích */
-  #arena-track { background: #0a0f1d; border-radius: 12px; padding: 12px; margin: 14px 0; border: 2px solid #283756; position: relative; }
-  .lane { height: 42px; position: relative; border-bottom: 2px dashed #243452; display: flex; align-items: center; }
+  /* Đấu trường đua xe */
+  #arena-track { background: #080d1a; border-radius: 12px; padding: 12px; margin: 14px 0; border: 2px solid #223150; position: relative; }
+  .lane { height: 42px; position: relative; border-bottom: 2px dashed #1e293b; display: flex; align-items: center; }
   .lane:last-child { border-bottom: none; }
   .flag-gate { position: absolute; right: 24px; top: 0; bottom: 0; width: 10px; background: repeating-linear-gradient(to bottom, #fff, #fff 8px, #000 8px, #000 16px); z-index: 1; }
   
@@ -54,24 +55,24 @@
   }
 
   /* Bảng trạng thái */
-  .stats-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; background: #0d1627; padding: 10px; border-radius: 8px; margin-bottom: 12px; font-weight: bold; font-size: 13px; }
+  .stats-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; background: #0b1222; padding: 10px; border-radius: 8px; margin-bottom: 12px; font-weight: bold; font-size: 13px; }
   .timer-highlight { color: #ef4444; font-size: 15px; font-weight: 800; animation: blink 1s infinite alternate; }
   @keyframes blink { from { opacity: 1; } to { opacity: 0.7; } }
 
-  /* Khung câu hỏi và nút trả lời */
-  .q-panel { background: #1f2d4a; border-radius: 10px; padding: 16px; min-height: 85px; margin-bottom: 14px; display: flex; flex-direction: column; justify-content: center; }
+  /* Khung câu hỏi & nút bấm */
+  .q-panel { background: #1c2744; border-radius: 10px; padding: 16px; min-height: 85px; margin-bottom: 14px; display: flex; flex-direction: column; justify-content: center; }
   #q-title { font-size: 15.5px; font-weight: 600; line-height: 1.45; }
   .answers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .ans-btn { background: #121a2d; border: 2px solid #283756; color: #f8fafc; padding: 12px; border-radius: 8px; font-size: 14px; cursor: pointer; transition: 0.2s; text-align: left; font-weight: 500; }
+  .ans-btn { background: #0f172a; border: 2px solid #223150; color: #f8fafc; padding: 12px; border-radius: 8px; font-size: 14px; cursor: pointer; transition: 0.2s; text-align: left; font-weight: 500; }
   .ans-btn:hover:not([disabled]) { border-color: #38bdf8; background: #1e293b; }
-  .ans-btn.right-ans { background: #059669 !important; border-color: #10b981 !important; }
-  .ans-btn.wrong-ans { background: #dc2626 !important; border-color: #ef4444 !important; }
+  .ans-btn.right-ans { background: #059669 !important; border-color: #10b981 !important; color: #fff; }
+  .ans-btn.wrong-ans { background: #dc2626 !important; border-color: #ef4444 !important; color: #fff; }
 
   /* Bảng biểu */
   table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
-  th, td { border: 1px solid #283756; padding: 8px 10px; text-align: left; }
-  th { background: #0d1627; color: #f59e0b; }
-  .history-section { margin-top: 18px; border-top: 1px dashed #334e7a; padding-top: 12px; text-align: left; }
+  th, td { border: 1px solid #223150; padding: 8px 10px; text-align: left; }
+  th { background: #0b1222; color: #f59e0b; }
+  .history-section { margin-top: 18px; border-top: 1px dashed #2d3f66; padding-top: 12px; text-align: left; }
   .scroll-table { max-height: 160px; overflow-y: auto; }
 </style>
 </head>
@@ -80,8 +81,8 @@
 <div id="app-card">
   <!-- MÀN HÌNH 1: ĐĂNG NHẬP -->
   <div id="screen-auth" class="screen active">
-    <h1>🏁 ĐĂNG NHẬP TAY ĐUA TOÁN 4 🏎️</h1>
-    <p class="desc">Chinh phục trọn bộ 13 Chủ đề SGK Toán 4 Tập 1 & Tập 2</p>
+    <h1>🏁 ĐƯỜNG ĐUA TOÁN LỚP 4 & VIOLYMPIC 🏎️</h1>
+    <p class="desc">Trọn bộ SGK Toán 4 và Đấu trường chuyên đề ViOlympic Toán 4</p>
     <div class="auth-form">
       <input type="text" id="input-username" class="auth-input" placeholder="Tên tay đua (VD: Nam)...">
       <input type="password" id="input-pin" class="auth-input" placeholder="Mã PIN bí mật (VD: 1234)...">
@@ -89,20 +90,21 @@
     </div>
   </div>
 
-  <!-- MÀN HÌNH 2: CHỌN SÁCH & CHỦ ĐỀ -->
+  <!-- MÀN HÌNH 2: CHỌN CHỦ ĐỀ & ĐẤU TRƯỜNG -->
   <div id="screen-topics" class="screen">
     <div class="user-header-bar">
       <span>Tay đua: <b id="user-name-tag"></b></span>
-      <span>Tổng điểm: <b id="cum-score-tag">0</b> đ</span>
+      <span>Điểm tích lũy: <b id="cum-score-tag">0</b> đ</span>
       <button class="btn-secondary" onclick="handleLogout()">Đăng xuất</button>
     </div>
-    <h1>🗺️ BẢN ĐỒ CHỦ ĐỀ TOÁN 4</h1>
-    <p class="desc">Thời gian cả ván: <b>5 phút</b> (10 câu bốc ngẫu nhiên từ kho 30 câu).</p>
+    <h1>🗺️ BẢN ĐỒ THỬ THÁCH TOÁN 4</h1>
+    <p class="desc">10 câu hỏi bốc ngẫu nhiên từ kho 30 câu. Thời gian tổng bài: <b>5 phút</b>.</p>
 
-    <!-- Bộ lọc Tập 1 và Tập 2 -->
+    <!-- 3 LỰA CHỌN: TẬP 1, TẬP 2 HOẶC VIOLYMPIC -->
     <div class="tab-container">
-      <button class="tab-btn active-tab" id="tab-vol1" onclick="switchVolume(1)">📘 TẬP 1 (Chủ đề 1 - 7)</button>
-      <button class="tab-btn" id="tab-vol2" onclick="switchVolume(2)">📙 TẬP 2 (Chủ đề 8 - 13)</button>
+      <button class="tab-btn active-tab" id="tab-vol1" onclick="switchCategory('vol1')">📘 TẬP 1 (Chủ đề 1-7)</button>
+      <button class="tab-btn" id="tab-vol2" onclick="switchCategory('vol2')">📙 TẬP 2 (Chủ đề 8-13)</button>
+      <button class="tab-btn tab-vio" id="tab-vio" onclick="switchCategory('vio')">🏆 ĐẤU TRƯỜNG VIOLYMPIC</button>
     </div>
 
     <div class="topics-wrapper" id="topics-list"></div>
@@ -115,7 +117,7 @@
       </div>
       <div class="scroll-table">
         <table id="history-log-table">
-          <thead><tr><th>Thời gian</th><th>Chủ đề</th><th>Điểm ván</th><th>Kết quả</th></tr></thead>
+          <thead><tr><th>Thời gian</th><th>Nội dung thi</th><th>Điểm ván</th><th>Kết quả</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -138,7 +140,7 @@
     </div>
 
     <div class="q-panel">
-      <div id="q-title">Đang tải câu đố...</div>
+      <div id="q-title">Đang tải câu hỏi...</div>
       <button onclick="readQuestionTTS()" style="background:transparent; border:none; color:#38bdf8; cursor:pointer; font-size:12px; margin-top:8px;">🔊 Nghe Google đọc đề</button>
     </div>
 
@@ -146,19 +148,19 @@
     <div id="feedback-txt" style="min-height: 22px; margin-top: 10px; font-weight: bold;"></div>
   </div>
 
-  <!-- MÀN HÌNH 4: TỔNG KẾT -->
+  <!-- MÀN HÌNH 4: TỔNG KẾT VÒNG ĐUA -->
   <div id="screen-summary" class="screen">
     <h1 id="win-status-title">🏆 KẾT QUẢ VÒNG ĐUA!</h1>
     <p style="margin: 10px 0;">Điểm vừa đạt: <b id="sum-round-gain" style="color:#10b981;">0</b> | Tổng điểm tích lũy: <b id="sum-cum-total" style="color:#f59e0b;">0</b> đ</p>
     <div class="scroll-table">
       <table id="summary-table">
-        <thead><tr><th>STT</th><th>Câu hỏi</th><th>Kết quả</th></tr></thead>
+        <thead><tr><th>STT</th><th>Câu hỏi</th><th>Đánh giá</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
     <br>
-    <button class="btn-primary" onclick="restartCurrentTopic()">🔄 Đua lại chủ đề này (Đảo 10 câu mới)</button>
-    <button class="btn-secondary" onclick="backToTopicMenu()">🗺️ Về phòng chờ & Chọn chủ đề</button>
+    <button class="btn-primary" onclick="restartCurrentTopic()">🔄 Đua lại nội dung này (Đảo 10 câu mới)</button>
+    <button class="btn-secondary" onclick="backToTopicMenu()">🗺️ Về menu chọn nội dung</button>
   </div>
 </div>
 
@@ -180,19 +182,19 @@ function sfxCorrect() { playTone(587, 0.1); setTimeout(() => playTone(880, 0.2),
 function sfxWrong() { playTone(140, 0.3, "sawtooth"); }
 function sfxWin() { [523, 659, 783, 1046].forEach((f, i) => setTimeout(() => playTone(f, 0.2), i * 110)); }
 
-// Hệ thống người dùng & LocalStorage
+// Quản lý người dùng & LocalStorage
 let currentUser = null;
-let currentVolume = 1;
+let currentCategory = 'vol1';
 
 function handleLogin() {
   const uName = document.getElementById('input-username').value.trim();
   const pin = document.getElementById('input-pin').value.trim();
   if (!uName || !pin) return alert("Vui lòng nhập đầy đủ tên và mã PIN!");
 
-  const raw = localStorage.getItem(`math4_allbooks_${uName}`);
+  const raw = localStorage.getItem(`math4_vio_acc_${uName}`);
   if (raw) {
     const data = JSON.parse(raw);
-    if (data.pin !== pin) return alert("Mã PIN không đúng cho tài khoản này!");
+    if (data.pin !== pin) return alert("Mã PIN không khớp với tài khoản này!");
     currentUser = data;
     if (!currentUser.history) currentUser.history = [];
   } else {
@@ -208,7 +210,7 @@ function handleLogin() {
 
 function saveUser() {
   if (currentUser) {
-    localStorage.setItem(`math4_allbooks_${currentUser.username}`, JSON.stringify(currentUser));
+    localStorage.setItem(`math4_vio_acc_${currentUser.username}`, JSON.stringify(currentUser));
   }
 }
 
@@ -227,7 +229,7 @@ function renderHistoryTable() {
   const tbody = document.querySelector('#history-log-table tbody');
   tbody.innerHTML = '';
   if (!currentUser.history || currentUser.history.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8;">Chưa có lịch sử. Hãy chọn một chủ đề để thi đấu!</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8;">Chưa có lượt đua nào. Hãy chọn một chủ đề để thi đấu!</td></tr>`;
     return;
   }
   currentUser.history.slice().reverse().forEach(h => {
@@ -245,18 +247,60 @@ function clearHistoryLog() {
   }
 }
 
-function switchVolume(vol) {
-  currentVolume = vol;
-  document.getElementById('tab-vol1').classList.toggle('active-tab', vol === 1);
-  document.getElementById('tab-vol2').classList.toggle('active-tab', vol === 2);
+function switchCategory(cat) {
+  currentCategory = cat;
+  document.getElementById('tab-vol1').classList.toggle('active-tab', cat === 'vol1');
+  document.getElementById('tab-vol2').classList.toggle('active-tab', cat === 'vol2');
+  document.getElementById('tab-vio').classList.toggle('active-tab', cat === 'vio');
   renderTopics();
 }
 
-// CƠ SỞ DỮ LIỆU ĐẦY ĐỦ 13 CHỦ ĐỀ - MỖI CHỦ ĐỀ ĐỦ 30 CÂU (10 CHÍNH + 20 DỰ PHÒNG)
-const ALL_TOPICS = [
-  // --- TẬP 1 (CHỦ ĐỀ 1 - 7) ---
+// =========================================================================
+// CƠ SỞ DỮ LIỆU ĐẦY ĐỦ: TẬP 1, TẬP 2 VÀ ĐẤU TRƯỜNG VIOLYMPIC TOÁN 4 (30 CÂU)
+// =========================================================================
+const MATH4_DATA = [
+  // --- ĐẤU TRƯỜNG VIOLYMPIC (DỰA TRÊN TÀI LIỆU 95 BÀI TOÁN VIOLYMPIC TẬP 1) ---
   {
-    vol: 1, id: "cd1", title: "Chủ đề 1: Ôn tập và bổ sung (Trang 6 - 32)",
+    cat: 'vio', id: "vio_tap1", title: "🏆 ViOlympic Toán 4: Cấu tạo số, Dãy số & Trung bình cộng",
+    pool: [
+      // 7 câu hỏi trọng tâm từ tài liệu
+      { q: "Bài ViO4.01: Khi viết chữ số 5 vào bên trái một số có ba chữ số thì số mới hơn số cũ bao nhiêu đơn vị?", opts: ["500 đơn vị", "5 000 đơn vị", "50 đơn vị", "5 đơn vị"], a: 0 },
+      { q: "Bài ViO4.02: Tìm số có ba chữ số có tổng các chữ số bằng 26, khi đổi chỗ hàng trăm và hàng đơn vị cho nhau thì số đó không đổi:", opts: ["989", "899", "998", "889"], a: 0 },
+      { q: "Bài ViO4.03: Khi viết thêm chữ số 2 vào bên trái của một số có năm chữ số thì số đó tăng thêm bao nhiêu đơn vị?", opts: ["200 000 đơn vị", "20 000 đơn vị", "2 000 000 đơn vị", "20 đơn vị"], a: 0 },
+      { q: "Bài ViO4.04: Dãy số tự nhiên liên tiếp từ 325 đến 796 có tất cả bao nhiêu số lẻ?", opts: ["236 số lẻ", "235 số lẻ", "472 số lẻ", "237 số lẻ"], a: 0 },
+      { q: "Bài ViO4.05: Tìm số có ba chữ số có tổng các chữ số bằng 26, khi đổi chỗ chữ số hàng chục và hàng đơn vị thì số đó không đổi:", opts: ["899", "989", "998", "988"], a: 0 },
+      { q: "Bài ViO4.06: Khi viết thêm chữ số 3 vào bên phải số 8723 thì số này tăng thêm bao nhiêu đơn vị?", opts: ["78 510 đơn vị", "30 000 đơn vị", "87 233 đơn vị", "78 500 đơn vị"], a: 0 },
+      { q: "Bài ViO4.07: Dãy số tự nhiên liên tiếp từ 324 đến 987 có tất cả bao nhiêu số chẵn?", opts: ["332 số chẵn", "331 số chẵn", "664 số chẵn", "333 số chẵn"], a: 0 },
+      // 23 câu hỏi bổ sung bám sát cấu trúc ViOlympic Toán 4
+      { q: "ViOlympic: Khi xóa đi chữ số 7 ở hàng đơn vị của một số tự nhiên thì số đó giảm đi bao nhiêu lần?", opts: ["Giảm 10 lần và 7 đơn vị", "Giảm 70 đơn vị", "Giảm 10 lần", "Giảm 7 đơn vị"], a: 0 },
+      { q: "ViOlympic: Viết thêm chữ số 0 vào bên phải một số tự nhiên thì số đó thay đổi như thế nào?", opts: ["Tăng gấp 10 lần", "Tăng 10 đơn vị", "Tăng 100 lần", "Không đổi"], a: 0 },
+      { q: "ViOlympic: Dãy số tự nhiên từ 1 đến 100 có tất cả bao nhiêu chữ số?", opts: ["192 chữ số", "189 chữ số", "100 chữ số", "190 chữ số"], a: 0 },
+      { q: "ViOlympic: Tìm số chẵn lớn nhất có 4 chữ số khác nhau:", opts: ["9 876", "9 998", "9 874", "9 864"], a: 0 },
+      { q: "ViOlympic: Tìm số lẻ bé nhất có 5 chữ số khác nhau:", opts: ["10 235", "10 001", "10 237", "12 345"], a: 0 },
+      { q: "ViOlympic: Có bao nhiêu số có 3 chữ số mà chữ số hàng trăm là 5?", opts: ["100 số", "90 số", "50 số", "10 số"], a: 0 },
+      { q: "ViOlympic: Dãy số chẵn từ 2 đến 200 có tất cả bao nhiêu số hạng?", opts: ["100 số", "99 số", "101 số", "198 số"], a: 0 },
+      { q: "ViOlympic: Dãy số lẻ từ 1 đến 99 có tất cả bao nhiêu số hạng?", opts: ["50 số", "49 số", "51 số", "100 số"], a: 0 },
+      { q: "ViOlympic: Trung bình cộng của hai số là 45, biết số thứ nhất là 52. Số thứ hai là:", opts: ["38", "42", "40", "36"], a: 0 },
+      { q: "ViOlympic: Trung bình cộng của ba số liên tiếp chính là số nào?", opts: ["Số ở chính giữa", "Số bé nhất", "Số lớn nhất", "Tổng ba số"], a: 0 },
+      { q: "ViOlympic: Trung bình cộng của các số tự nhiên từ 1 đến 9 là:", opts: ["5", "4", "6", "4,5"], a: 0 },
+      { q: "ViOlympic: Có bao nhiêu số có 2 chữ số mà chữ số tận cùng là 5?", opts: ["9 số", "10 số", "8 số", "5 số"], a: 0 },
+      { q: "ViOlympic: Tìm số có hai chữ số biết tổng hai chữ số bằng 11 và tích của chúng bằng 28:", opts: ["74 hoặc 47", "83 hoặc 38", "92 hoặc 29", "65 hoặc 56"], a: 0 },
+      { q: "ViOlympic: Từ các chữ số 0, 2, 5 lập được bao nhiêu số có 3 chữ số khác nhau?", opts: ["4 số", "6 số", "2 số", "5 số"], a: 0 },
+      { q: "ViOlympic: Từ các chữ số 1, 3, 5 lập được bao nhiêu số có 3 chữ số khác nhau?", opts: ["6 số", "9 số", "4 số", "3 số"], a: 0 },
+      { q: "ViOlympic: Tìm một số biết khi bớt số đó đi 15 đơn vị rồi gấp lên 3 lần thì được 60. Số đó là:", opts: ["35", "25", "30", "40"], a: 0 },
+      { q: "ViOlympic: Tổng hai số là 150, hiệu hai số là 30. Số lớn là:", opts: ["90", "60", "80", "120"], a: 0 },
+      { q: "ViOlympic: Tổng hai số là 150, hiệu hai số là 30. Số bé là:", opts: ["60", "90", "50", "40"], a: 0 },
+      { q: "ViOlympic: Khi viết thêm chữ số 0 vào giữa chữ số hàng chục và hàng trăm của số 45 thì số mới là:", opts: ["Số 45 chỉ có 2 chữ số, đề xét số 405 khi viết vào giữa 4 và 5", "450", "405", "504"], a: 2 },
+      { q: "ViOlympic: Tìm số có 3 chữ số biết chữ số hàng trăm gấp 3 lần chữ số hàng đơn vị và chữ số hàng chục bằng 0:", opts: ["301; 602; 903", "103; 206; 309", "300", "600"], a: 0 },
+      { q: "ViOlympic: Dãy số 2, 4, 6, ..., 50 có tổng tất cả các chữ số hoặc tổng giá trị dãy số là:", opts: ["650 (Số số hạng: 25, Tổng: (50+2)x25:2)", "600", "550", "700"], a: 0 },
+      { q: "ViOlympic: Trung bình cộng của 5 số lẻ liên tiếp là 21. Số lẻ lớn nhất là:", opts: ["25", "23", "27", "29"], a: 0 },
+      { q: "ViOlympic: Trung bình cộng của 4 số chẵn liên tiếp là 15. Số chẵn bé nhất là:", opts: ["12", "14", "10", "8"], a: 0 }
+    ]
+  },
+
+  // --- TẬP 1 (CHỦ ĐỀ 1 ĐẾN 7) ---
+  {
+    cat: 'vol1', id: "cd1", title: "Chủ đề 1: Ôn tập và bổ sung",
     pool: [
       { q: "Tính nhẩm: 8 000 + 7 000 = ?", opts: ["15 000", "14 000", "16 000", "150 000"], a: 0 },
       { q: "Hộp bút giá 16 500đ, ba lô đắt hơn hộp bút 62 500đ. Mua cả hai hết bao nhiêu?", opts: ["95 500 đồng", "79 000 đồng", "78 000 đồng", "82 500 đồng"], a: 0 },
@@ -278,20 +322,20 @@ const ALL_TOPICS = [
       { q: "Giá trị của biểu thức 45 : (3 + 6) là:", opts: ["5", "21", "9", "15"], a: 0 },
       { q: "Tìm x, biết: x - 4 500 = 5 500. Giá trị của x là:", opts: ["10 000", "1 000", "9 000", "11 000"], a: 0 },
       { q: "Tìm x, biết: x : 3 = 12 000. Giá trị của x là:", opts: ["36 000", "4 000", "30 000", "24 000"], a: 0 },
-      { q: "Mẹ mua 2 kg táo giá 30 000 đ/kg và 1 gói bánh 25 000 đ. Mẹ đưa 100 000 đ, cô bán hàng thối lại:", opts: ["15 000 đồng", "20 000 đồng", "10 000 đồng", "25 000 đồng"], a: 0 },
+      { q: "Mẹ mua 2 kg táo giá 30 000 đ/kg và 1 gói bánh 25 000 đ. Đưa 100 000 đ được trả lại:", opts: ["15 000 đồng", "20 000 đồng", "10 000 đồng", "25 000 đồng"], a: 0 },
       { q: "Số gồm 4 chục nghìn, 5 trăm, 2 đơn vị viết là:", opts: ["40 502", "45 002", "40 520", "45 200"], a: 0 },
       { q: "Trong số 78 945, chữ số 8 có giá trị là:", opts: ["8 000", "80 000", "800", "80"], a: 0 },
       { q: "Tổng của số lớn nhất có 4 chữ số và số bé nhất có 4 chữ số là:", opts: ["10 999", "10 000", "9 999", "11 000"], a: 0 },
       { q: "Đoạn thẳng AB dài 18 cm, đoạn thẳng CD dài bằng 1/3 đoạn AB. Đoạn CD dài:", opts: ["6 cm", "9 cm", "12 cm", "3 cm"], a: 0 },
-      { q: "Mỗi thùng đựng 24 chai nước. Hỏi 6 thùng như thế đựng bao nhiêu chai?", opts: ["144 chai", "120 chai", "136 chai", "150 chai"], a: 0 },
+      { q: "Mỗi thùng đựng 24 chai nước. 6 thùng như thế đựng số chai là:", opts: ["144 chai", "120 chai", "136 chai", "150 chai"], a: 0 },
       { q: "Xếp 72 quả cam đều vào 8 giỏ. 5 giỏ như thế có số quả cam là:", opts: ["45 quả", "40 quả", "48 quả", "54 quả"], a: 0 },
       { q: "Số chẵn liền sau của số 9 998 là:", opts: ["10 000", "9 999", "10 002", "10 004"], a: 0 },
       { q: "Tính: (10 000 - 6 000) x 5 = ?", opts: ["20 000", "15 000", "25 000", "30 000"], a: 0 },
-      { q: "Có 3 xe chở hàng, xe 1 chở 12 tạ, xe 2 chở 14 tạ, xe 3 chở 16 tạ. Trung bình mỗi xe chở:", opts: ["14 tạ", "15 tạ", "13 tạ", "12 tạ"], a: 0 }
+      { q: "Có 3 xe hàng: xe 1 chở 12 tạ, xe 2 chở 14 tạ, xe 3 chở 16 tạ. Trung bình mỗi xe chở:", opts: ["14 tạ", "15 tạ", "13 tạ", "12 tạ"], a: 0 }
     ]
   },
   {
-    vol: 1, id: "cd2", title: "Chủ đề 2: Góc và đơn vị đo góc (Trang 33 - 42)",
+    cat: 'vol1', id: "cd2", title: "Chủ đề 2: Góc và đơn vị đo góc",
     pool: [
       { q: "Kim đồng hồ lúc 3 giờ đúng tạo thành góc gì?", opts: ["Góc vuông", "Góc nhọn", "Góc tù", "Góc bẹt"], a: 0 },
       { q: "Kim đồng hồ lúc 6 giờ đúng tạo thành góc gì?", opts: ["Góc bẹt", "Góc vuông", "Góc nhọn", "Góc tù"], a: 0 },
@@ -326,7 +370,7 @@ const ALL_TOPICS = [
     ]
   },
   {
-    vol: 1, id: "cd3", title: "Chủ đề 3: Số có nhiều chữ số (Trang 43 - 54)",
+    cat: 'vol1', id: "cd3", title: "Chủ đề 3: Số có nhiều chữ số",
     pool: [
       { q: "Số liền sau của 999 999 999 là số nào?", opts: ["1 000 000 000", "999 999 990", "1 000 000 001", "100 000 000"], a: 0 },
       { q: "Số 1 000 000 000 đọc là:", opts: ["Một tỉ", "Một trăm triệu", "Mười triệu", "Mười tỉ"], a: 0 },
@@ -334,10 +378,8 @@ const ALL_TOPICS = [
       { q: "Lớp triệu gồm các hàng nào sau đây?", opts: ["Hàng triệu, hàng chục triệu, hàng trăm triệu", "Hàng nghìn, chục nghìn, trăm nghìn", "Hàng đơn vị, hàng chục, hàng trăm", "Hàng trăm, hàng nghìn, hàng triệu"], a: 0 },
       { q: "Số 'Sáu mươi triệu' được viết bằng số là:", opts: ["60 000 000", "6 000 000", "600 000 000", "600 000"], a: 0 },
       { q: "Số liền trước của số 1 000 000 000 là số nào?", opts: ["999 999 999", "999 999 990", "999 999 000", "1 000 000 001"], a: 0 },
-      { q: "Từ 6 thẻ 1, 7, 8, 2, 6, 5 (số 178 265), đổi ít nhất mấy lượt 2 thẻ để được số 268 157?", opts: ["2 lượt", "1 lượt", "3 lượt", "4 lượt"], a: 0 },
       { q: "Số nào lớn nhất: 35 489 000, 35 498 000, 35 500 000, 34 999 999?", opts: ["35 500 000", "35 498 000", "35 489 000", "34 999 999"], a: 0 },
       { q: "Lập số chẵn có 6 chữ số có lớp nghìn (3,0,0) và lớp đơn vị (1,1,8):", opts: ["300 118", "003 118", "300 811", "300 181"], a: 0 },
-      { q: "Một số có 9 chữ số thì chữ số cao nhất thuộc hàng nào?", opts: ["Hàng trăm triệu", "Hàng chục triệu", "Hàng triệu", "Hàng tỉ"], a: 0 },
       { q: "Số 500 000 000 đọc là:", opts: ["Năm trăm triệu", "Năm mươi triệu", "Năm triệu", "Năm tỉ"], a: 0 },
       { q: "Chữ số 1 trong số 149 597 876 có giá trị là:", opts: ["100 000 000", "10 000 000", "1 000 000", "1 000 000 000"], a: 0 },
       { q: "Lớp nghìn của số 149 597 876 gồm các chữ số:", opts: ["5, 9, 7", "1, 4, 9", "8, 7, 6", "9, 7, 8"], a: 0 },
@@ -357,19 +399,19 @@ const ALL_TOPICS = [
       { q: "Số chẵn nhỏ nhất có 7 chữ số là:", opts: ["1 000 000", "1 000 002", "1 234 568", "1 000 001"], a: 0 },
       { q: "Chữ số 7 trong số 76 543 210 có giá trị là:", opts: ["70 000 000", "7 000 000", "700 000", "700 000 000"], a: 0 },
       { q: "Có bao nhiêu chữ số 0 trong cách viết số 'Hai tỉ'?", opts: ["9 chữ số 0", "8 chữ số 0", "6 chữ số 0", "10 chữ số 0"], a: 0 },
-      { q: "Số 98 000 000 gồm mấy chục triệu?", opts: ["9 chục triệu", "98 chục triệu", "8 chục triệu", "90 chục triệu"], a: 0 }
+      { q: "Số 98 000 000 gồm mấy chục triệu?", opts: ["9 chục triệu", "98 chục triệu", "8 chục triệu", "90 chục triệu"], a: 0 },
+      { q: "Dân số TP Cà Mau năm 2019 là 226 372 người. Chữ số 6 ở hàng nào?", opts: ["Hàng nghìn", "Hàng chục nghìn", "Hàng trăm", "Hàng trăm nghìn"], a: 0 },
+      { q: "Số 'Ba trăm nghìn bốn trăm bảy mươi lăm' viết là:", opts: ["300 475", "340 075", "304 750", "300 745"], a: 0 }
     ]
   },
   {
-    vol: 1, id: "cd4", title: "Chủ đề 4: Một số đơn vị đo đại lượng (Trang 55 - 74)",
+    cat: 'vol1', id: "cd4", title: "Chủ đề 4: Một số đơn vị đo đại lượng",
     pool: [
       { q: "1 tạ bằng bao nhiêu ki-lô-gam (kg)?", opts: ["100 kg", "10 kg", "1 000 kg", "10 000 kg"], a: 0 },
       { q: "1 tấn bằng bao nhiêu ki-lô-gam (kg)?", opts: ["1 000 kg", "100 kg", "10 kg", "10 000 kg"], a: 0 },
       { q: "1 tấn bằng bao nhiêu tạ?", opts: ["10 tạ", "100 tạ", "1 tạ", "1 000 tạ"], a: 0 },
       { q: "Điền số thích hợp: 7 yến 3 kg = ... kg?", opts: ["73 kg", "703 kg", "730 kg", "37 kg"], a: 0 },
       { q: "Điền số thích hợp: 3 tấn 5 tạ = ... tạ?", opts: ["35 tạ", "305 tạ", "350 tạ", "3500 tạ"], a: 0 },
-      { q: "Làm tròn đến hàng chục được 120 kg. Số đo thực tế của voi con có thể là:", opts: ["1 tạ 17 kg", "1 tạ 3 yến", "1 tạ 2 kg", "1 tạ 9 kg"], a: 0 },
-      { q: "Tê giác nặng hơn Hươu, Trâu nhẹ hơn Hươu. Trong 1 300 kg, 1 tấn, 2 tấn thì Tê giác nặng:", opts: ["2 tấn", "1 300 kg", "1 tấn", "3 tấn"], a: 0 },
       { q: "Một thế kỉ bằng bao nhiêu năm?", opts: ["100 năm", "10 năm", "50 năm", "1 000 năm"], a: 0 },
       { q: "1 phút 15 giây bằng bao nhiêu giây?", opts: ["75 giây", "60 giây", "115 giây", "70 giây"], a: 0 },
       { q: "Năm 2000 thuộc thế kỉ nào?", opts: ["Thế kỉ XX", "Thế kỉ XIX", "Thế kỉ XXI", "Thế kỉ XVIII"], a: 0 },
@@ -392,11 +434,13 @@ const ALL_TOPICS = [
       { q: "Xe tải chở được tối đa 5 tấn. Đã chở 3 500 kg thì còn chở thêm được:", opts: ["1 500 kg", "2 500 kg", "1 000 kg", "2 000 kg"], a: 0 },
       { q: "So sánh: 2 tấn 50 kg ... 2 500 kg", opts: ["<", ">", "=", "Không so sánh được"], a: 0 },
       { q: "So sánh: 6 tạ ... 60 yến", opts: ["=", ">", "<", "Khác"], a: 0 },
-      { q: "Năm 1010, vua Lý Thái Tổ dời đô về Thăng Long thuộc thế kỉ nào?", opts: ["Thế kỉ XI", "Thế kỉ X", "Thế kỉ XII", "Thế kỉ IX"], a: 0 }
+      { q: "Năm 1010, vua Lý Thái Tổ dời đô về Thăng Long thuộc thế kỉ nào?", opts: ["Thế kỉ XI", "Thế kỉ X", "Thế kỉ XII", "Thế kỉ IX"], a: 0 },
+      { q: "Đổi đơn vị: 1 m² = ... dm²?", opts: ["100 dm²", "10 dm²", "1 000 dm²", "10 000 dm²"], a: 0 },
+      { q: "Đổi đơn vị: 5 cm² = ... mm²?", opts: ["500 mm²", "50 mm²", "5000 mm²", "0.5 mm²"], a: 0 }
     ]
   },
   {
-    vol: 1, id: "cd5", title: "Chủ đề 5: Phép cộng và phép trừ (Trang 75 - 94)",
+    cat: 'vol1', id: "cd5", title: "Chủ đề 5: Phép cộng và phép trừ",
     pool: [
       { q: "Tính nhẩm đặt tính: 83 738 + 12 533 = ?", opts: ["96 271", "95 271", "96 171", "97 271"], a: 0 },
       { q: "Tính nhẩm đặt tính: 65 428 - 23 115 = ?", opts: ["42 313", "42 213", "41 313", "43 313"], a: 0 },
@@ -431,18 +475,15 @@ const ALL_TOPICS = [
     ]
   },
   {
-    vol: 1, id: "cd6", title: "Chủ đề 6: Vuông góc, song song & Hình bình hành (Trang 95 - 110)",
+    cat: 'vol1', id: "cd6", title: "Chủ đề 6: Vuông góc, song song & Hình bình hành, hình thoi",
     pool: [
       { q: "Hình bình hành ABCD có đặc điểm gì nổi bật?", opts: ["Hai cặp cạnh đối diện song song và bằng nhau", "Có 4 cạnh bằng nhau", "Có 4 góc vuông", "Không có cạnh nào song song"], a: 0 },
       { q: "Trong hình bình hành ABCD, cạnh đối diện với AB là cạnh nào?", opts: ["Cạnh CD", "Cạnh AD", "Cạnh BC", "Cạnh BD"], a: 0 },
-      { q: "Trong hình bình hành ABCD, cạnh AD song song với cạnh nào?", opts: ["Cạnh BC", "Cạnh AB", "Cạnh CD", "Cạnh AC"], a: 0 },
       { q: "Hai đường thẳng vuông góc với nhau tạo thành góc mấy độ?", opts: ["90°", "60°", "180°", "45°"], a: 0 },
       { q: "Hai đường thẳng song song với nhau có đặc điểm gì?", opts: ["Không bao giờ cắt nhau", "Cắt nhau tại 1 điểm vuông góc", "Cắt nhau tạo góc nhọn", "Trùng nhau hoàn toàn"], a: 0 },
-      { q: "Hình thoi có đặc điểm khác gì so với hình bình hành thông thường?", opts: ["Có 4 cạnh dài bằng nhau", "Có 4 góc vuông", "Không có cạnh đối song song", "Có 3 đỉnh"], a: 0 },
+      { q: "Hình thoi có đặc điểm khác biệt gì so với hình bình hành thông thường?", opts: ["Có 4 cạnh dài bằng nhau", "Có 4 góc vuông", "Không có cạnh đối song song", "Có 3 đỉnh"], a: 0 },
       { q: "Hình chữ nhật có phải là một hình bình hành đặc biệt không?", opts: ["Có", "Không", "Chỉ khi xoay nghiêng", "Tùy kích thước"], a: 0 },
       { q: "Hình vuông có phải là một hình thoi đặc biệt không?", opts: ["Có", "Không", "Chỉ là hình chữ nhật", "Không thể xác định"], a: 0 },
-      { q: "Hình bình hành có bao nhiêu góc tù?", opts: ["2 góc tù", "1 góc tù", "3 góc tù", "4 góc tù"], a: 0 },
-      { q: "Hình bình hành có bao nhiêu góc nhọn?", opts: ["2 góc nhọn", "1 góc nhọn", "3 góc nhọn", "4 góc nhọn"], a: 0 },
       { q: "Một hình bình hành có độ dài đáy 10 cm, cạnh bên 6 cm. Chu vi của nó là:", opts: ["32 cm", "16 cm", "60 cm", "26 cm"], a: 0 },
       { q: "Hình thoi có cạnh dài 5 cm thì chu vi là bao nhiêu?", opts: ["20 cm", "25 cm", "15 cm", "10 cm"], a: 0 },
       { q: "Tứ giác có 2 cặp cạnh đối diện song song là:", opts: ["Hình bình hành", "Hình thang", "Hình tam giác", "Hình ngũ giác"], a: 0 },
@@ -458,69 +499,74 @@ const ALL_TOPICS = [
       { q: "Hai đường thẳng phân biệt cùng vuông góc với đường thẳng thứ ba thì chúng:", opts: ["Song song với nhau", "Vuông góc với nhau", "Cắt nhau", "Trùng nhau"], a: 0 },
       { q: "Hình nào vừa có 4 cạnh bằng nhau vừa có 4 góc vuông?", opts: ["Hình vuông", "Hình thoi", "Hình chữ nhật", "Hình bình hành"], a: 0 },
       { q: "Khung diều hình thoi có độ dài 1 cạnh là 15 cm. Chu vi khung diều là:", opts: ["60 cm", "30 cm", "45 cm", "50 cm"], a: 0 },
-      { q: "Khi kéo dãn hai góc đối diện của hình chữ nhật theo đường chéo, ta được hình:", opts: ["Hình bình hành", "Hình thoi", "Hình thang", "Hình tam giác"], a: 0 },
+      { q: "Khi kéo dãn hai góc đối diện của hình chữ nhật theo đường chéo, ta được:", opts: ["Hình bình hành", "Hình thoi", "Hình thang", "Hình tam giác"], a: 0 },
       { q: "Khi bóp dẹp hai góc đối diện của hình vuông, ta được hình:", opts: ["Hình thoi", "Hình chữ nhật", "Hình bình hành", "Hình tam giác"], a: 0 },
       { q: "Cạnh đối diện với BC trong hình bình hành ABCD là:", opts: ["Cạnh AD", "Cạnh AB", "Cạnh CD", "Cạnh AC"], a: 0 },
       { q: "Độ dài đáy hình bình hành gấp đôi cạnh bên (cạnh bên 4 cm). Chu vi là:", opts: ["24 cm", "16 cm", "32 cm", "20 cm"], a: 0 },
-      { q: "Biển báo hiệu giao thông nào dưới đây thường có dạng hình thoi?", opts: ["Biển báo đường ưu tiên", "Biển cấm đi ngược chiều", "Biển chỉ dẫn", "Biển báo nguy hiểm"], a: 0 }
+      { q: "Biển báo hiệu giao thông nào dưới đây thường có dạng hình thoi?", opts: ["Biển báo đường ưu tiên", "Biển cấm đi ngược chiều", "Biển chỉ dẫn", "Biển báo nguy hiểm"], a: 0 },
+      { q: "Hình bình hành có bao nhiêu góc tù và bao nhiêu góc nhọn?", opts: ["2 góc tù và 2 góc nhọn", "1 góc tù và 3 góc nhọn", "4 góc vuông", "Không có góc tù"], a: 0 },
+      { q: "Cắt hình vuông ABCD theo đường chéo AC rồi ghép lại ta được hình gì?", opts: ["Hình bình hành hoặc hình tam giác", "Hình chữ nhật", "Hình thoi", "Hình thang cân"], a: 0 },
+      { q: "Trong hình bình hành ABCD, cạnh AD song song với:", opts: ["Cạnh BC", "Cạnh AB", "Cạnh CD", "Cạnh AC"], a: 0 }
     ]
   },
   {
-    vol: 1, id: "cd7", title: "Chủ đề 7: Ôn tập học kì I (Trang 111 - 130)",
+    cat: 'vol1', id: "cd7", title: "Chủ đề 7: Ôn tập học kì I",
     pool: [
-      { q: "Hình vẽ gồm tam giác và hình chữ nhật ghép lại, phần tam giác có mấy góc nhọn?", opts: ["3 góc nhọn", "2 góc nhọn", "1 góc nhọn", "0 góc nhọn"], a: 0 },
       { q: "Số bé nhất có 6 chữ số khác nhau là:", opts: ["102 345", "100 000", "123 456", "102 354"], a: 0 },
       { q: "Số lớn nhất có 6 chữ số khác nhau là:", opts: ["987 654", "999 999", "987 650", "986 754"], a: 0 },
       { q: "Trung bình cộng của 3 số: 45, 55, 80 là bao nhiêu?", opts: ["60", "50", "70", "65"], a: 0 },
       { q: "Tìm số trung bình cộng của 4 số: 10, 20, 30, 40 là:", opts: ["25", "20", "30", "24"], a: 0 },
-      { q: "Biểu đồ cột có cột thứ Năm cao 70 bạn, thứ Sáu cao 115 bạn. Thứ Sáu nhiều hơn thứ Năm:", opts: ["45 bạn", "40 bạn", "35 bạn", "55 bạn"], a: 0 },
-      { q: "Tháng 1 mưa 20 ngày, tháng 2 mưa 25 ngày, tháng 3 mưa 15 ngày. Trung bình mỗi tháng mưa:", opts: ["20 ngày", "25 ngày", "15 ngày", "30 ngày"], a: 0 },
-      { q: "Một cửa hàng ngày 1 bán 120 m vải, ngày 2 bán gấp đôi ngày 1. Cả hai ngày bán:", opts: ["360 m", "240 m", "300 m", "400 m"], a: 0 },
       { q: "Đặt tính rồi tính: 24 150 x 3 = ?", opts: ["72 450", "72 350", "62 450", "71 450"], a: 0 },
       { q: "Đặt tính rồi tính: 48 060 : 4 = ?", opts: ["12 015", "12 150", "12 050", "11 015"], a: 0 },
-      { q: "Có 3 bao gạo, bao 1 nặng 45 kg, bao 2 nặng 55 kg, bao 3 nặng 50 kg. Trung bình mỗi bao nặng:", opts: ["50 kg", "48 kg", "52 kg", "45 kg"], a: 0 },
-      { q: "Muốn tìm số trung bình cộng của nhiều số, ta tính:", opts: ["Tổng các số chia cho số các số hạng", "Tổng các số nhân số các số hạng", "Số lớn nhất cộng số bé nhất chia đôi", "Tổng các số chia cho 2"], a: 0 },
-      { q: "Biểu đồ cột biểu diễn đại lượng số liệu thông qua:", opts: ["Chiều cao của các cột", "Màu sắc ngẫu nhiên của cột", "Độ rộng của các cột", "Đường viền của cột"], a: 0 },
+      { q: "Có 3 bao gạo: 45 kg, 55 kg, 50 kg. Trung bình mỗi bao nặng:", opts: ["50 kg", "48 kg", "52 kg", "45 kg"], a: 0 },
       { q: "Góc bẹt thì bằng mấy lần góc vuông?", opts: ["2 lần", "3 lần", "4 lần", "1 lần"], a: 0 },
       { q: "Trong các đơn vị đo: tấn, tạ, yến, kg. Đơn vị đo lớn nhất là:", opts: ["Tấn", "Tạ", "Yến", "Kg"], a: 0 },
       { q: "5 tạ 4 yến = ... yến?", opts: ["54 yến", "504 yến", "540 yến", "54 yến"], a: 0 },
-      { q: "Chu vi của một mảnh đất hình vuông có cạnh 25 m là:", opts: ["100 m", "50 m", "625 m", "125 m"], a: 0 },
-      { q: "Diện tích của một mảnh đất hình vuông có cạnh 25 m là:", opts: ["625 m²", "100 m²", "50 m²", "250 m²"], a: 0 },
+      { q: "Chu vi mảnh đất hình vuông có cạnh 25 m là:", opts: ["100 m", "50 m", "625 m", "125 m"], a: 0 },
+      { q: "Diện tích mảnh đất hình vuông có cạnh 25 m là:", opts: ["625 m²", "100 m²", "50 m²", "250 m²"], a: 0 },
       { q: "Tính giá trị biểu thức: 50 000 + 20 000 : 2 =", opts: ["60 000", "35 000", "70 000", "40 000"], a: 0 },
       { q: "Tính giá trị biểu thức: (50 000 + 20 000) : 2 =", opts: ["35 000", "60 000", "70 000", "45 000"], a: 0 },
-      { q: "Một trường tiểu học có 4 khối, mỗi khối có 150 học sinh. Tổng số học sinh là:", opts: ["600 em", "500 em", "450 em", "700 em"], a: 0 },
-      { q: "Một rạp chiếu phim bán 300 vé buổi sáng, buổi chiều nhiều hơn 150 vé. Cả ngày bán:", opts: ["750 vé", "600 vé", "450 vé", "700 vé"], a: 0 },
-      { q: "Một xe tải chở 4 bao phân bón, mỗi bao nặng 50 kg. Xe đó chở tất cả:", opts: ["2 tạ", "2 tấn", "20 yến", "200 tạ"], a: 0 },
+      { q: "Trường có 4 khối, mỗi khối 150 học sinh. Tổng số học sinh là:", opts: ["600 em", "500 em", "450 em", "700 em"], a: 0 },
+      { q: "Một rạp chiếu phim bán 300 vé sáng, chiều bán nhiều hơn 150 vé. Cả ngày bán:", opts: ["750 vé", "600 vé", "450 vé", "700 vé"], a: 0 },
+      { q: "Xe tải chở 4 bao phân bón, mỗi bao 50 kg. Xe đó chở tất cả:", opts: ["2 tạ", "2 tấn", "20 yến", "200 tạ"], a: 0 },
       { q: "Đoạn thẳng MN song song với đoạn thẳng PQ thì chúng:", opts: ["Không bao giờ cắt nhau", "Cắt nhau tạo góc vuông", "Cắt nhau tạo góc nhọn", "Trùng khớp nhau"], a: 0 },
-      { q: "Kim giờ chỉ số 6, kim phút chỉ số 12. Góc tạo thành là góc gì?", opts: ["Góc bẹt", "Góc vuông", "Góc nhọn", "Góc tù"], a: 0 },
-      { q: "Kim giờ chỉ số 9, kim phút chỉ số 12. Góc tạo thành là góc gì?", opts: ["Góc vuông", "Góc nhọn", "Góc tù", "Góc bẹt"], a: 0 },
+      { q: "Kim giờ chỉ số 6, kim phút chỉ số 12. Góc tạo thành là:", opts: ["Góc bẹt", "Góc vuông", "Góc nhọn", "Góc tù"], a: 0 },
+      { q: "Kim giờ chỉ số 9, kim phút chỉ số 12. Góc tạo thành là:", opts: ["Góc vuông", "Góc nhọn", "Góc tù", "Góc bẹt"], a: 0 },
       { q: "Số liền trước của số chẵn bé nhất có 5 chữ số là:", opts: ["9 999", "10 001", "10 000", "9 998"], a: 0 },
       { q: "Kết quả của phép chia 36 000 : 9 là:", opts: ["4 000", "400", "40 000", "3 600"], a: 0 },
       { q: "Kết quả của phép nhân 1 200 x 5 là:", opts: ["6 000", "5 000", "7 000", "600"], a: 0 },
-      { q: "Năm 1975 giải phóng hoàn toàn miền Nam thuộc thế kỉ nào?", opts: ["Thế kỉ XX", "Thế kỉ XIX", "Thế kỉ XXI", "Thế kỉ XVIII"], a: 0 }
+      { q: "Năm 1975 giải phóng miền Nam thuộc thế kỉ nào?", opts: ["Thế kỉ XX", "Thế kỉ XIX", "Thế kỉ XXI", "Thế kỉ XVIII"], a: 0 },
+      { q: "Dân số TP Hồ Chí Minh năm 2019 là 8 993 082 người. Chữ số hàng triệu là:", opts: ["8", "9", "3", "0"], a: 0 },
+      { q: "Trồng 760 cây ổi và chuối, ổi nhiều hơn chuối 40 cây. Số cây ổi là:", opts: ["400 cây", "360 cây", "420 cây", "380 cây"], a: 0 },
+      { q: "Trồng 760 cây ổi và chuối, ổi nhiều hơn chuối 40 cây. Số cây chuối là:", opts: ["360 cây", "400 cây", "340 cây", "350 cây"], a: 0 },
+      { q: "Tính: 78 060 : (10 - 7) + 300 045 =", opts: ["326 065", "326 000", "300 000", "316 065"], a: 0 },
+      { q: "Thu hoạch 5 tấn muối, xe 1 chở nhiều hơn xe 2 là 4 tạ. Xe 1 chở được:", opts: ["27 tạ (2 700 kg)", "23 tạ", "25 tạ", "30 tạ"], a: 0 },
+      { q: "Muốn tìm số trung bình cộng của nhiều số, ta tính:", opts: ["Tổng các số chia cho số các số hạng", "Tổng các số nhân số các số hạng", "Số lớn nhất cộng số bé nhất chia đôi", "Tổng các số chia cho 2"], a: 0 }
     ]
   },
 
-  // --- TẬP 2 (CHỦ ĐỀ 8 - 13) ---
+  // --- TẬP 2 (CHỦ ĐỀ 8 ĐẾN 13) ---
   {
-    vol: 2, id: "cd8", title: "Chủ đề 8: Phép nhân và phép chia (Tập 2)",
+    cat: 'vol2', id: "cd8", title: "Chủ đề 8: Phép nhân và phép chia",
     pool: [
-      { q: "Mỗi ngày nhà máy sản xuất 160 140 chiếc khẩu trang. Trong 7 ngày sản xuất được:", opts: ["1 120 980 chiếc", "1 120 000 chiếc", "1 120 880 chiếc", "1 220 980 chiếc"], a: 0 },
+      { q: "Tính chất phân phối: a x (b + c) = ?", opts: ["a x b + a x c", "a x b x c", "a + b + c", "(a + b) x c"], a: 0 },
+      { q: "Tính thuận tiện: 67 x 3 + 67 x 7 = 67 x (3 + 7) = ?", opts: ["670", "67", "6 700", "607"], a: 0 },
+      { q: "Tính thuận tiện: 27 x 6 + 73 x 6 = (27 + 73) x 6 = ?", opts: ["600", "60", "6 000", "550"], a: 0 },
+      { q: "Tính nhẩm: 48 256 x 10 = ?", opts: ["482 560", "48 256", "482 500", "4 825 600"], a: 0 },
+      { q: "Tính nhẩm: 625 400 : 100 = ?", opts: ["6 254", "62 540", "625,4", "625"], a: 0 },
+      { q: "Vườn hồng dài 14 m, rộng 10 m; vườn cúc vuông cạnh 12 m. Chu vi 2 vườn thế nào?", opts: ["Chu vi hai mảnh vườn bằng nhau (48 m)", "Vườn hồng lớn hơn", "Vườn cúc lớn hơn", "Không tính được"], a: 0 },
+      { q: "15 thùng xoài nặng 675 kg. Bán 8 thùng thì còn lại bao nhiêu kg?", opts: ["315 kg", "360 kg", "270 kg", "300 kg"], a: 0 },
+      { q: "Tính nhẩm: 500 x 70 = ?", opts: ["35 000", "3 500", "350 000", "350"], a: 0 },
+      { q: "Tính thuận tiện: 125 x 32 x 8 = (125 x 8) x 32 = ?", opts: ["32 000", "3 200", "320 000", "16 000"], a: 0 },
       { q: "Mỗi ô tô chở 34 học sinh. 12 ô tô như thế chở được bao nhiêu học sinh?", opts: ["408 học sinh", "340 học sinh", "418 học sinh", "380 học sinh"], a: 0 },
-      { q: "Tính giá trị: 34 x 10 + 34 x 2 = ?", opts: ["408", "340", "418", "380"], a: 0 },
       { q: "Tích riêng thứ hai khi nhân với số có hai chữ số phải viết như thế nào?", opts: ["Lùi sang trái một cột so với tích riêng thứ nhất", "Viết thẳng cột với tích riêng thứ nhất", "Lùi sang phải một cột", "Viết cách hai dòng"], a: 0 },
       { q: "Tính: 27 283 x 3 = ?", opts: ["81 849", "81 749", "80 849", "82 849"], a: 0 },
       { q: "Tính: 40 819 x 5 = ?", opts: ["204 095", "204 195", "200 095", "205 095"], a: 0 },
-      { q: "Tính: 374 519 x 2 = ?", opts: ["749 038", "748 038", "749 138", "750 038"], a: 0 },
-      { q: "Một trường mua 15 bộ bàn ghế, mỗi bộ giá 450 000 đồng. Tổng số tiền là:", opts: ["6 750 000 đồng", "6 500 000 đồng", "7 000 000 đồng", "6 250 000 đồng"], a: 0 },
       { q: "Tính: 74 165 : 5 = ?", opts: ["14 833", "14 835", "14 830", "13 833"], a: 0 },
       { q: "Tính: 324 x 14 = ?", opts: ["4 536", "4 236", "4 546", "3 536"], a: 0 },
-      { q: "Tính nhẩm: 250 x 100 = ?", opts: ["25 000", "2 500", "250 000", "2 500 000"], a: 0 },
-      { q: "Tính nhẩm: 48 000 : 100 = ?", opts: ["480", "48", "4 800", "48 000"], a: 0 },
       { q: "Một phép chia có số dư lớn nhất là 8. Số chia của phép chia đó là:", opts: ["9", "8", "7", "10"], a: 0 },
       { q: "Khi chia cho số có hai chữ số, số dư phải luôn luôn:", opts: ["Bé hơn số chia", "Lớn hơn số chia", "Bằng số chia", "Bằng 0"], a: 0 },
       { q: "Tìm x: x : 11 = 25. Giá trị của x là:", opts: ["275", "250", "265", "285"], a: 0 },
-      { q: "Tính: (125 x 8) x 7 = ?", opts: ["7 000", "8 000", "6 000", "5 600"], a: 0 },
       { q: "Tính: 35 x 11 = ?", opts: ["385", "375", "395", "365"], a: 0 },
       { q: "Tính: 68 x 11 = ?", opts: ["748", "738", "758", "688"], a: 0 },
       { q: "Một rạp chiếu phim có 24 hàng ghế, mỗi hàng có 18 ghế. Rạp có tất cả:", opts: ["432 chỗ ngồi", "422 chỗ ngồi", "442 chỗ ngồi", "412 chỗ ngồi"], a: 0 },
@@ -529,61 +575,53 @@ const ALL_TOPICS = [
       { q: "Chia đều 240 quyển vở cho 12 bạn. Mỗi bạn nhận được:", opts: ["20 quyển", "24 quyển", "18 quyển", "15 quyển"], a: 0 },
       { q: "Tính thuận tiện: 2 x 45 x 5 = ?", opts: ["450", "400", "500", "420"], a: 0 },
       { q: "Tính thuận tiện: 4 x 37 x 25 = ?", opts: ["3 700", "3 500", "4 000", "3 800"], a: 0 },
-      { q: "Số thích hợp điền vào chỗ chấm: 32 x (10 + 3) = 32 x 10 + 32 x ...", opts: ["3", "10", "32", "13"], a: 0 },
-      { q: "Một xe chở hàng chở 45 thùng mì gói, mỗi thùng nặng 12 kg. Tổng khối lượng là:", opts: ["540 kg", "500 kg", "520 kg", "560 kg"], a: 0 },
       { q: "Tìm thương và số dư của phép chia: 75 : 12 =", opts: ["Thương 6, dư 3", "Thương 6, dư 2", "Thương 5, dư 15", "Thương 7, dư 0"], a: 0 },
       { q: "Thương của 9 600 : 300 là:", opts: ["32", "320", "302", "3.2"], a: 0 },
-      { q: "Tính: 15 x 6 : 5 = ?", opts: ["18", "15", "20", "12"], a: 0 },
-      { q: "Nếu gấp thừa số thứ nhất lên 2 lần và giữ nguyên thừa số thứ hai thì tích:", opts: ["Gấp lên 2 lần", "Giảm đi 2 lần", "Không đổi", "Gấp lên 4 lần"], a: 0 }
+      { q: "Nếu gấp thừa số thứ nhất lên 2 lần và giữ nguyên thừa số 2 thì tích:", opts: ["Gấp lên 2 lần", "Giảm đi 2 lần", "Không đổi", "Gấp lên 4 lần"], a: 0 },
+      { q: "Tính: 15 x 6 : 5 = ?", opts: ["18", "15", "20", "12"], a: 0 }
     ]
   },
   {
-    vol: 2, id: "cd9", title: "Chủ đề 9: Làm quen với thống kê, xác suất (Tập 2)",
+    cat: 'vol2', id: "cd9", title: "Chủ đề 9: Làm quen với yếu tố thống kê, xác suất",
     pool: [
-      { q: "Rô-bốt ghi quãng đường đạp xe các ngày (km): 1, 2, 2, 2, 3. Dãy số liệu trên có mấy số?", opts: ["5 số", "4 số", "6 số", "3 số"], a: 0 },
-      { q: "Dãy số liệu đạp xe: 1, 2, 2, 2, 3 km. Quãng đường dài nhất Rô-bốt đi được trong 1 buổi là:", opts: ["3 km", "2 km", "1 km", "4 km"], a: 0 },
-      { q: "Dãy số liệu đạp xe: 1, 2, 2, 2, 3 km. Trung bình mỗi ngày Rô-bốt đi được bao nhiêu km?", opts: ["2 km", "1.5 km", "2.5 km", "3 km"], a: 0 },
+      { q: "Rô-bốt ghi quãng đường đạp xe các ngày (km): 1, 2, 2, 2, 3. Dãy số liệu có mấy số?", opts: ["5 số", "4 số", "6 số", "3 số"], a: 0 },
       { q: "Gieo một đồng xu có hai mặt Sấp và Ngửa. Có mấy sự kiện có thể xảy ra?", opts: ["2 khả năng", "1 khả năng", "3 khả năng", "4 khả năng"], a: 0 },
-      { q: "Vòng quay may mắn có 4 ô: Xanh, Đỏ, Vàng, Tím. Kim chỉ vào ô Trắng là sự kiện:", opts: ["Không thể xảy ra", "Chắc chắn xảy ra", "Có thể xảy ra", "Xảy ra 50%"], a: 0 },
-      { q: "Tung một con xúc xắc 6 mặt. Sự kiện 'Xuất hiện mặt có 7 chấm' là sự kiện:", opts: ["Không thể xảy ra", "Có thể xảy ra", "Chắc chắn xảy ra", "Hiếm khi"], a: 0 },
-      { q: "Biểu đồ cột biểu diễn số cây trồng của 4 lớp: 4A (35), 4B (40), 4C (38), 4D (45). Lớp trồng nhiều nhất là:", opts: ["Lớp 4D", "Lớp 4B", "Lớp 4C", "Lớp 4A"], a: 0 },
-      { q: "Theo số liệu trên: 4A (35 cây), 4B (40 cây). Lớp 4B trồng nhiều hơn 4A bao nhiêu cây?", opts: ["5 cây", "10 cây", "8 cây", "4 cây"], a: 0 },
-      { q: "Nhiệt độ các ngày trong tuần (°C): 25, 27, 28, 26, 29. Nhiệt độ cao nhất ghi nhận là:", opts: ["29°C", "28°C", "27°C", "30°C"], a: 0 },
-      { q: "Trong một hộp có 3 viên bi đỏ và 1 viên bi xanh. Lấy ngẫu nhiên 1 viên, sự kiện nào dễ xảy ra hơn?", opts: ["Lấy được bi đỏ", "Lấy được bi xanh", "Hai khả năng bằng nhau", "Lấy được bi vàng"], a: 0 },
+      { q: "Vòng quay có 4 ô: Xanh, Đỏ, Vàng, Tím. Kim chỉ vào ô Trắng là sự kiện:", opts: ["Không thể xảy ra", "Chắc chắn xảy ra", "Có thể xảy ra", "Xảy ra 50%"], a: 0 },
+      { q: "Tung một con xúc xắc 6 mặt. Sự kiện 'Xuất hiện mặt 7 chấm' là sự kiện:", opts: ["Không thể xảy ra", "Có thể xảy ra", "Chắc chắn xảy ra", "Hiếm khi"], a: 0 },
+      { q: "Trong hộp có 3 viên bi đỏ và 1 viên bi xanh. Lấy 1 viên, sự kiện nào dễ xảy ra hơn?", opts: ["Lấy được bi đỏ", "Lấy được bi xanh", "Hai khả năng bằng nhau", "Lấy được bi vàng"], a: 0 },
       { q: "Dãy số liệu điểm kiểm tra: 8, 9, 7, 10, 8, 9. Có bao nhiêu bạn đạt điểm 9?", opts: ["2 bạn", "1 bạn", "3 bạn", "0 bạn"], a: 0 },
       { q: "Tung con xúc xắc, mặt xuất hiện số chấm chẵn là sự kiện:", opts: ["Có thể xảy ra", "Chắc chắn xảy ra", "Không thể xảy ra", "Luôn luôn sai"], a: 0 },
-      { q: "Biểu đồ cột thường gồm hai trục nào?", opts: ["Trục ngang và trục đứng", "Hai trục chéo nhau", "Chỉ một trục tròn", "Trục cong hình sóng"], a: 0 },
-      { q: "Số lượng học sinh giỏi các tổ: Tổ 1 (4), Tổ 2 (5), Tổ 3 (3), Tổ 4 (6). Cả 4 tổ có bao nhiêu học sinh giỏi?", opts: ["18 em", "17 em", "19 em", "16 em"], a: 0 },
-      { q: "Chiều cao của cột trong biểu đồ cột dùng để biểu thị:", opts: ["Số liệu của đối tượng tương ứng", "Tên của đối tượng", "Thứ tự thời gian", "Màu sắc ưa thích"], a: 0 },
-      { q: "Cho dãy số đo chiều cao (cm): 132, 135, 128, 140. Bạn có chiều cao thấp nhất là:", opts: ["128 cm", "132 cm", "135 cm", "140 cm"], a: 0 },
+      { q: "Biểu đồ cột thường gồm hai trục nào?", opts: ["Trục ngang và trục đứng", "Hai trục chéo nhau", "Chỉ một trục tròn", "Trục cong"], a: 0 },
+      { q: "Chiều cao của cột trong biểu đồ cột dùng để biểu thị:", opts: ["Số liệu của đối tượng tương ứng", "Tên của đối tượng", "Thứ tự thời gian", "Màu sắc"], a: 0 },
+      { q: "Cho dãy số đo chiều cao (cm): 132, 135, 128, 140. Bạn thấp nhất cao:", opts: ["128 cm", "132 cm", "135 cm", "140 cm"], a: 0 },
       { q: "Hộp có 5 bút chì đen. Rút ra 1 chiếc bút chì màu đỏ là sự kiện:", opts: ["Không thể xảy ra", "Có thể xảy ra", "Chắc chắn xảy ra", "Tùy lúc"], a: 0 },
-      { q: "Hộp có 5 bút chì đen. Rút ra 1 chiếc bút chì màu đen là sự kiện:", opts: ["Chắc chắn xảy ra", "Có thể xảy ra", "Không thể xảy ra", "50% khả năng"], a: 0 },
+      { q: "Hộp có 5 bút chì đen. Rút ra 1 chiếc bút chì màu đen là sự kiện:", opts: ["Chắc chắn xảy ra", "Có thể xảy ra", "Không thể xảy ra", "50%"], a: 0 },
       { q: "Trung bình cộng dãy số: 10, 20, 30 là:", opts: ["20", "15", "25", "30"], a: 0 },
-      { q: "Số ngày nghỉ mưa trong 4 tháng: 3, 5, 2, 6 ngày. Tổng số ngày mưa là:", opts: ["16 ngày", "15 ngày", "14 ngày", "18 ngày"], a: 0 },
+      { q: "Số ngày mưa trong 4 tháng: 3, 5, 2, 6 ngày. Tổng số ngày mưa là:", opts: ["16 ngày", "15 ngày", "14 ngày", "18 ngày"], a: 0 },
       { q: "Tung đồng xu 10 lần, số lần xuất hiện mặt Ngửa có thể là:", opts: ["Bất kỳ số nào từ 0 đến 10", "Chắc chắn là 5", "Luôn luôn là 10", "Không thể bằng 0"], a: 0 },
       { q: "Vòng quay có 2 ô đỏ, 6 ô xanh. Kim có khả năng dừng ở ô màu nào cao hơn?", opts: ["Màu xanh", "Màu đỏ", "Hai màu như nhau", "Màu vàng"], a: 0 },
-      { q: "Số cuốn sách đọc được trong hè: Mai (8), Nam (12), Việt (10). Cả 3 bạn đọc trung bình mỗi bạn:", opts: ["10 cuốn", "9 cuốn", "11 cuốn", "12 cuốn"], a: 0 },
-      { q: "Quan sát biểu đồ cột, để biết đối tượng có số liệu ít nhất ta tìm:", opts: ["Cột thấp nhất", "Cột cao nhất", "Cột nằm ở giữa", "Cột ngoài cùng"], a: 0 },
+      { q: "Sách đọc được: Mai (8), Nam (12), Việt (10). Trung bình mỗi bạn đọc được:", opts: ["10 cuốn", "9 cuốn", "11 cuốn", "12 cuốn"], a: 0 },
+      { q: "Quan sát biểu đồ cột, để biết đối tượng ít nhất ta tìm:", opts: ["Cột thấp nhất", "Cột cao nhất", "Cột nằm ở giữa", "Cột ngoài cùng"], a: 0 },
       { q: "Tung con xúc xắc 6 mặt, khả năng xuất hiện mặt 1 chấm và mặt 6 chấm là:", opts: ["Như nhau", "Mặt 6 dễ ra hơn", "Mặt 1 dễ ra hơn", "Không xác định"], a: 0 },
       { q: "Dãy số liệu: 15, 20, 25, 30, 35. Số thứ tư trong dãy là số nào?", opts: ["30", "25", "20", "35"], a: 0 },
-      { q: "Mai bốc 1 quả bóng từ túi chứa toàn bóng tennis màu xanh. Sự kiện lấy được bóng xanh là:", opts: ["Chắc chắn xảy ra", "Có thể xảy ra", "Không thể", "Chưa biết"], a: 0 },
+      { q: "Túi chứa toàn bóng bàn màu trắng. Rút 1 quả lấy được bóng trắng là sự kiện:", opts: ["Chắc chắn xảy ra", "Có thể xảy ra", "Không thể", "Chưa biết"], a: 0 },
       { q: "Dãy số liệu cân nặng (kg): 32, 35, 38, 35, 40. Có bao nhiêu bạn nặng 35 kg?", opts: ["2 bạn", "1 bạn", "3 bạn", "0 bạn"], a: 0 },
-      { q: "Khi quan sát biểu đồ cột, độ rộng của các cột nên như thế nào?", opts: ["Bằng nhau", "Cột to cột nhỏ", "Tùy kích thước số liệu", "Không quan trọng"], a: 0 },
-      { q: "Bảng thống kê giúp người xem:", opts: ["Dễ dàng so sánh và nắm bắt thông tin số liệu", "Vẽ tranh đẹp hơn", "Học thuộc bảng nhân", "Viết chữ nắn nót"], a: 0 }
+      { q: "Khi vẽ biểu đồ cột, độ rộng của các cột phải như thế nào?", opts: ["Bằng nhau", "Cột to cột nhỏ", "Tùy kích thước", "Không quan trọng"], a: 0 },
+      { q: "Bảng thống kê giúp người xem:", opts: ["Dễ dàng so sánh và nắm bắt thông tin", "Vẽ tranh đẹp", "Học thuộc bảng cửu chương", "Tô màu"], a: 0 },
+      { q: "Lớp 4A trồng 35 cây, 4B trồng 40 cây. Lớp 4B trồng nhiều hơn 4A số cây là:", opts: ["5 cây", "10 cây", "8 cây", "4 cây"], a: 0 },
+      { q: "Biểu đồ lớp ngoại khoá: Bơi 60, Võ 45, Cờ 30, Múa 45 em. Lớp đông nhất là:", opts: ["Lớp Bơi (60 em)", "Lớp Võ", "Lớp Múa", "Lớp Cờ"], a: 0 },
+      { q: "Chiều cao (cm): Thắng 180, Hùng 175, Bình 182, Trung 178, Dũng 185. VĐV cao nhất là:", opts: ["Dũng (185 cm)", "Bình (182 cm)", "Thắng (180 cm)", "Trung (178 cm)"], a: 0 },
+      { q: "Trung bình mỗi lớp ngoại khóa có bao nhiêu học sinh tham gia (60, 45, 30, 45)?", opts: ["45 học sinh", "40 học sinh", "50 học sinh", "35 học sinh"], a: 0 },
+      { q: "Tháng 1 mưa 20 ngày, tháng 2 mưa 25 ngày, tháng 3 mưa 15 ngày. Trung bình mỗi tháng mưa:", opts: ["20 ngày", "25 ngày", "15 ngày", "30 ngày"], a: 0 },
+      { q: "Biểu đồ cột thư viện: Thứ 6 có 115 bạn, thứ 5 có 70 bạn. Thứ 6 hơn thứ 5 số bạn là:", opts: ["45 bạn", "40 bạn", "55 bạn", "35 bạn"], a: 0 }
     ]
   },
   {
-    vol: 2, id: "cd10", title: "Chủ đề 10: Phân số (Tập 2)",
+    cat: 'vol2', id: "cd10", title: "Chủ đề 10: Phân số",
     pool: [
-      { q: "Chia đều 3 cái bánh cho 4 bạn thì mỗi bạn được bao nhiêu phần cái bánh?", opts: ["3/4 cái bánh", "4/3 cái bánh", "1/4 cái bánh", "1/3 cái bánh"], a: 0 },
-      { q: "Chia đều 5 cái bánh cho 4 bạn thì mỗi bạn được bao nhiêu phần cái bánh?", opts: ["5/4 cái bánh", "4/5 cái bánh", "1/4 cái bánh", "5/5 cái bánh"], a: 0 },
+      { q: "Chia đều 3 cái bánh cho 4 bạn thì mỗi bạn được bao nhiêu cái bánh?", opts: ["3/4 cái bánh", "4/3 cái bánh", "1/4 cái bánh", "1/3 cái bánh"], a: 0 },
       { q: "Thương của phép chia 7 : 5 viết dưới dạng phân số là:", opts: ["7/5", "5/7", "7/10", "2/5"], a: 0 },
       { q: "Thương của phép chia 3 : 3 viết dưới dạng phân số là:", opts: ["3/3 (= 1)", "3/1", "1/3", "0/3"], a: 0 },
-      { q: "Phân số có tử số là 5, mẫu số là 8 được viết là:", opts: ["5/8", "8/5", "5/13", "8/13"], a: 0 },
-      { q: "Hai tờ giấy như nhau, Việt tô 3/8 tờ giấy, Mai tô 3/4 tờ giấy. Phần tô màu của ai nhiều hơn?", opts: ["Mai nhiều hơn Việt (3/4 > 3/8)", "Việt nhiều hơn Mai", "Hai bạn bằng nhau", "Không so sánh được"], a: 0 },
-      { q: "Quy tắc: Hai phân số có cùng tử số, phân số nào có mẫu số bé hơn thì phân số đó:", opts: ["Lớn hơn", "Bé hơn", "Bằng nhau", "Không xác định"], a: 0 },
-      { q: "So sánh hai phân số: 5/6 ... 5/12", opts: [">", "<", "=", "Khác"], a: 0 },
-      { q: "So sánh hai phân số: 9/20 ... 9/10", opts: ["<", ">", "=", "Khác"], a: 0 },
       { q: "Rút gọn phân số 6/9 về tối giản ta được:", opts: ["2/3", "3/2", "1/3", "3/9"], a: 0 },
       { q: "Rút gọn phân số 8/20 về tối giản ta được:", opts: ["2/5", "4/10", "1/5", "4/5"], a: 0 },
       { q: "Rút gọn phân số 25/65 về tối giản ta được:", opts: ["5/13", "1/13", "5/15", "5/12"], a: 0 },
@@ -599,57 +637,59 @@ const ALL_TOPICS = [
       { q: "Trong các phân số: 1/3, 2/6, 3/9, 4/12, phân số nào tối giản?", opts: ["1/3", "2/6", "3/9", "4/12"], a: 0 },
       { q: "Số tự nhiên 7 viết dưới dạng phân số có mẫu số bằng 1 là:", opts: ["7/1", "1/7", "7/7", "7/0"], a: 0 },
       { q: "Số 0 viết dưới dạng phân số có mẫu số bằng 5 là:", opts: ["0/5", "5/0", "1/5", "0/0"], a: 0 },
-      { q: "Khi nhân cả tử và mẫu của một phân số với 3 (khác 0), ta được phân số mới:", opts: ["Bằng phân số đã cho", "Lớn gấp 3 lần", "Nhỏ hơn 3 lần", "Gấp 9 lần"], a: 0 },
+      { q: "Khi nhân cả tử và mẫu của một phân số với 3 (khác 0), ta được:", opts: ["Phân số bằng phân số đã cho", "Lớn gấp 3 lần", "Nhỏ hơn 3 lần", "Gấp 9 lần"], a: 0 },
       { q: "So sánh phân số 13/15 và 1:", opts: ["13/15 < 1", "13/15 > 1", "13/15 = 1", "Khác"], a: 0 },
       { q: "So sánh phân số 23/19 và 1:", opts: ["23/19 > 1", "23/19 < 1", "23/19 = 1", "Khác"], a: 0 },
+      { q: "Hai phân số có cùng tử số, phân số nào có mẫu số bé hơn thì phân số đó:", opts: ["Lớn hơn", "Bé hơn", "Bằng nhau", "Không xác định"], a: 0 },
+      { q: "So sánh hai phân số: 5/6 ... 5/12", opts: [">", "<", "=", "Khác"], a: 0 },
+      { q: "So sánh hai phân số: 9/20 ... 9/10", opts: ["<", ">", "=", "Khác"], a: 0 },
+      { q: "Phân số có tử số là 5, mẫu số là 8 được viết là:", opts: ["5/8", "8/5", "5/13", "8/13"], a: 0 },
       { q: "Quy đồng mẫu số 3/4 và 5/8 được:", opts: ["6/8 và 5/8", "3/8 và 5/8", "8/8 và 5/8", "6/8 và 10/8"], a: 0 },
-      { q: "Phân số chỉ 3 phần tô màu trong hình tròn chia 8 phần bằng nhau là:", opts: ["3/8", "5/8", "8/3", "3/5"], a: 0 },
-      { q: "Tử số của phân số 15/28 là số nào?", opts: ["15", "28", "43", "13"], a: 0 }
+      { q: "Hình tròn chia 6 phần bằng nhau, lấy 2 phần. Phân số chỉ phần đã lấy là:", opts: ["2/6", "1/6", "6/2", "2/4"], a: 0 },
+      { q: "Hình tròn chia 8 phần, tô màu 5 phần. Phân số chỉ phần tô màu là:", opts: ["5/8", "3/8", "8/5", "5/3"], a: 0 },
+      { q: "Phân số 2/3 đọc là gì?", opts: ["Hai phần ba", "Ba phần hai", "Hai chia ba", "Hai trên ba"], a: 0 },
+      { q: "Phân số nào bằng phân số 3/4?", opts: ["9/12", "6/10", "4/3", "3/8"], a: 0 }
     ]
   },
   {
-    vol: 2, id: "cd11", title: "Chủ đề 11: Phép cộng, phép trừ phân số (Tập 2)",
+    cat: 'vol2', id: "cd11", title: "Chủ đề 11: Phép cộng, phép trừ phân số",
     pool: [
-      { q: "Tính: 1/2 - 1/8 = ?", opts: ["3/8", "0/6", "2/8", "1/6"], a: 0 },
-      { q: "Tính: 7/10 - 1/5 = ?", opts: ["5/10 (= 1/2)", "6/5", "6/10", "5/5"], a: 0 },
-      { q: "Tính: 3/6 + 2/3 = ?", opts: ["7/6", "5/9", "5/6", "1/2"], a: 0 },
-      { q: "Rút gọn rồi tính: 4/24 + 7/6 = ?", opts: ["8/6 (= 4/3)", "11/24", "11/6", "1/6"], a: 0 },
-      { q: "Rút gọn rồi tính: 10/15 - 1/3 = ?", opts: ["1/3", "2/3", "9/15", "3/15"], a: 0 },
-      { q: "Rút gọn rồi tính: 21/28 - 1/4 = ?", opts: ["2/4 (= 1/2)", "20/28", "3/4", "1/4"], a: 0 },
-      { q: "Một xe ô tô giờ đầu chạy 2/7 quãng đường, giờ sau chạy thêm 3/7 quãng đường. Sau 2 giờ chạy được:", opts: ["5/7 quãng đường", "6/7 quãng đường", "5/14 quãng đường", "1 quãng đường"], a: 0 },
-      { q: "Cây gỗ dài 17/4 m, khúc 1 dài 3/2 m, khúc 2 dài 9/8 m. Chiều dài khúc gỗ còn lại là:", opts: ["13/8 m", "11/8 m", "15/8 m", "17/8 m"], a: 0 },
-      { q: "Tính theo mẫu: 2 + 1/6 = 12/6 + 1/6 = ?", opts: ["13/6", "3/6", "12/6", "14/6"], a: 0 },
-      { q: "Tính: 1 - 1/4 = 4/4 - 1/4 = ?", opts: ["3/4", "0/4", "2/4", "1/4"], a: 0 },
-      { q: "Tính: 1 + 4/9 = ?", opts: ["13/9", "5/9", "9/9", "14/9"], a: 0 },
-      { q: "Tính: 5 + 1/2 = ?", opts: ["11/2", "6/2", "7/2", "10/2"], a: 0 },
-      { q: "Tính: 3 - 5/6 = ?", opts: ["13/6", "2/6", "18/6", "11/6"], a: 0 },
-      { q: "Tính: 31/7 - 2 = ?", opts: ["17/7", "29/7", "15/7", "27/7"], a: 0 },
-      { q: "Muốn cộng hai phân số có cùng mẫu số, ta làm thế nào?", opts: ["Cộng hai tử số với nhau và giữ nguyên mẫu số", "Cộng cả tử số và cộng cả mẫu số", "Quy đồng mẫu số trước", "Lấy tử nhân mẫu"], a: 0 },
-      { q: "Muốn trừ hai phân số có cùng mẫu số, ta làm thế nào?", opts: ["Trừ tử số cho nhau và giữ nguyên mẫu số", "Trừ tử và trừ mẫu", "Nhân chéo", "Đảo ngược phân số"], a: 0 },
-      { q: "Muốn cộng hai phân số khác mẫu số, việc đầu tiên cần làm là:", opts: ["Quy đồng mẫu số hai phân số", "Cộng hai tử số ngay", "Cộng hai mẫu số", "Rút gọn về 0"], a: 0 },
+      { q: "Tính: 7/8 - 1/4 = 7/8 - 2/8 = ?", opts: ["5/8", "6/4", "6/8", "1/2"], a: 0 },
+      { q: "Tính: 1/2 - 1/6 = 3/6 - 1/6 = ?", opts: ["2/6 (= 1/3)", "0/4", "1/4", "2/3"], a: 0 },
+      { q: "Tính: 7/10 - 2/5 = 7/10 - 4/10 = ?", opts: ["3/10", "5/10", "5/5", "1/2"], a: 0 },
+      { q: "Rút gọn rồi tính: 2/3 - 2/6 = 2/3 - 1/3 = ?", opts: ["1/3", "0", "2/3", "1/6"], a: 0 },
+      { q: "Muốn cộng hai phân số cùng mẫu số, ta làm thế nào?", opts: ["Cộng hai tử số với nhau và giữ nguyên mẫu", "Cộng cả tử và mẫu", "Quy đồng mẫu", "Lấy tử nhân mẫu"], a: 0 },
+      { q: "Muốn trừ hai phân số cùng mẫu số, ta làm thế nào?", opts: ["Trừ tử số cho nhau và giữ nguyên mẫu số", "Trừ tử và trừ mẫu", "Nhân chéo", "Đảo ngược phân số"], a: 0 },
+      { q: "Muốn cộng (trừ) hai phân số khác mẫu số, việc đầu tiên cần làm là:", opts: ["Quy đồng mẫu số hai phân số", "Cộng hai tử số ngay", "Cộng hai mẫu số", "Rút gọn về 0"], a: 0 },
       { q: "Tính: 2/5 + 3/5 = ?", opts: ["5/5 (= 1)", "5/10", "6/5", "1/5"], a: 0 },
       { q: "Tính: 8/9 - 5/9 = ?", opts: ["3/9 (= 1/3)", "3/0", "13/9", "2/9"], a: 0 },
       { q: "Tính: 1/3 + 1/6 = ?", opts: ["3/6 (= 1/2)", "2/9", "2/6", "1/9"], a: 0 },
       { q: "Tính: 3/4 - 1/2 = ?", opts: ["1/4", "2/2", "2/4", "0/2"], a: 0 },
-      { q: "Bình nước có 7/8 lít nước, Mai uống hết 3/8 lít. Bình còn lại bao nhiêu lít nước?", opts: ["4/8 lít (= 1/2 l)", "3/8 lít", "5/8 lít", "1/8 lít"], a: 0 },
+      { q: "Bình có 7/8 l nước, Mai uống hết 3/8 l. Bình còn lại bao nhiêu lít?", opts: ["4/8 lít (= 1/2 l)", "3/8 lít", "5/8 lít", "1/8 lít"], a: 0 },
       { q: "Tính giá trị biểu thức: 1/5 + 2/5 + 4/5 = ?", opts: ["7/5", "7/15", "6/5", "8/5"], a: 0 },
       { q: "Tính thuận tiện: 3/7 + 4/9 + 4/7 = ?", opts: ["1 + 4/9 = 13/9", "7/7", "8/9", "11/9"], a: 0 },
       { q: "Tính: 2/3 - 1/4 = ?", opts: ["5/12", "1/1", "1/12", "3/7"], a: 0 },
       { q: "Tính: 1/4 + 2/5 = ?", opts: ["13/20", "3/9", "3/20", "11/20"], a: 0 },
-      { q: "Một hộp bi có 1/3 số bi xanh, 2/5 số bi đỏ. Tổng số bi xanh và bi đỏ chiếm:", opts: ["11/15 hộp bi", "3/8 hộp bi", "3/15 hộp bi", "12/15 hộp bi"], a: 0 },
-      { q: "Phép tính 5/6 - 2/6 có kết quả là:", opts: ["3/6 (= 1/2)", "7/6", "3/0", "2/6"], a: 0 },
+      { q: "Một hộp bi có 1/3 bi xanh, 2/5 bi đỏ. Tổng bi xanh và đỏ chiếm:", opts: ["11/15 hộp bi", "3/8 hộp bi", "3/15 hộp bi", "12/15 hộp bi"], a: 0 },
       { q: "Tính: 4 - 1/3 = ?", opts: ["11/3", "3/3", "12/3", "10/3"], a: 0 },
-      { q: "Tìm x: x - 1/2 = 1/4. Giá trị của x là:", opts: ["3/4", "2/6", "1/4", "1/2"], a: 0 }
+      { q: "Tìm x: x - 1/2 = 1/4. Giá trị của x là:", opts: ["3/4", "2/6", "1/4", "1/2"], a: 0 },
+      { q: "Tính: 2 + 1/6 = 12/6 + 1/6 = ?", opts: ["13/6", "3/6", "12/6", "14/6"], a: 0 },
+      { q: "Tính: 1 - 1/4 = ?", opts: ["3/4", "0/4", "2/4", "1/4"], a: 0 },
+      { q: "Tính: 1 + 4/9 = ?", opts: ["13/9", "5/9", "9/9", "14/9"], a: 0 },
+      { q: "Tính: 5 + 1/2 = ?", opts: ["11/2", "6/2", "7/2", "10/2"], a: 0 },
+      { q: "Tính: 3 - 5/6 = ?", opts: ["13/6", "2/6", "18/6", "11/6"], a: 0 },
+      { q: "Tính: 31/7 - 2 = ?", opts: ["17/7", "29/7", "15/7", "27/7"], a: 0 },
+      { q: "Xe chạy giờ 1 được 2/7 đường, giờ 2 chạy 3/7 đường. Sau 2 giờ chạy được:", opts: ["5/7 quãng đường", "6/7 quãng đường", "5/14 quãng đường", "1 quãng đường"], a: 0 },
+      { q: "Khúc gỗ dài 17/4 m, đoạn 1 dài 3/2 m, đoạn 2 dài 9/8 m. Phần còn lại dài:", opts: ["13/8 m", "11/8 m", "15/8 m", "17/8 m"], a: 0 },
+      { q: "Phép tính 5/6 - 2/6 có kết quả là:", opts: ["3/6 (= 1/2)", "7/6", "3/0", "2/6"], a: 0 },
+      { q: "Dế trũi có 3/8 lá cỏ, cho dế mèn 1/4 lá. Trũi còn lại:", opts: ["1/8 cái lá cỏ", "2/8 cái lá", "1/4 cái lá", "2/4 cái lá"], a: 0 },
+      { q: "Rút gọn rồi tính: 4/24 + 7/6 = 1/6 + 7/6 = ?", opts: ["8/6 (= 4/3)", "11/24", "11/6", "1/6"], a: 0 }
     ]
   },
   {
-    vol: 2, id: "cd12", title: "Chủ đề 12: Phép nhân, chia phân số (Tập 2)",
+    cat: 'vol2', id: "cd12", title: "Chủ đề 12: Phép nhân, phép chia phân số",
     pool: [
-      { q: "Tính bằng cách thuận tiện: 2/13 x 22/5 x 13/2 = ?", opts: ["22/5", "13/5", "2/5", "1"], a: 0 },
-      { q: "Tính bằng cách thuận tiện: 3/5 x 6/7 + 6/7 x 3/5 = (3/5 x 6/7) x 2 = ?", opts: ["36/35", "18/35", "9/35", "12/35"], a: 0 },
-      { q: "Từ chiếc vại có 15 l tương, rót vào tất cả 6 lọ nhỏ, mỗi lọ 3/4 l. Trong vại còn lại:", opts: ["21/2 lít (10.5 l)", "11/2 lít", "9 lít", "12 lít"], a: 0 },
-      { q: "Ông nội 72 tuổi. Tuổi Việt bằng 1/8 tuổi ông. Anh Chúc hơn Việt 5 tuổi. Anh Chúc bao nhiêu tuổi?", opts: ["14 tuổi", "9 tuổi", "15 tuổi", "12 tuổi"], a: 0 },
-      { q: "Muốn nhân hai phân số với nhau, ta làm thế nào?", opts: ["Lấy tử số nhân tử số, mẫu số nhân mẫu số", "Lấy tử nhân chéo với mẫu", "Quy đồng mẫu số rồi nhân tử", "Cộng hai tử và hai mẫu"], a: 0 },
+      { q: "Muốn nhân hai phân số với nhau, ta làm thế nào?", opts: ["Lấy tử số nhân tử số, mẫu số nhân mẫu số", "Lấy tử nhân chéo với mẫu", "Quy đồng mẫu số rồi nhân", "Cộng hai tử và hai mẫu"], a: 0 },
       { q: "Muốn chia một phân số cho một phân số khác 0, ta làm thế nào?", opts: ["Lấy phân số thứ nhất nhân với phân số thứ hai đảo ngược", "Lấy tử chia tử, mẫu chia mẫu", "Lấy mẫu nhân chéo tử", "Trừ hai phân số"], a: 0 },
       { q: "Phân số đảo ngược của 3/5 là:", opts: ["5/3", "3/5", "-3/5", "1/3"], a: 0 },
       { q: "Phân số đảo ngược của 1/4 là:", opts: ["4/1 (= 4)", "1/4", "4/4", "0/4"], a: 0 },
@@ -661,47 +701,51 @@ const ALL_TOPICS = [
       { q: "Tính: 4 : 2/3 = 4 x 3/2 = ?", opts: ["6", "8/3", "12/3", "4/6"], a: 0 },
       { q: "Tìm 2/3 của 18 quả cam là bao nhiêu quả cam?", opts: ["12 quả", "6 quả", "9 quả", "15 quả"], a: 0 },
       { q: "Tìm 3/5 của 25 kg gạo là bao nhiêu kg?", opts: ["15 kg", "10 kg", "20 kg", "5 kg"], a: 0 },
-      { q: "Một mảnh đất hình chữ nhật có chiều dài 20 m, chiều rộng bằng 3/4 chiều dài. Chiều rộng là:", opts: ["15 m", "12 m", "16 m", "18 m"], a: 0 },
-      { q: "Diện tích hình chữ nhật có chiều dài 4/5 m, chiều rộng 2/3 m là:", opts: ["8/15 m²", "6/8 m²", "14/15 m²", "8/8 m²"], a: 0 },
+      { q: "Mảnh đất dài 20 m, rộng bằng 3/4 chiều dài. Chiều rộng là:", opts: ["15 m", "12 m", "16 m", "18 m"], a: 0 },
+      { q: "Diện tích hình chữ nhật dài 4/5 m, rộng 2/3 m là:", opts: ["8/15 m²", "6/8 m²", "14/15 m²", "8/8 m²"], a: 0 },
       { q: "Hình vuông có cạnh 3/4 m thì chu vi là bao nhiêu mét?", opts: ["3 m", "9/16 m", "12/4 m", "6/4 m"], a: 0 },
       { q: "Hình vuông có cạnh 3/4 m thì diện tích là bao nhiêu mét vuông?", opts: ["9/16 m²", "3 m²", "12/16 m²", "6/8 m²"], a: 0 },
       { q: "Tính: 1/2 x 2/3 x 3/4 = ?", opts: ["1/4", "6/24", "1/3", "2/4"], a: 0 },
       { q: "Tính: (3/4 : 1/2) x 2/3 = ?", opts: ["1", "3/2", "2/3", "1/2"], a: 0 },
       { q: "Biểu thức: 15 x 2/3 có giá trị là:", opts: ["10", "30", "5", "15"], a: 0 },
       { q: "Biểu thức: (2/3 - 1/6) : 5 = 1/2 : 5 = ?", opts: ["1/10", "5/2", "1/2", "2/15"], a: 0 },
-      { q: "Biểu thức: (7/4 - 8/3) : 1/3 có kết quả âm hoặc chưa học ở lớp 4, biểu thức lớn nhất thường là:", opts: ["15 x 2/3 (= 10)", "(2/3 - 1/6) : 5", "Tất cả bằng nhau", "Không xác định"], a: 0 },
-      { q: "Một tấm vải dài 30 m, người ta cắt lấy 2/5 tấm vải để may áo. Số vải đã cắt là:", opts: ["12 m", "15 m", "10 m", "18 m"], a: 0 },
+      { q: "Một tấm vải dài 30 m, cắt lấy 2/5 để may áo. Số vải đã cắt là:", opts: ["12 m", "15 m", "10 m", "18 m"], a: 0 },
       { q: "Tính: 7/9 x 1 = ?", opts: ["7/9", "1", "9/7", "0"], a: 0 },
       { q: "Tính: 7/9 x 0 = ?", opts: ["0", "7/9", "1", "9/7"], a: 0 },
-      { q: "Một bình nước có 2 lít, mỗi cốc rót 1/4 lít thì rót được mấy cốc?", opts: ["8 cốc", "6 cốc", "4 cốc", "10 cốc"], a: 0 },
-      { q: "Tìm x: x x 1/3 = 2/9. Giá trị của x là:", opts: ["2/3", "2/27", "6/9", "1/3"], a: 0 }
+      { q: "Một bình nước có 2 lít, mỗi cốc rót 1/4 lít thì rót được:", opts: ["8 cốc", "6 cốc", "4 cốc", "10 cốc"], a: 0 },
+      { q: "Tìm x: x x 1/3 = 2/9. Giá trị của x là:", opts: ["2/3", "2/27", "6/9", "1/3"], a: 0 },
+      { q: "Tính thuận tiện: 2/13 x 22/5 x 13/2 = ?", opts: ["22/5", "13/5", "2/5", "1"], a: 0 },
+      { q: "Vại có 15 l tương, rót vào 6 lọ nhỏ mỗi lọ 3/4 l. Trong vại còn lại:", opts: ["21/2 lít (10.5 l)", "11/2 lít", "9 lít", "12 lít"], a: 0 },
+      { q: "Ông 72 tuổi. Tuổi Việt bằng 1/8 tuổi ông. Anh Chúc hơn Việt 5 tuổi. Tuổi Chúc là:", opts: ["14 tuổi", "9 tuổi", "15 tuổi", "12 tuổi"], a: 0 },
+      { q: "Tính: 5/7 x 7/5 = ?", opts: ["1", "35/49", "25/49", "0"], a: 0 },
+      { q: "Tính: 9/4 : 3 = ?", opts: ["3/4", "27/4", "9/12", "1/4"], a: 0 }
     ]
   },
   {
-    vol: 2, id: "cd13", title: "Chủ đề 13: Ôn tập cuối năm học (Tập 2)",
+    cat: 'vol2', id: "cd13", title: "Chủ đề 13: Ôn tập cuối năm học",
     pool: [
       { q: "Số gồm '2 chục nghìn, 7 nghìn, 5 trăm, 4 chục và 4 đơn vị' viết là:", opts: ["27 544", "27 454", "27 540", "20 754"], a: 0 },
       { q: "Số gồm '8 chục nghìn, 5 trăm, 2 chục và 5 đơn vị' viết là:", opts: ["80 525", "85 205", "85 250", "80 255"], a: 0 },
       { q: "Số gồm '3 triệu, 2 trăm nghìn, 4 chục nghìn, 6 nghìn, 3 trăm và 4 đơn vị' viết là:", opts: ["3 246 304", "3 246 340", "3 204 634", "3 240 634"], a: 0 },
       { q: "Tính: 2 667 + 3 825 = ?", opts: ["6 492", "6 482", "6 392", "6 592"], a: 0 },
       { q: "Tính: 8 274 - 4 516 = ?", opts: ["3 758", "3 768", "3 658", "4 758"], a: 0 },
-      { q: "Sắp xếp theo thứ tự từ bé đến lớn: 3 142; 2 413; 2 431; 3 421", opts: ["2 413; 2 431; 3 142; 3 421", "2 431; 2 413; 3 142; 3 421", "3 421; 3 142; 2 431; 2 413", "2 413; 3 142; 2 431; 3 421"], a: 0 },
-      { q: "Ba ngày bán: 45 m, 38 m, 52 m vải. Trung bình mỗi ngày cửa hàng bán được:", opts: ["45 m vải", "40 m vải", "48 m vải", "42 m vải"], a: 0 },
-      { q: "Mảnh đất chữ nhật có chiều rộng 15 m, chiều dài gấp đôi chiều rộng. Chu vi mảnh đất là:", opts: ["90 m", "45 m", "60 m", "100 m"], a: 0 },
-      { q: "Mảnh đất chữ nhật có chiều rộng 15 m, chiều dài gấp đôi chiều rộng. Diện tích là:", opts: ["450 m²", "300 m²", "225 m²", "90 m²"], a: 0 },
+      { q: "Sắp xếp từ bé đến lớn: 3 142; 2 413; 2 431; 3 421", opts: ["2 413; 2 431; 3 142; 3 421", "2 431; 2 413; 3 142; 3 421", "3 421; 3 142; 2 431; 2 413", "2 413; 3 142; 2 431; 3 421"], a: 0 },
+      { q: "Ba ngày bán: 45 m, 38 m, 52 m vải. Trung bình mỗi ngày bán:", opts: ["45 m vải", "40 m vải", "48 m vải", "42 m vải"], a: 0 },
+      { q: "Mảnh đất chữ nhật có chiều rộng 15 m, chiều dài gấp đôi. Chu vi là:", opts: ["90 m", "45 m", "60 m", "100 m"], a: 0 },
+      { q: "Mảnh đất chữ nhật có chiều rộng 15 m, chiều dài gấp đôi. Diện tích là:", opts: ["450 m²", "300 m²", "225 m²", "90 m²"], a: 0 },
       { q: "Rút gọn phân số 48/64 về tối giản ta được:", opts: ["3/4", "6/8", "12/16", "2/3"], a: 0 },
       { q: "Tính: 1/4 + 3/8 = ?", opts: ["5/8", "4/12", "1/2", "7/8"], a: 0 },
       { q: "Tính: 5/6 - 1/3 = ?", opts: ["3/6 (= 1/2)", "4/3", "4/6", "2/3"], a: 0 },
       { q: "Tính: 3/5 x 10/9 = ?", opts: ["2/3", "30/45", "1/3", "4/5"], a: 0 },
       { q: "Tính: 4/7 : 2/7 = ?", opts: ["2", "8/49", "1", "1/2"], a: 0 },
-      { q: "Hình bình hành có độ dài đáy 18 cm, chiều cao tương ứng 10 cm. Diện tích là:", opts: ["180 cm²", "90 cm²", "56 cm²", "28 cm²"], a: 0 },
-      { q: "Hình thoi có độ dài hai đường chéo là 12 cm và 8 cm. Diện tích hình thoi là:", opts: ["48 cm²", "96 cm²", "20 cm²", "24 cm²"], a: 0 },
+      { q: "Hình bình hành có đáy 18 cm, chiều cao 10 cm. Diện tích là:", opts: ["180 cm²", "90 cm²", "56 cm²", "28 cm²"], a: 0 },
+      { q: "Hình thoi có độ dài hai đường chéo 12 cm và 8 cm. Diện tích là:", opts: ["48 cm²", "96 cm²", "20 cm²", "24 cm²"], a: 0 },
       { q: "1 mét vuông (m²) bằng bao nhiêu đề-xi-mét vuông (dm²)?", opts: ["100 dm²", "10 dm²", "1 000 dm²", "10 000 dm²"], a: 0 },
       { q: "1 đề-xi-mét vuông (dm²) bằng bao nhiêu xăng-ti-mét vuông (cm²)?", opts: ["100 cm²", "10 cm²", "1 000 cm²", "10 000 cm²"], a: 0 },
       { q: "1 mét vuông (m²) bằng bao nhiêu mi-li-mét vuông (mm²)?", opts: ["1 000 000 mm²", "100 000 mm²", "10 000 mm²", "1 000 mm²"], a: 0 },
       { q: "Điền số thích hợp: 4 m² 25 dm² = ... dm²?", opts: ["425 dm²", "4 025 dm²", "4 250 dm²", "42 500 dm²"], a: 0 },
-      { q: "Một lớp học có 35 học sinh, trong đó 3/5 là học sinh nữ. Số học sinh nữ là:", opts: ["21 em", "14 em", "15 em", "20 em"], a: 0 },
-      { q: "Một lớp học có 35 học sinh, trong đó 3/5 là học sinh nữ. Số học sinh nam là:", opts: ["14 em", "21 em", "15 em", "18 em"], a: 0 },
+      { q: "Lớp có 35 học sinh, trong đó 3/5 là học sinh nữ. Số học sinh nữ là:", opts: ["21 em", "14 em", "15 em", "20 em"], a: 0 },
+      { q: "Lớp có 35 học sinh, trong đó 3/5 là học sinh nữ. Số học sinh nam là:", opts: ["14 em", "21 em", "15 em", "18 em"], a: 0 },
       { q: "Hai số có tổng là 90, tỉ số là 2/3. Số bé là:", opts: ["36", "54", "30", "40"], a: 0 },
       { q: "Hai số có tổng là 90, tỉ số là 2/3. Số lớn là:", opts: ["54", "36", "60", "50"], a: 0 },
       { q: "Hai số có hiệu là 24, tỉ số là 1/3. Số lớn là:", opts: ["36", "12", "48", "24"], a: 0 },
@@ -714,7 +758,7 @@ const ALL_TOPICS = [
   }
 ];
 
-// THUẬT TOÁN ĐẢO NGẪU NHIÊN FISHER-YATES
+// Fisher-Yates Shuffle
 function shuffleArray(arr) {
   const array = [...arr];
   for (let i = array.length - 1; i > 0; i--) {
@@ -735,7 +779,7 @@ function pickAndShuffle10(pool) {
   });
 }
 
-// QUẢN LÝ VÁN ĐẤU
+// Biến điều khiển ván đấu
 let activeTopic = null;
 let currentRoundQuestions = [];
 let curQIdx = 0, roundScore = 0, streak = 0;
@@ -747,7 +791,7 @@ let totalGameTimer = null, botInterval = null;
 function renderTopics() {
   const box = document.getElementById('topics-list');
   box.innerHTML = '';
-  const filtered = ALL_TOPICS.filter(t => t.vol === currentVolume);
+  const filtered = MATH4_DATA.filter(t => t.cat === currentCategory);
   
   filtered.forEach(topic => {
     const card = document.createElement('div');
@@ -775,7 +819,7 @@ function startTopicRace(topic) {
   document.getElementById('disp-cum-score').innerText = currentUser.cumScore;
   updatePositionsUI();
 
-  // Đếm ngược 5 phút tổng cả ván
+  // Đếm ngược 5 phút
   clearInterval(totalGameTimer);
   updateTimerDisplay();
   totalGameTimer = setInterval(() => {
@@ -789,7 +833,7 @@ function startTopicRace(topic) {
     }
   }, 1000);
 
-  // Bot tự chạy đều đặn theo nhịp 5 phút
+  // Xe bot đối thủ
   clearInterval(botInterval);
   botInterval = setInterval(() => {
     botProgress += 0.28;
@@ -834,13 +878,26 @@ function readQuestionTTS() {
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(text);
-    const voices = window.speechSynthesis.getVoices();
-    const gVoice = voices.find(v => v.lang.includes('vi') && (v.name.includes('Google') || v.name.includes('Natural')));
-    if (gVoice) utter.voice = gVoice;
     utter.lang = 'vi-VN';
-    utter.rate = 0.95;
+    utter.rate = 0.92;
+
+    const voices = window.speechSynthesis.getVoices();
+    const viVoice = voices.find(v => v.lang.includes('vi') || v.lang.includes('VIE'));
+    if (viVoice) utter.voice = viVoice;
+
+    utter.onerror = function() {
+      playFallbackAudio(text);
+    };
     window.speechSynthesis.speak(utter);
+  } else {
+    playFallbackAudio(text);
   }
+}
+
+function playFallbackAudio(text) {
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(text)}`;
+  const audio = new Audio(url);
+  audio.play().catch(e => console.log("Lỗi autoplay:", e));
 }
 
 function handleChoice(selectedIdx, btnEl) {
@@ -857,7 +914,7 @@ function handleChoice(selectedIdx, btnEl) {
     roundScore += (10 + bonus);
     playerProgress += 8.4;
     sfxCorrect();
-    fb.innerHTML = `<span style="color:#10b981;">Chính xác! ${streak > 1 ? '⚡ TĂNG TỐC (+5đ thưởng)' : '🏎️ Tiến lên!'}</span>`;
+    fb.innerHTML = `<span style="color:#10b981;">Chính xác! ${streak > 1 ? '⚡ TĂNG TỐC (+5đ thưởng)' : '🏎️ Bứt tốc!'}</span>`;
   } else {
     if (btnEl) btnEl.classList.add('wrong-ans');
     streak = 0;
@@ -888,10 +945,7 @@ function finishRace(winner) {
   clearInterval(totalGameTimer);
   clearInterval(botInterval);
 
-  // TÍCH LŨY ĐIỂM SỐ
   currentUser.cumScore += roundScore;
-
-  // LƯU LỊCH SỬ THI ĐẤU
   const isWinner = (winner === "BẠN");
   const now = new Date();
   const timeStr = `${now.getHours()}:${now.getMinutes() < 10 ? '0' : ''}${now.getMinutes()} - ${now.getDate()}/${now.getMonth() + 1}`;
