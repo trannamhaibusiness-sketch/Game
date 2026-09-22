@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Đại Chiến Đường Đua - Toán 4 & Tiếng Anh</title>
+<title>Đấu Trường Học Tập - Toán & Tiếng Anh SGK</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
   body { background: #070d19; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 12px; }
@@ -21,12 +21,10 @@
   .btn-primary:hover { background: #d97706; }
   .btn-secondary { background: #334155; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 13px; margin: 4px; }
   .btn-secondary:hover { background: #475569; }
+  .btn-danger { background: #dc2626; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px; transition: 0.2s; }
+  .btn-danger:hover { background: #b91c1c; }
 
-  /* Nút dừng thi / thoát khẩn cấp */
-  .btn-exit-race { background: #dc2626; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
-  .btn-exit-race:hover { background: #b91c1c; }
-
-  /* Thanh thông tin người dùng */
+  /* Thanh trạng thái người dùng */
   .user-header-bar { display: flex; justify-content: space-between; align-items: center; background: #0b1222; padding: 10px 16px; border-radius: 8px; margin-bottom: 14px; font-size: 14px; border: 1px solid #1e293b; }
   .user-header-bar span b { color: #f59e0b; }
 
@@ -44,25 +42,28 @@
   .tab-btn.active-tab { background: #2563eb; color: #fff; border-color: #60a5fa; }
   .tab-btn.tab-gold.active-tab { background: #d97706; border-color: #fbbf24; }
 
-  /* Danh sách bài */
-  .topics-wrapper { display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; text-align: left; padding-right: 4px; }
+  /* Danh sách bài tập / Unit */
+  .topics-wrapper { display: flex; flex-direction: column; gap: 8px; max-height: 320px; overflow-y: auto; text-align: left; padding-right: 4px; }
   .topic-card { background: #1c2744; border: 1px solid #2d3f66; color: #fff; padding: 12px 15px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
   .topic-card:hover { background: #1d4ed8; border-color: #38bdf8; }
   .topic-card b { font-size: 14px; }
 
-  /* Đấu trường đua xe */
+  /* Phân cấp Unit -> Lesson -> Activity */
+  .unit-section-title { background: #0f172a; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: bold; color: #38bdf8; margin-top: 6px; }
+
+  /* Đấu trường đua xe (Môn Toán) */
   #arena-track { background: #080d1a; border-radius: 12px; padding: 12px; margin: 14px 0; border: 2px solid #223150; position: relative; }
   .lane { height: 42px; position: relative; border-bottom: 2px dashed #1e293b; display: flex; align-items: center; }
   .lane:last-child { border-bottom: none; }
   .flag-gate { position: absolute; right: 24px; top: 0; bottom: 0; width: 10px; background: repeating-linear-gradient(to bottom, #fff, #fff 8px, #000 8px, #000 16px); z-index: 1; }
   .race-car { position: absolute; left: 4px; font-size: 26px; transition: left 0.4s ease-out; z-index: 2; transform: scaleX(-1); display: inline-block; }
 
-  /* Bảng trạng thái ván đấu */
+  /* Bảng trạng thái làm bài */
   .stats-board { display: flex; justify-content: space-between; align-items: center; background: #0b1222; padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; font-weight: bold; font-size: 13px; }
   .timer-highlight { color: #ef4444; font-size: 15px; font-weight: 800; animation: blink 1s infinite alternate; }
   @keyframes blink { from { opacity: 1; } to { opacity: 0.7; } }
 
-  /* Câu hỏi & Đáp án */
+  /* Bảng câu hỏi & Đáp án */
   .q-panel { background: #1c2744; border-radius: 10px; padding: 16px; min-height: 85px; margin-bottom: 14px; display: flex; flex-direction: column; justify-content: center; }
   #q-title { font-size: 15.5px; font-weight: 600; line-height: 1.45; }
   .answers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -71,7 +72,6 @@
   .ans-btn.right-ans { background: #059669 !important; border-color: #10b981 !important; color: #fff; }
   .ans-btn.wrong-ans { background: #dc2626 !important; border-color: #ef4444 !important; color: #fff; }
 
-  /* Bảng kết quả & Lịch sử */
   table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
   th, td { border: 1px solid #223150; padding: 8px 10px; text-align: left; }
   th { background: #0b1222; color: #f59e0b; }
@@ -84,8 +84,8 @@
 <div id="app-card">
   <!-- MÀN HÌNH 1: ĐĂNG NHẬP -->
   <div id="screen-auth" class="screen active">
-    <h1>🏁 ĐẤU TRƯỜNG TOÁN 4 & TIẾNG ANH 🏎️</h1>
-    <p class="desc">Trọn bộ 20 Unit Tiếng Anh & Đấu trường ViOlympic Toán 4</p>
+    <h1>🏁 ĐĂNG NHẬP TAY ĐUA TOÁN & TIẾNG ANH 🏎️</h1>
+    <p class="desc">Học và luyện tập chuẩn SGK & Đấu trường ViOlympic</p>
     <div class="auth-form">
       <input type="text" id="input-username" class="auth-input" placeholder="Tên thí sinh (VD: Minh Anh)...">
       <input type="password" id="input-pin" class="auth-input" placeholder="Mã PIN bí mật (VD: 1234)...">
@@ -93,96 +93,96 @@
     </div>
   </div>
 
-  <!-- MÀN HÌNH 2: CHỌN MÔN HỌC -->
-  <div id="screen-subject-portal" class="screen">
+  <!-- MÀN HÌNH 2: CHỌN MÔN THI ĐẤU -->
+  <div id="screen-portal" class="screen">
     <div class="user-header-bar">
       <span>Thí sinh: <b id="portal-user-tag"></b></span>
       <span>Điểm tích lũy: <b id="portal-cum-tag">0</b> đ</span>
       <button class="btn-secondary" onclick="handleLogout()">Đăng xuất</button>
     </div>
-    <h1>📚 LỰA CHỌN MÔN THI ĐẤU</h1>
-    <p class="desc">Chọn môn học để bước vào chặng đua tốc độ:</p>
+    <h1>📚 LỰA CHỌN MÔN HỌC</h1>
+    <p class="desc">Chọn môn bạn muốn rèn luyện hôm nay:</p>
 
     <div class="portal-grid">
       <div class="portal-card" onclick="openSubjectMenu('math')">
         <div class="portal-icon">📐</div>
         <div class="portal-title">MÔN TOÁN HỌC</div>
-        <div class="portal-desc">Sách giáo khoa (Tập 1, Tập 2) & 95 Bài ViOlympic</div>
+        <div class="portal-desc">Đua xe đối kháng: SGK (Tập 1, 2) & ViOlympic (Đảo câu hỏi)</div>
       </div>
       <div class="portal-card" onclick="openSubjectMenu('english')">
         <div class="portal-icon">🌍</div>
         <div class="portal-title">TIẾNG ANH (ENGLISH)</div>
-        <div class="portal-desc">Trọn vẹn 20 Unit cả năm (Học kỳ 1 & Học kỳ 2)</div>
+        <div class="portal-desc">Chuẩn SGK: Chia theo từng Unit & từng Bài tập (Không đảo bài)</div>
       </div>
     </div>
 
-    <!-- Bảng lịch sử thi đấu -->
     <div class="history-section">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <span style="font-weight:bold; color:#38bdf8;">📜 Lịch sử các vòng đua:</span>
+        <span style="font-weight:bold; color:#38bdf8;">📜 Lịch sử kết quả:</span>
         <button class="btn-secondary" style="font-size:11px; padding:3px 8px;" onclick="clearHistoryLog()">Xóa lịch sử</button>
       </div>
       <div class="scroll-table">
         <table id="history-log-table">
-          <thead><tr><th>Thời gian</th><th>Nội dung thi</th><th>Điểm ván</th><th>Kết quả</th></tr></thead>
+          <thead><tr><th>Thời gian</th><th>Nội dung</th><th>Điểm</th><th>Kết quả</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <!-- MÀN HÌNH 3: CHỌN NỘI DUNG THI -->
+  <!-- MÀN HÌNH 3: CHỌN BÀI TẬP / CHUYÊN ĐỀ -->
   <div id="screen-topics" class="screen">
     <div class="user-header-bar">
       <span>Thí sinh: <b id="user-name-tag"></b></span>
-      <span>Tổng điểm: <b id="cum-score-tag">0</b> đ</span>
+      <span>Điểm tích lũy: <b id="cum-score-tag">0</b> đ</span>
       <button class="btn-secondary" onclick="returnToPortal()">⬅ Đổi môn học</button>
     </div>
-    <h1 id="topics-title-header">DANH MỤC NỘI DUNG</h1>
-    <p class="desc">10 câu hỏi bốc ngẫu nhiên mỗi lượt đua. Thời gian: <b>5 phút</b>.</p>
+    <h1 id="topics-title-header">DANH MỤC BÀI HỌC</h1>
+    <p class="desc" id="topics-desc-header">Chọn bài tập để bắt đầu luyện tập:</p>
 
     <div class="tab-container" id="tabs-wrapper"></div>
     <div class="topics-wrapper" id="topics-list"></div>
   </div>
 
-  <!-- MÀN HÌNH 4: ĐƯỜNG ĐUA TRỰC QUAN (ĐÃ BỔ SUNG NÚT DỪNG THI) -->
+  <!-- MÀN HÌNH 4: GIAO DIỆN LÀM BÀI THI -->
   <div id="screen-race" class="screen">
     <div class="stats-board">
-      <span style="color:#ef4444;">Ván này: <b id="disp-round-score">0</b> đ</span>
+      <span style="color:#ef4444;">Bài này: <b id="disp-round-score">0</b> đ</span>
       <span class="timer-highlight" id="disp-total-timer">⏱️ 05:00</span>
-      <span style="color:#10b981;" id="disp-progress">Câu: 1/10</span>
-      <!-- Nút dừng thi / Thoát ra màn hình trước -->
-      <button class="btn-exit-race" onclick="abortRaceAndExit()">🚪 Dừng thi</button>
+      <span style="color:#10b981;" id="disp-progress">Câu: 1/5</span>
+      <!-- NÚT DỪNG THI / THOÁT RA MÀN HÌNH GẦN NHẤT -->
+      <button class="btn-danger" onclick="abortSessionAndExit()">🚪 Dừng bài</button>
     </div>
 
+    <!-- Đấu trường xe (chỉ hiển thị đua bot khi thi Toán) -->
     <div id="arena-track">
       <div class="flag-gate"></div>
       <div class="lane"><span class="race-car" id="car-player">🏎️</span></div>
-      <div class="lane"><span class="race-car" id="car-bot">🚙</span></div>
+      <div class="lane" id="bot-lane"><span class="race-car" id="car-bot">🚙</span></div>
     </div>
 
     <div class="q-panel">
       <div id="q-title">Đang tải câu hỏi...</div>
-      <button onclick="readQuestionTTS()" style="background:transparent; border:none; color:#38bdf8; cursor:pointer; font-size:12px; margin-top:8px;">🔊 Nghe Google đọc câu hỏi</button>
+      <button onclick="readQuestionTTS()" style="background:transparent; border:none; color:#38bdf8; cursor:pointer; font-size:12px; margin-top:8px;">🔊 Nghe Google đọc đề</button>
     </div>
 
     <div class="answers-grid" id="answers-container"></div>
     <div id="feedback-txt" style="min-height: 22px; margin-top: 10px; font-weight: bold;"></div>
   </div>
 
-  <!-- MÀN HÌNH 5: TỔNG KẾT VÒNG ĐUA -->
+  <!-- MÀN HÌNH 5: TỔNG KẾT BÀI LÀM -->
   <div id="screen-summary" class="screen">
-    <h1 id="win-status-title">🏆 KẾT QUẢ VÒNG ĐUA!</h1>
+    <h1 id="win-status-title">🏆 HOÀN THÀNH BÀI LÀM!</h1>
     <p style="margin: 10px 0;">Điểm vừa đạt: <b id="sum-round-gain" style="color:#10b981;">0</b> | Tổng điểm tích lũy: <b id="sum-cum-total" style="color:#f59e0b;">0</b> đ</p>
     <div class="scroll-table">
       <table id="summary-table">
-        <thead><tr><th>STT</th><th>Câu hỏi</th><th>Đánh giá</th></tr></thead>
+        <thead><tr><th>STT</th><th>Nội dung câu</th><th>Đánh giá</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
     <br>
-    <button class="btn-primary" onclick="restartCurrentTopic()">🔄 Đua lại bài này (Đảo câu mới)</button>
-    <button class="btn-secondary" onclick="backToTopicMenu()">🗺️ Về menu chủ đề</button>
+    <button class="btn-primary" onclick="restartCurrentTask()">🔄 Làm lại bài này</button>
+    <button class="btn-secondary" onclick="backToTaskMenu()">🗺️ Trở về danh sách bài</button>
   </div>
 </div>
 
@@ -214,7 +214,7 @@ function handleLogin() {
   const pin = document.getElementById('input-pin').value.trim();
   if (!uName || !pin) return alert("Vui lòng nhập đầy đủ tên và mã PIN!");
 
-  const raw = localStorage.getItem(`full_20units_arena_${uName}`);
+  const raw = localStorage.getItem(`super_arena_study_${uName}`);
   if (raw) {
     const data = JSON.parse(raw);
     if (data.pin !== pin) return alert("Mã PIN không khớp với tài khoản này!");
@@ -227,12 +227,12 @@ function handleLogin() {
   refreshUserHeader();
   renderHistoryTable();
   document.getElementById('screen-auth').classList.remove('active');
-  document.getElementById('screen-subject-portal').classList.add('active');
+  document.getElementById('screen-portal').classList.add('active');
 }
 
 function saveUser() {
   if (currentUser) {
-    localStorage.setItem(`full_20units_arena_${currentUser.username}`, JSON.stringify(currentUser));
+    localStorage.setItem(`super_arena_study_${currentUser.username}`, JSON.stringify(currentUser));
   }
 }
 
@@ -246,7 +246,7 @@ function refreshUserHeader() {
 function handleLogout() {
   currentUser = null;
   document.getElementById('screen-topics').classList.remove('active');
-  document.getElementById('screen-subject-portal').classList.remove('active');
+  document.getElementById('screen-portal').classList.remove('active');
   document.getElementById('screen-auth').classList.add('active');
 }
 
@@ -254,41 +254,43 @@ function returnToPortal() {
   refreshUserHeader();
   renderHistoryTable();
   document.getElementById('screen-topics').classList.remove('active');
-  document.getElementById('screen-subject-portal').classList.add('active');
+  document.getElementById('screen-portal').classList.add('active');
 }
 
 function renderHistoryTable() {
   const tbody = document.querySelector('#history-log-table tbody');
   tbody.innerHTML = '';
   if (!currentUser.history || currentUser.history.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8;">Chưa có lượt đua nào. Hãy chọn một nội dung để thi đấu!</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8;">Chưa có kết quả làm bài nào. Hãy bắt đầu chọn bài để luyện tập!</td></tr>`;
     return;
   }
   currentUser.history.slice().reverse().forEach(h => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${h.time}</td><td>${h.topic}</td><td style="color:#10b981; font-weight:bold;">+${h.score}đ</td><td style="color:${h.win ? '#10b981' : '#ef4444'}; font-weight:bold;">${h.win ? 'Thắng 🏆' : 'Thua 🏁'}</td>`;
+    tr.innerHTML = `<td>${h.time}</td><td>${h.topic}</td><td style="color:#10b981; font-weight:bold;">+${h.score}đ</td><td style="color:${h.win ? '#10b981' : '#ef4444'}; font-weight:bold;">${h.win ? 'Đạt 🏆' : 'Chưa đạt ⚠️'}</td>`;
     tbody.appendChild(tr);
   });
 }
 
 function clearHistoryLog() {
-  if (confirm("Bạn có chắc chắn muốn xóa toàn bộ lịch sử thi đấu của tài khoản này?")) {
+  if (confirm("Bạn có chắc chắn muốn xóa toàn bộ lịch sử của tài khoản này?")) {
     currentUser.history = [];
     saveUser();
     renderHistoryTable();
   }
 }
 
+// Chuyển menu theo môn
 function openSubjectMenu(subject) {
   currentSubject = subject;
-  document.getElementById('screen-subject-portal').classList.remove('active');
+  document.getElementById('screen-portal').classList.remove('active');
   document.getElementById('screen-topics').classList.add('active');
 
   const tabsWrapper = document.getElementById('tabs-wrapper');
   tabsWrapper.innerHTML = '';
 
   if (subject === 'math') {
-    document.getElementById('topics-title-header').innerText = "📐 ĐẤU TRƯỜNG TOÁN HỌC";
+    document.getElementById('topics-title-header').innerText = "📐 MÔN TOÁN HỌC LỚP 4";
+    document.getElementById('topics-desc-header').innerText = "Đua xe tính giờ: Bốc ngẫu nhiên 10 câu hỏi để thi đấu:";
     currentCategory = 'vol1';
     tabsWrapper.innerHTML = `
       <button class="tab-btn active-tab" id="tab-math-v1" onclick="switchCategory('vol1')">📘 SGK TẬP 1</button>
@@ -296,11 +298,11 @@ function openSubjectMenu(subject) {
       <button class="tab-btn tab-gold" id="tab-math-vio" onclick="switchCategory('vio')">🏆 VIOLYMPIC TOÁN 4</button>
     `;
   } else {
-    document.getElementById('topics-title-header').innerText = "🌍 20 UNITS TIẾNG ANH 4";
-    currentCategory = 'eng_term1';
+    document.getElementById('topics-title-header').innerText = "🌍 TIẾNG ANH 4 - GLOBAL SUCCESS";
+    document.getElementById('topics-desc-header').innerText = "Theo từng Unit & Lesson - Chọn chính xác bài tập để luyện (Không đảo câu):";
+    currentCategory = 'unit7';
     tabsWrapper.innerHTML = `
-      <button class="tab-btn active-tab" id="tab-eng-t1" onclick="switchCategory('eng_term1')">📘 HỌC KỲ 1 (UNIT 1 - 10)</button>
-      <button class="tab-btn" id="tab-eng-t2" onclick="switchCategory('eng_term2')">📙 HỌC KỲ 2 (UNIT 11 - 20)</button>
+      <button class="tab-btn active-tab" id="tab-eng-u7" onclick="switchCategory('unit7')">📖 UNIT 7: OUR TIMETABLES</button>
     `;
   }
   renderTopicCards();
@@ -313,20 +315,92 @@ function switchCategory(cat) {
     document.getElementById('tab-math-v2').classList.toggle('active-tab', cat === 'vol2');
     document.getElementById('tab-math-vio').classList.toggle('active-tab', cat === 'vio');
   } else {
-    document.getElementById('tab-eng-t1').classList.toggle('active-tab', cat === 'eng_term1');
-    document.getElementById('tab-eng-t2').classList.toggle('active-tab', cat === 'eng_term2');
+    document.getElementById('tab-eng-u7').classList.toggle('active-tab', cat === 'unit7');
   }
   renderTopicCards();
 }
 
 // =========================================================================
-// HỆ THỐNG CÂU HỎI LIÊN MÔN: TOÁN SGK, VIOLYMPIC & ĐỦ 20 UNIT TIẾNG ANH
+// CƠ SỞ DỮ LIỆU: TIẾNG ANH PHÂN CHIA CHUẨN UNIT -> LESSON -> BÀI TẬP SGK
 // =========================================================================
 const MASTER_DATABASE = [
-  // --- VIOLYMPIC TOÁN 4 ---
+  // --- TIẾNG ANH: UNIT 7 - OUR TIMETABLES (BÁM SÁT TỪNG HOẠT ĐỘNG SGK TRANG 50, 52, 54) ---
   {
-    subject: 'math', cat: 'vio', id: 'vio_tap1', title: '🏆 ViOlympic: Cấu tạo số, Dãy số & TBC',
-    lang: 'vi-VN',
+    subject: 'english', cat: 'unit7', id: 'eng_u7_l1_act1',
+    title: 'Unit 7 - Lesson 1: Act 1. Look, listen and repeat (Trang 50)',
+    lesson: 'Lesson 1', lang: 'en-US', isFixedOrder: true,
+    pool: [
+      { q: "Mẹ hỏi: 'What time do you have class today, Minh?' Minh trả lời:", opts: ["At eight, Mum.", "At seven, Mum.", "At nine, Mum.", "At ten, Mum."], a: 0 },
+      { q: "Mẹ hỏi: 'What subjects do you have today?' Minh trả lời:", opts: ["I have English and maths.", "I have music and art.", "I have science.", "I have Vietnamese."], a: 0 },
+      { q: "Trong đoạn hội thoại trên, Minh có môn học nào vào hôm nay?", opts: ["English and maths", "Vietnamese and art", "Science and PE", "Music and history"], a: 0 }
+    ]
+  },
+  {
+    subject: 'english', cat: 'unit7', id: 'eng_u7_l1_act2',
+    title: 'Unit 7 - Lesson 1: Act 2. Listen, point and say (Trang 50)',
+    lesson: 'Lesson 1', lang: 'en-US', isFixedOrder: true,
+    pool: [
+      { q: "Q: What subjects do you have today? - A: I have ______ . (Sách Tiếng Việt 4)", opts: ["Vietnamese", "English", "maths", "science"], a: 0 },
+      { q: "Q: What subjects do you have today? - A: I have ______ . (Sách Tiếng Anh 4)", opts: ["English", "Vietnamese", "science", "maths"], a: 0 },
+      { q: "Q: What subjects do you have today? - A: I have ______ . (Sách Toán 4)", opts: ["maths", "science", "English", "Vietnamese"], a: 0 },
+      { q: "Q: What subjects do you have today? - A: I have ______ . (Sách Khoa học 4)", opts: ["science", "Vietnamese", "English", "maths"], a: 0 }
+    ]
+  },
+  {
+    subject: 'english', cat: 'unit7', id: 'eng_u7_l1_act3',
+    title: "Unit 7 - Lesson 1: Act 3. Let's talk (Trang 50)",
+    lesson: 'Lesson 1', lang: 'en-US', isFixedOrder: true,
+    pool: [
+      { q: "Hoàn thiện mẫu câu hỏi trong phần Let's talk: 'What ______ do you have today?'", opts: ["subjects", "time", "clocks", "lessons"], a: 0 },
+      { q: "Trả lời câu hỏi theo mẫu: 'I have ______ and science.'", opts: ["maths", "on", "at", "time"], a: 0 }
+    ]
+  },
+  {
+    subject: 'english', cat: 'unit7', id: 'eng_u7_l2_act1',
+    title: 'Unit 7 - Lesson 2: Act 1. Look, listen and repeat (Trang 52)',
+    lesson: 'Lesson 2', lang: 'en-US', isFixedOrder: true,
+    pool: [
+      { q: "Bạn nữ hỏi: 'What subjects do you have today?' Bạn nam trả lời:", opts: ["I have Vietnamese and science.", "I have maths and English.", "I have music.", "I have art."], a: 0 },
+      { q: "Bạn nam hỏi: 'When do you have maths?' Bạn nữ trả lời:", opts: ["I have it on Mondays and Fridays.", "I have it on Tuesday.", "I have it at eight.", "I have it today."], a: 0 }
+    ]
+  },
+  {
+    subject: 'english', cat: 'unit7', id: 'eng_u7_l2_act2',
+    title: 'Unit 7 - Lesson 2: Act 2. Listen, point and say (Trang 52)',
+    lesson: 'Lesson 2', lang: 'en-US', isFixedOrder: true,
+    pool: [
+      { q: "Môn Mỹ thuật (Lịch ghi: 16 Monday): 'When do you have art?' - 'I have it on ______ .'", opts: ["Mondays", "Wednesdays", "Tuesdays", "Fridays"], a: 0 },
+      { q: "Môn Âm nhạc (Lịch ghi: 18 Wednesday): 'When do you have music?' - 'I have it on ______ .'", opts: ["Wednesdays", "Mondays", "Thursdays", "Fridays"], a: 0 },
+      { q: "Môn Lịch sử & Địa lí (Lịch ghi: 17 Tuesday, 20 Friday): 'When do you have history and geography?'", opts: ["I have it on Tuesdays and Fridays.", "I have it on Mondays.", "I have it on Wednesdays.", "I have it on Thursdays."], a: 0 },
+      { q: "Môn Tiếng Anh (Lịch ghi: 16, 17, 19, 20): 'When do you have English?'", opts: ["On Mondays, Tuesdays, Thursdays and Fridays.", "On Saturdays and Sundays.", "Only on Monday.", "On Wednesday."], a: 0 }
+    ]
+  },
+  {
+    subject: 'english', cat: 'unit7', id: 'eng_u7_l2_act3',
+    title: "Unit 7 - Lesson 2: Act 3. Let's talk & Timetable (Trang 52)",
+    lesson: 'Lesson 2', lang: 'en-US', isFixedOrder: true,
+    pool: [
+      { q: "Theo bảng thời khóa biểu trang 52, vào ngày thứ Hai (Monday) có môn nào?", opts: ["Vietnamese, maths, science, English", "art, music", "history and geography", "PE, IT"], a: 0 },
+      { q: "Theo bảng thời khóa biểu trang 52, học sinh có môn Mỹ thuật (art) vào thứ mấy?", opts: ["Thursday", "Monday", "Tuesday", "Wednesday"], a: 0 },
+      { q: "Theo bảng thời khóa biểu trang 52, học sinh có môn Âm nhạc (music) vào thứ mấy?", opts: ["Tuesday", "Monday", "Thursday", "Friday"], a: 0 }
+    ]
+  },
+  {
+    subject: 'english', cat: 'unit7', id: 'eng_u7_l3_act12',
+    title: 'Unit 7 - Lesson 3: Act 1 & 2. Phonics & Listen and circle (Trang 54)',
+    lesson: 'Lesson 3', lang: 'en-US', isFixedOrder: true,
+    pool: [
+      { q: "Âm 'se' trong từ nào? 'When do you have ______ ?' (Trang 54)", opts: ["Vietnamese", "science", "maths", "English"], a: 0 },
+      { q: "Âm 'ce' trong từ nào? 'We have ______ today.' (Trang 54)", opts: ["science", "Vietnamese", "art", "music"], a: 0 },
+      { q: "Listen and circle (Bài 2.1 trang 54): 'When do you have ______ ?'", opts: ["science", "Vietnamese", "maths", "English"], a: 0 },
+      { q: "Listen and circle (Bài 2.2 trang 54): 'They have ______ today.'", opts: ["maths", "science", "Vietnamese", "history"], a: 0 }
+    ]
+  },
+
+  // --- MÔN TOÁN: VIOLYMPIC TOÁN 4 (GIỮ NGUYÊN LUẬT ĐUA BOT & ĐẢO CÂU) ---
+  {
+    subject: 'math', cat: 'vio', id: 'vio_tap1', title: '🏆 ViOlympic: Cấu tạo số, Dãy số & TBC (Đảo 10 câu)',
+    lang: 'vi-VN', isFixedOrder: false,
     pool: [
       { q: "Bài ViO4.01: Khi viết chữ số 5 vào bên trái một số có ba chữ số thì số mới hơn số cũ bao nhiêu đơn vị?", opts: ["500 đơn vị", "5 000 đơn vị", "50 đơn vị", "5 đơn vị"], a: 0 },
       { q: "Bài ViO4.02: Tìm số có ba chữ số có tổng các chữ số bằng 26, khi đổi chỗ hàng trăm và hàng đơn vị cho nhau thì số đó không đổi:", opts: ["989", "899", "998", "889"], a: 0 },
@@ -342,283 +416,49 @@ const MASTER_DATABASE = [
       { q: "ViOlympic: Dãy số tự nhiên từ 1 đến 100 có tất cả bao nhiêu chữ số?", opts: ["192 chữ số", "189 chữ số", "100 chữ số", "190 chữ số"], a: 0 },
       { q: "ViOlympic: Tìm số chẵn lớn nhất có 4 chữ số khác nhau:", opts: ["9 876", "9 998", "9 874", "9 864"], a: 0 },
       { q: "ViOlympic: Tìm số lẻ bé nhất có 5 chữ số khác nhau:", opts: ["10 235", "10 001", "10 237", "12 345"], a: 0 },
-      { q: "ViOlympic: Dãy số chẵn từ 2 đến 200 có tất cả bao nhiêu số hạng?", opts: ["100 số", "99 số", "101 số", "198 số"], a: 0 },
-      { q: "ViOlympic: Dãy số lẻ từ 1 đến 99 có tất cả bao nhiêu số hạng?", opts: ["50 số", "49 số", "51 số", "100 số"], a: 0 },
-      { q: "ViOlympic: Trung bình cộng của hai số là 45, số thứ nhất là 52. Số thứ hai là:", opts: ["38", "42", "40", "36"], a: 0 },
-      { q: "ViOlympic: Có bao nhiêu số có 2 chữ số mà chữ số tận cùng là 5?", opts: ["9 số", "10 số", "8 số", "5 số"], a: 0 },
-      { q: "ViOlympic: Tìm số có hai chữ số biết tổng hai chữ số bằng 11 và tích của chúng bằng 28:", opts: ["74 hoặc 47", "83 hoặc 38", "92 hoặc 29", "65 hoặc 56"], a: 0 },
-      { q: "ViOlympic: Từ các chữ số 0, 2, 5 lập được bao nhiêu số có 3 chữ số khác nhau?", opts: ["4 số", "6 số", "2 số", "5 số"], a: 0 }
+      { q: "ViOlympic: Dãy số chẵn từ 2 đến 200 có tất cả bao nhiêu số hạng?", opts: ["100 số", "99 số", "101 số", "198 số"], a: 0 }
     ]
   },
 
   // --- MÔN TOÁN: SGK TẬP 1 & TẬP 2 ---
   {
     subject: 'math', cat: 'vol1', id: 'math_t1_all', title: 'Toán 4 Tập 1: Ôn tập, Góc, Lớp triệu & Hình học',
-    lang: 'vi-VN',
+    lang: 'vi-VN', isFixedOrder: false,
     pool: [
       { q: "Tính nhẩm: 8 000 + 7 000 = ?", opts: ["15 000", "14 000", "16 000", "150 000"], a: 0 },
-      { q: "Kim đồng hồ lúc 3 giờ đúng tạo thành góc gì?", opts: ["Góc vuông", "Góc nhọn", "Góc tù", "Góc bẹt"], a: 0 },
+      { q: "Kim đồng hồ lúc 3 giờ đúng tạo thành góc gì? (SGK trang 113)", opts: ["Góc vuông", "Góc nhọn", "Góc tù", "Góc bẹt"], a: 0 },
       { q: "Số liền sau của 999 999 999 là số nào?", opts: ["1 000 000 000", "999 999 990", "1 000 000 001", "100 000 000"], a: 0 },
       { q: "1 tạ bằng bao nhiêu ki-lô-gam (kg)?", opts: ["100 kg", "10 kg", "1 000 kg", "10 000 kg"], a: 0 },
       { q: "1 tấn bằng bao nhiêu tạ?", opts: ["10 tạ", "100 tạ", "1 tạ", "1 000 tạ"], a: 0 },
       { q: "Hình bình hành ABCD có đặc điểm gì nổi bật?", opts: ["Hai cặp cạnh đối diện song song và bằng nhau", "Có 4 cạnh bằng nhau", "Có 4 góc vuông", "Không có cạnh nào song song"], a: 0 },
-      { q: "Một thế kỉ bằng bao nhiêu năm?", opts: ["100 năm", "10 năm", "50 năm", "1 000 năm"], a: 0 },
+      { q: "Một thế kỉ bằng bao nhiêu năm? (SGK trang 66)", opts: ["100 năm", "10 năm", "50 năm", "1 000 năm"], a: 0 },
       { q: "Kim đồng hồ lúc 6 giờ đúng tạo thành góc gì?", opts: ["Góc bẹt", "Góc vuông", "Góc nhọn", "Góc tù"], a: 0 },
       { q: "Tính nhẩm đặt tính: 83 738 + 12 533 = ?", opts: ["96 271", "95 271", "96 171", "97 271"], a: 0 },
       { q: "Tổng của 2 số là 100, hiệu là 20. Số lớn là:", opts: ["60", "40", "80", "70"], a: 0 },
-      { q: "Số lớn nhất có 6 chữ số khác nhau là:", opts: ["987 654", "999 999", "987 650", "986 754"], a: 0 },
-      { q: "Số bé nhất có 6 chữ số khác nhau là:", opts: ["102 345", "100 000", "123 456", "102 354"], a: 0 },
-      { q: "Đặt tính rồi tính: 24 150 x 3 = ?", opts: ["72 450", "72 350", "62 450", "71 450"], a: 0 },
-      { q: "Đặt tính rồi tính: 48 060 : 4 = ?", opts: ["12 015", "12 150", "12 050", "11 015"], a: 0 },
-      { q: "Năm 1975 giải phóng miền Nam thuộc thế kỉ nào?", opts: ["Thế kỉ XX", "Thế kỉ XIX", "Thế kỉ XXI", "Thế kỉ XVIII"], a: 0 },
+      { q: "Đoạn thẳng MN song song với đoạn thẳng PQ thì chúng:", opts: ["Không bao giờ cắt nhau", "Cắt nhau tạo góc vuông", "Cắt nhau tạo góc nhọn", "Trùng khớp nhau"], a: 0 },
       { q: "Chu vi mảnh đất hình vuông có cạnh 25 m là:", opts: ["100 m", "50 m", "625 m", "125 m"], a: 0 }
     ]
   },
   {
     subject: 'math', cat: 'vol2', id: 'math_t2_all', title: 'Toán 4 Tập 2: Nhân chia, Phân số & Thống kê',
-    lang: 'vi-VN',
+    lang: 'vi-VN', isFixedOrder: false,
     pool: [
       { q: "Tính chất phân phối: a x (b + c) = ?", opts: ["a x b + a x c", "a x b x c", "a + b + c", "(a + b) x c"], a: 0 },
       { q: "Tính thuận tiện: 67 x 3 + 67 x 7 = 67 x (3 + 7) = ?", opts: ["670", "67", "6 700", "607"], a: 0 },
-      { q: "Tính nhẩm: 48 256 x 10 = ?", opts: ["482 560", "48 256", "482 500", "4 825 600"], a: 0 },
-      { q: "Tính nhẩm: 625 400 : 100 = ?", opts: ["6 254", "62 540", "625,4", "625"], a: 0 },
+      { q: "Tính nhẩm: 48 256 x 10 = ? (SGK trang 33)", opts: ["482 560", "48 256", "482 500", "4 825 600"], a: 0 },
+      { q: "Tính nhẩm: 625 400 : 100 = ? (SGK trang 33)", opts: ["6 254", "62 540", "625,4", "625"], a: 0 },
       { q: "Rút gọn phân số 6/9 về tối giản ta được:", opts: ["2/3", "3/2", "1/3", "3/9"], a: 0 },
       { q: "Rút gọn phân số 8/20 về tối giản ta được:", opts: ["2/5", "4/10", "1/5", "4/5"], a: 0 },
-      { q: "Tính: 7/8 - 1/4 = 7/8 - 2/8 = ?", opts: ["5/8", "6/4", "6/8", "1/2"], a: 0 },
-      { q: "Tính: 1/2 - 1/6 = 3/6 - 1/6 = ?", opts: ["2/6 (= 1/3)", "0/4", "1/4", "2/3"], a: 0 },
+      { q: "Tính: 7/8 - 1/4 = 7/8 - 2/8 = ? (SGK trang 81)", opts: ["5/8", "6/4", "6/8", "1/2"], a: 0 },
+      { q: "Tính: 1/2 - 1/6 = 3/6 - 1/6 = ? (SGK trang 82)", opts: ["2/6 (= 1/3)", "0/4", "1/4", "2/3"], a: 0 },
       { q: "Tính: 2/3 x 4/5 = ?", opts: ["8/15", "6/8", "6/15", "10/12"], a: 0 },
       { q: "Tính: 5/8 : 3/4 = 5/8 x 4/3 = ?", opts: ["5/6", "20/24", "15/32", "5/8"], a: 0 },
       { q: "Tìm 2/3 của 18 quả cam là bao nhiêu quả cam?", opts: ["12 quả", "6 quả", "9 quả", "15 quả"], a: 0 },
-      { q: "Tìm 3/5 của 25 kg gạo là bao nhiêu kg?", opts: ["15 kg", "10 kg", "20 kg", "5 kg"], a: 0 },
-      { q: "Phân số nào sau đây bằng 1?", opts: ["5/5", "4/5", "6/5", "0/5"], a: 0 },
-      { q: "Phân số nào sau đây lớn hơn 1?", opts: ["7/4", "3/4", "4/4", "1/2"], a: 0 }
-    ]
-  },
-
-  // --- TRỌN BỘ 20 UNITS TIẾNG ANH LỚP 4 ---
-  {
-    subject: 'english', cat: 'eng_term1', id: 'eng_u1', title: 'Unit 1: My Friends (Bạn bè của tôi)',
-    lang: 'en-US',
-    pool: [
-      { q: "Where's he from? - He's from ______ .", opts: ["Malaysia", "American", "English", "Vietnamese"], a: 0 },
-      { q: "Where are you from? - I'm from ______ .", opts: ["Viet Nam", "Vietnamese", "Japanese", "Australian"], a: 0 },
-      { q: "What nationality is she? - She's ______ .", opts: ["Japanese", "Japan", "America", "England"], a: 0 },
-      { q: "Nice to ______ you again!", opts: ["see", "look", "watch", "listen"], a: 0 },
-      { q: "Hello, I'm Akiko. I'm from Tokyo, ______ .", opts: ["Japan", "Japanese", "England", "America"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term1', id: 'eng_u2', title: 'Unit 2: Time and Daily Routines (Thời gian & Sinh hoạt)',
-    lang: 'en-US',
-    pool: [
-      { q: "What time is it? - It's ______ . (7:15)", opts: ["seven fifteen", "seven fifty", "seven five", "fifteen"], a: 0 },
-      { q: "What time do you get up? - I get up ______ 6:00 a.m.", opts: ["at", "on", "in", "from"], a: 0 },
-      { q: "I have breakfast ______ 6:30 every morning.", opts: ["at", "on", "in", "to"], a: 0 },
-      { q: "What time does he go to bed? - At ______ (10:00 p.m.).", opts: ["ten o'clock", "ten thirty", "nine o'clock", "eleven"], a: 0 },
-      { q: "I ______ to school at 7 o'clock.", opts: ["go", "goes", "going", "went"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term1', id: 'eng_u3', title: 'Unit 3: My Week (Một tuần của tôi)',
-    lang: 'en-US',
-    pool: [
-      { q: "What day is it today? - It's ______ .", opts: ["Monday", "at Monday", "in Monday", "May"], a: 0 },
-      { q: "What do you do on Saturdays? - I ______ my grandparents.", opts: ["visit", "visits", "visiting", "visited"], a: 0 },
-      { q: "I go to school from Monday ______ Friday.", opts: ["to", "at", "in", "on"], a: 0 },
-      { q: "Do you go swimming on Sundays? - Yes, I ______ .", opts: ["do", "am", "can", "have"], a: 0 },
-      { q: "We have English ______ Tuesdays and Thursdays.", opts: ["on", "at", "in", "to"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term1', id: 'eng_u4', title: 'Unit 4: My Birthday Party (Tiệc sinh nhật)',
-    lang: 'en-US',
-    pool: [
-      { q: "When's your birthday? - It's in ______ .", opts: ["March", "Monday", "morning", "table"], a: 0 },
-      { q: "What do you want to eat? - I want some ______ .", opts: ["chips", "water", "milk", "juice"], a: 0 },
-      { q: "Would you like some lemonade? - Yes, ______ .", opts: ["please", "thanks", "I do", "I can"], a: 0 },
-      { q: "How old are you? - I'm nine ______ old.", opts: ["years", "year", "day", "days"], a: 0 },
-      { q: "Happy birthday ______ you!", opts: ["to", "for", "at", "on"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term1', id: 'eng_u5', title: 'Unit 5: Things We Can Do (Khả năng)',
-    lang: 'en-US',
-    pool: [
-      { q: "Can you ride a bike? - Yes, I ______ .", opts: ["can", "do", "am", "have"], a: 0 },
-      { q: "What can you do? - I can ______ the piano.", opts: ["play", "swim", "singing", "skate"], a: 0 },
-      { q: "Can she swim? - No, she ______ .", opts: ["can't", "don't", "isn't", "doesn't"], a: 0 },
-      { q: "My brother can draw, but he ______ dance.", opts: ["can't", "can", "is", "doesn't"], a: 0 },
-      { q: "Can you play chess? - Yes, of ______ !", opts: ["course", "sure", "well", "fine"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term1', id: 'eng_u6', title: 'Unit 6: Our School Facilities (Trường học)',
-    lang: 'en-US',
-    pool: [
-      { q: "Where's your school? - It's ______ the city.", opts: ["in", "on", "at", "from"], a: 0 },
-      { q: "Is your school big? - Yes, it ______ .", opts: ["is", "does", "can", "has"], a: 0 },
-      { q: "How many buildings are there? - There ______ three.", opts: ["are", "is", "have", "do"], a: 0 },
-      { q: "We read books in the school ______ .", opts: ["library", "playground", "gym", "canteen"], a: 0 },
-      { q: "We play football in the ______ .", opts: ["playground", "classroom", "computer room", "office"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term1', id: 'eng_u7', title: 'Unit 7: Our Timetables (Thời khóa biểu)',
-    lang: 'en-US',
-    pool: [
-      { q: "What time do you have class today, Minh? - At ______ o'clock.", opts: ["eight", "seven", "nine", "ten"], a: 0 },
-      { q: "What subjects do you have today? - I have English and ______ .", opts: ["maths", "music", "history", "PE"], a: 0 },
-      { q: "Choose the correct subject name for 'Tiếng Việt':", opts: ["Vietnamese", "English", "Science", "Maths"], a: 0 },
-      { q: "Choose the correct subject name for 'Khoa học':", opts: ["science", "maths", "Vietnamese", "art"], a: 0 },
-      { q: "How many subjects do you have on Wednesday? - I have ______ (4) subjects.", opts: ["four", "five", "three", "two"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term1', id: 'eng_u8', title: 'Unit 8: My Favourite Subjects (Môn học yêu thích)',
-    lang: 'en-US',
-    pool: [
-      { q: "What's your favourite subject? - It's ______ .", opts: ["English", "Monday", "book", "pencil"], a: 0 },
-      { q: "Why do you like music? - ______ I like singing songs.", opts: ["Because", "So", "And", "Although"], a: 0 },
-      { q: "What subject is related to drawing and painting?", opts: ["art", "PE", "IT", "maths"], a: 0 },
-      { q: "What subject is related to computers and software?", opts: ["IT", "PE", "art", "music"], a: 0 },
-      { q: "My brother likes IT because he loves using the ______ .", opts: ["computer", "piano", "guitar", "football"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term1', id: 'eng_u9', title: 'Unit 9: Our Sports Day (Ngày hội thể thao)',
-    lang: 'en-US',
-    pool: [
-      { q: "When will Sports Day be? - It'll be on ______ .", opts: ["Saturday", "football", "swimming", "gym"], a: 0 },
-      { q: "What are you going to do on Sports Day? - I'm going to ______ football.", opts: ["play", "swim", "sing", "listen"], a: 0 },
-      { q: "Tony is going to take part in the ______ race.", opts: ["running", "speaking", "reading", "cooking"], a: 0 },
-      { q: "Which sport needs a shuttlecock and rackets?", opts: ["badminton", "football", "swimming", "basketball"], a: 0 },
-      { q: "Look! The boys ______ football on the grass.", opts: ["are playing", "is playing", "play", "played"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term1', id: 'eng_u10', title: 'Unit 10: Where Were You Yesterday? (Quá khứ)',
-    lang: 'en-US',
-    pool: [
-      { q: "Where were you yesterday, Quan? - I was ______ home.", opts: ["at", "in", "on", "to"], a: 0 },
-      { q: "What did you do yesterday morning? - I ______ my homework.", opts: ["did", "do", "does", "doing"], a: 0 },
-      { q: "Did you water the flowers? - Yes, I ______ .", opts: ["did", "do", "was", "have"], a: 0 },
-      { q: "They ______ football in the park yesterday afternoon.", opts: ["played", "play", "playing", "plays"], a: 0 },
-      { q: "Past tense of 'go' is: ______", opts: ["went", "goed", "gone", "goes"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term2', id: 'eng_u11', title: 'Unit 11: My Home (Ngôi nhà của tôi)',
-    lang: 'en-US',
-    pool: [
-      { q: "Where is the lamp? - It's ______ the table.", opts: ["on", "in", "at", "to"], a: 0 },
-      { q: "Where are the chairs? - They're ______ the kitchen.", opts: ["in", "on", "at", "from"], a: 0 },
-      { q: "How many rooms are there in your house? - There ______ six rooms.", opts: ["are", "is", "have", "do"], a: 0 },
-      { q: "We cook food in the ______ .", opts: ["kitchen", "bedroom", "bathroom", "garden"], a: 0 },
-      { q: "We sleep in the ______ .", opts: ["bedroom", "living room", "kitchen", "garage"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term2', id: 'eng_u12', title: 'Unit 12: Jobs (Nghề nghiệp)',
-    lang: 'en-US',
-    pool: [
-      { q: "What does your father do? - He's a ______ .", opts: ["doctor", "hospital", "school", "pencil"], a: 0 },
-      { q: "Where does a teacher work? - In a ______ .", opts: ["school", "hospital", "farm", "factory"], a: 0 },
-      { q: "Where does a farmer work? - On a ______ .", opts: ["farm", "factory", "office", "bank"], a: 0 },
-      { q: "What does your mother do? - She ______ a nurse.", opts: ["is", "are", "do", "does"], a: 0 },
-      { q: "A worker works in a ______ .", opts: ["factory", "hospital", "school", "kitchen"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term2', id: 'eng_u13', title: 'Unit 13: Appearance (Ngoại hình & Tính cách)',
-    lang: 'en-US',
-    pool: [
-      { q: "What does he look like? - He's ______ .", opts: ["tall", "doctor", "swimming", "friendly"], a: 0 },
-      { q: "Who is taller, Tom or Peter? - Tom ______ taller.", opts: ["is", "are", "does", "has"], a: 0 },
-      { q: "My sister has ______ hair.", opts: ["long", "tall", "high", "fat"], a: 0 },
-      { q: "He is short and ______ .", opts: ["slim", "tall", "high", "hair"], a: 0 },
-      { q: "She has big ______ eyes.", opts: ["brown", "tall", "short", "fat"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term2', id: 'eng_u14', title: 'Unit 14: Daily Activities (Hoạt động thường ngày)',
-    lang: 'en-US',
-    pool: [
-      { q: "What are you doing? - I ______ a book.", opts: ["am reading", "read", "reads", "is reading"], a: 0 },
-      { q: "What is she doing? - She is ______ the flowers.", opts: ["watering", "water", "waters", "watered"], a: 0 },
-      { q: "Are they watching TV? - Yes, they ______ .", opts: ["are", "do", "can", "have"], a: 0 },
-      { q: "Nam is ______ his bike in the park.", opts: ["riding", "driving", "flying", "playing"], a: 0 },
-      { q: "My father is ______ a car.", opts: ["driving", "riding", "walking", "running"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term2', id: 'eng_u15', title: 'Unit 15: At the Dining Table (Đồ ăn thức uống)',
-    lang: 'en-US',
-    pool: [
-      { q: "What's your favourite drink? - It's ______ .", opts: ["orange juice", "chicken", "bread", "beef"], a: 0 },
-      { q: "What's your favourite food? - It's ______ .", opts: ["fish", "milk", "water", "tea"], a: 0 },
-      { q: "Would you like some noodles? - No, ______ .", opts: ["thanks", "please", "I don't", "I'm not"], a: 0 },
-      { q: "Beef is my favourite ______ .", opts: ["meat", "drink", "fruit", "juice"], a: 0 },
-      { q: "I'm thirsty. I want some ______ .", opts: ["water", "rice", "bread", "pork"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term2', id: 'eng_u16', title: 'Unit 16: Weather (Thời tiết)',
-    lang: 'en-US',
-    pool: [
-      { q: "What's the weather like today? - It's ______ .", opts: ["sunny", "sun", "sunshine", "sunday"], a: 0 },
-      { q: "It's cold and ______ in winter.", opts: ["windy", "hot", "sun", "summer"], a: 0 },
-      { q: "Take an umbrella! It's ______ outside.", opts: ["raining", "sunny", "hot", "warm"], a: 0 },
-      { q: "How's the weather in Ha Noi? - It's ______ .", opts: ["cloudy", "cloud", "clouds", "clouding"], a: 0 },
-      { q: "I like summer because it is ______ and bright.", opts: ["warm", "cold", "snowy", "rainy"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term2', id: 'eng_u17', title: 'Unit 17: In the City (Địa điểm & Thành phố)',
-    lang: 'en-US',
-    pool: [
-      { q: "Where is the cinema? - It's ______ to the supermarket.", opts: ["next", "between", "on", "in"], a: 0 },
-      { q: "How can I get to the zoo? - You can go ______ bus.", opts: ["by", "on", "in", "with"], a: 0 },
-      { q: "The pharmacy is ______ the bakery and the bookshop.", opts: ["between", "next", "opposite", "at"], a: 0 },
-      { q: "Turn ______ at the traffic lights.", opts: ["left", "straight", "on", "to"], a: 0 },
-      { q: "Excuse me, where is the ______ ? I want to buy stamps.", opts: ["post office", "cinema", "zoo", "school"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term2', id: 'eng_u18', title: 'Unit 18: Shopping (Mua sắm & Giá tiền)',
-    lang: 'en-US',
-    pool: [
-      { q: "How much is this T-shirt? - It's ______ dong.", opts: ["80 000", "80 meters", "80 o'clock", "80 kilos"], a: 0 },
-      { q: "How much are these shoes? - ______ 200 000 dong.", opts: ["They're", "It's", "There's", "He's"], a: 0 },
-      { q: "Can I help you? - Yes, I want to ______ a cap.", opts: ["buy", "bought", "buying", "buys"], a: 0 },
-      { q: "This pair of trousers is too ______ for me.", opts: ["tight", "high", "many", "much"], a: 0 },
-      { q: "The yellow dress is very ______ .", opts: ["beautiful", "sweet", "fast", "thirsty"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term2', id: 'eng_u19', title: 'Unit 19: Animals (Động vật sở thú)',
-    lang: 'en-US',
-    pool: [
-      { q: "I want to see the ______ because they are cute.", opts: ["monkeys", "books", "pens", "schools"], a: 0 },
-      { q: "Tigers are very ______ and dangerous.", opts: ["fast", "slow", "small", "weak"], a: 0 },
-      { q: "The elephant has a very long ______ .", opts: ["trunk", "arm", "hand", "finger"], a: 0 },
-      { q: "What animal do you like? - I like ______ .", opts: ["giraffes", "tables", "desks", "chairs"], a: 0 },
-      { q: "Bears love eating ______ .", opts: ["honey", "pencils", "paper", "shoes"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'eng_term2', id: 'eng_u20', title: 'Unit 20: Summer Holidays (Kỳ nghỉ hè)',
-    lang: 'en-US',
-    pool: [
-      { q: "Where are you going this summer? - I'm going to ______ .", opts: ["Ha Long Bay", "Sunday", "English", "badminton"], a: 0 },
-      { q: "What are you going to do? - I'm going to ______ in the sea.", opts: ["swim", "run", "read", "write"], a: 0 },
-      { q: "We are going to stay in a luxury ______ .", opts: ["hotel", "tent", "school", "office"], a: 0 },
-      { q: "I'm going to eat delicious ______ on the beach.", opts: ["seafood", "homework", "sand", "water"], a: 0 },
-      { q: "Have a great ______ !", opts: ["holiday", "day", "class", "subject"], a: 0 }
+      { q: "Hình bình hành có đáy 18 cm, chiều cao 10 cm. Diện tích là:", opts: ["180 cm²", "90 cm²", "56 cm²", "28 cm²"], a: 0 }
     ]
   }
 ];
 
-// Thuật toán Fisher-Yates
 function shuffleArray(arr) {
   const array = [...arr];
   for (let i = array.length - 1; i > 0; i--) {
@@ -628,20 +468,29 @@ function shuffleArray(arr) {
   return array;
 }
 
-function pickAndShuffle10(pool) {
-  const shuffledPool = shuffleArray(pool);
-  const selected = shuffledPool.slice(0, Math.min(10, shuffledPool.length));
-  return selected.map(item => {
-    const originalAnswerText = item.opts[item.a];
-    const shuffledOpts = shuffleArray(item.opts);
-    const newCorrectIdx = shuffledOpts.indexOf(originalAnswerText);
-    return { q: item.q, opts: shuffledOpts, correct: newCorrectIdx };
-  });
+// Chuẩn bị câu hỏi: Toán thì đảo ngẫu nhiên; Tiếng Anh giữ nguyên thứ tự bài tập SGK
+function prepareQuestions(topic) {
+  if (topic.isFixedOrder) {
+    return topic.pool.map(item => ({
+      q: item.q,
+      opts: item.opts,
+      correct: item.a
+    }));
+  } else {
+    const shuffledPool = shuffleArray(topic.pool);
+    const selected = shuffledPool.slice(0, Math.min(10, shuffledPool.length));
+    return selected.map(item => {
+      const originalAnswerText = item.opts[item.a];
+      const shuffledOpts = shuffleArray(item.opts);
+      const newCorrectIdx = shuffledOpts.indexOf(originalAnswerText);
+      return { q: item.q, opts: shuffledOpts, correct: newCorrectIdx };
+    });
+  }
 }
 
-// Biến điều khiển ván đấu
+// Biến điều khiển phiên làm bài
 let activeTopic = null;
-let currentRoundQuestions = [];
+let currentSessionQuestions = [];
 let curQIdx = 0, roundScore = 0, streak = 0;
 let playerProgress = 4, botProgress = 4;
 let roundHistory = [];
@@ -656,17 +505,21 @@ function renderTopicCards() {
   filtered.forEach(topic => {
     const card = document.createElement('div');
     card.className = 'topic-card';
-    card.innerHTML = `<div><b>${topic.title}</b><br><small style="color:#94a3b8;">Bốc ngẫu nhiên 10 câu - Thời gian: 5 phút</small></div> <span>🏁 Vào Đua</span>`;
-    card.onclick = () => startTopicRace(topic);
+    if (topic.isFixedOrder) {
+      card.innerHTML = `<div><b>${topic.title}</b><br><small style="color:#38bdf8;">Chuẩn bài tập SGK (${topic.pool.length} câu - Đúng thứ tự)</small></div> <span>▶ Làm bài</span>`;
+    } else {
+      card.innerHTML = `<div><b>${topic.title}</b><br><small style="color:#94a3b8;">Đua xe tính giờ (Bốc ngẫu nhiên 10 câu)</small></div> <span>🏁 Vào Đua</span>`;
+    }
+    card.onclick = () => startTask(topic);
     box.appendChild(card);
   });
 }
 
-function startTopicRace(topic) {
+function startTask(topic) {
   if (audioCtx.state === 'suspended') audioCtx.resume();
   activeTopic = topic;
   
-  currentRoundQuestions = pickAndShuffle10(topic.pool);
+  currentSessionQuestions = prepareQuestions(topic);
   curQIdx = 0; roundScore = 0; streak = 0;
   playerProgress = 4; botProgress = 4;
   roundHistory = [];
@@ -676,6 +529,14 @@ function startTopicRace(topic) {
   document.getElementById('screen-race').classList.add('active');
 
   document.getElementById('disp-round-score').innerText = roundScore;
+
+  // Ẩn xe đối thủ nếu là bài học tiếng Anh (để làm bài tập trung không bị áp lực đua bot)
+  const botLane = document.getElementById('bot-lane');
+  if (topic.isFixedOrder) {
+    botLane.style.display = 'none';
+  } else {
+    botLane.style.display = 'flex';
+  }
   updatePositionsUI();
 
   // Đếm ngược 5 phút
@@ -687,39 +548,38 @@ function startTopicRace(topic) {
     if (totalSecondsLeft <= 0) {
       clearInterval(totalGameTimer);
       clearInterval(botInterval);
-      alert("⏱️ ĐÃ HẾT 5 PHÚT TỔNG BÀI THI!");
-      finishRace(playerProgress >= botProgress ? "BẠN" : "MÁY");
+      alert("⏱️ ĐÃ HẾT 5 PHÚT!");
+      finishSession(playerProgress >= botProgress ? "BẠN" : "MÁY");
     }
   }, 1000);
 
-  // Xe bot đối thủ
+  // Bot chạy đối kháng với môn Toán
   clearInterval(botInterval);
-  botInterval = setInterval(() => {
-    botProgress += 0.28;
-    document.getElementById('car-bot').style.left = `${Math.min(botProgress, 88)}%`;
-    if (botProgress >= 88) {
-      clearInterval(botInterval);
-      finishRace("MÁY");
-    }
-  }, 1000);
+  if (!topic.isFixedOrder) {
+    botInterval = setInterval(() => {
+      botProgress += 0.28;
+      document.getElementById('car-bot').style.left = `${Math.min(botProgress, 88)}%`;
+      if (botProgress >= 88) {
+        clearInterval(botInterval);
+        finishSession("MÁY");
+      }
+    }, 1000);
+  }
 
   loadQuestionUI();
 }
 
-// HÀM DỪNG THI VÀ THOÁT RA MÀN HÌNH GẦN NHẤT
-function abortRaceAndExit() {
-  const confirmExit = confirm("Bạn có chắc chắn muốn dừng thi và thoát ra không?\nKết quả của lượt đua này sẽ không được lưu.");
+// NÚT DỪNG BÀI VÀ THOÁT RA MÀN HÌNH GẦN NHẤT
+function abortSessionAndExit() {
+  const confirmExit = confirm("Bạn có chắc chắn muốn dừng làm bài và thoát ra không?\nKết quả bài làm hiện tại sẽ không được lưu.");
   if (confirmExit) {
-    // 1. Dọn dẹp bộ đếm thời gian và tiến trình chạy bot
     clearInterval(totalGameTimer);
     clearInterval(botInterval);
 
-    // 2. Dừng giọng đọc nếu đang nói
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
     }
 
-    // 3. Quay lại màn hình danh mục nội dung gần nhất
     document.getElementById('screen-race').classList.remove('active');
     document.getElementById('screen-topics').classList.add('active');
     refreshUserHeader();
@@ -734,10 +594,10 @@ function updateTimerDisplay() {
 }
 
 function loadQuestionUI() {
-  document.getElementById('disp-progress').innerText = `Câu: ${curQIdx + 1}/${currentRoundQuestions.length}`;
+  document.getElementById('disp-progress').innerText = `Câu: ${curQIdx + 1}/${currentSessionQuestions.length}`;
   document.getElementById('feedback-txt').innerText = '';
 
-  const qData = currentRoundQuestions[curQIdx];
+  const qData = currentSessionQuestions[curQIdx];
   document.getElementById('q-title').innerText = `Câu ${curQIdx + 1}: ${qData.q}`;
 
   const container = document.getElementById('answers-container');
@@ -754,7 +614,7 @@ function loadQuestionUI() {
 }
 
 function readQuestionTTS() {
-  const text = currentRoundQuestions[curQIdx].q;
+  const text = currentSessionQuestions[curQIdx].q;
   const langCode = activeTopic.lang || 'vi-VN';
 
   if ('speechSynthesis' in window) {
@@ -779,11 +639,11 @@ function readQuestionTTS() {
 function playFallbackAudio(text, langCode) {
   const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${langCode.substring(0, 2)}&client=tw-ob&q=${encodeURIComponent(text)}`;
   const audio = new Audio(url);
-  audio.play().catch(e => console.log("Lỗi autoplay:", e));
+  audio.play().catch(e => console.log("Lỗi audio:", e));
 }
 
 function handleChoice(selectedIdx, btnEl) {
-  const qData = currentRoundQuestions[curQIdx];
+  const qData = currentSessionQuestions[curQIdx];
   const isRight = (selectedIdx === qData.correct);
   const fb = document.getElementById('feedback-txt');
 
@@ -794,9 +654,9 @@ function handleChoice(selectedIdx, btnEl) {
     streak++;
     const bonus = streak > 1 ? 5 : 0;
     roundScore += (10 + bonus);
-    playerProgress += (84 / currentRoundQuestions.length);
+    playerProgress += (84 / currentSessionQuestions.length);
     sfxCorrect();
-    fb.innerHTML = `<span style="color:#10b981;">Chính xác! ${streak > 1 ? '⚡ TĂNG TỐC (+5đ thưởng)' : '🏎️ Bứt tốc!'}</span>`;
+    fb.innerHTML = `<span style="color:#10b981;">Chính xác! ${streak > 1 ? '⚡ TĂNG TỐC (+5đ thưởng)' : '🏎️ Rất tốt!'}</span>`;
   } else {
     if (btnEl) btnEl.classList.add('wrong-ans');
     streak = 0;
@@ -810,10 +670,10 @@ function handleChoice(selectedIdx, btnEl) {
 
   setTimeout(() => {
     curQIdx++;
-    if (curQIdx < currentRoundQuestions.length && playerProgress < 88) {
+    if (curQIdx < currentSessionQuestions.length && playerProgress < 88) {
       loadQuestionUI();
     } else {
-      finishRace(playerProgress >= botProgress ? "BẠN" : "MÁY");
+      finishSession(playerProgress >= botProgress ? "BẠN" : "MÁY");
     }
   }, 1400);
 }
@@ -823,12 +683,12 @@ function updatePositionsUI() {
   document.getElementById('car-bot').style.left = `${Math.min(botProgress, 88)}%`;
 }
 
-function finishRace(winner) {
+function finishSession(winner) {
   clearInterval(totalGameTimer);
   clearInterval(botInterval);
 
   currentUser.cumScore += roundScore;
-  const isWinner = (winner === "BẠN");
+  const isPass = activeTopic.isFixedOrder ? (roundScore >= currentSessionQuestions.length * 7) : (winner === "BẠN");
   const now = new Date();
   const timeStr = `${now.getHours()}:${now.getMinutes() < 10 ? '0' : ''}${now.getMinutes()} - ${now.getDate()}/${now.getMonth() + 1}`;
   
@@ -836,7 +696,7 @@ function finishRace(winner) {
     time: timeStr,
     topic: activeTopic.title.split(':')[0],
     score: roundScore,
-    win: isWinner
+    win: isPass
   });
   saveUser();
 
@@ -844,12 +704,12 @@ function finishRace(winner) {
   document.getElementById('screen-summary').classList.add('active');
 
   const title = document.getElementById('win-status-title');
-  if (isWinner) {
+  if (isPass) {
     sfxWin();
-    title.innerText = "🏆 ĐỘI ĐỎ CHIẾN THẮNG TUYỆT ĐỐI! 🎆";
+    title.innerText = "🏆 XUẤT SẮC HOÀN THÀNH BÀI LÀM! 🎆";
   } else {
     sfxWrong();
-    title.innerText = "🏁 ĐỐI THỦ ĐÃ VỀ ĐÍCH TRƯỚC!";
+    title.innerText = "🏁 CHƯA ĐẠT KẾT QUẢ TỐI ƯU!";
   }
 
   document.getElementById('sum-round-gain').innerText = `+${roundScore} đ`;
@@ -864,12 +724,12 @@ function finishRace(winner) {
   });
 }
 
-function restartCurrentTopic() {
+function restartCurrentTask() {
   document.getElementById('screen-summary').classList.remove('active');
-  startTopicRace(activeTopic);
+  startTask(activeTopic);
 }
 
-function backToTopicMenu() {
+function backToTaskMenu() {
   refreshUserHeader();
   renderHistoryTable();
   document.getElementById('screen-summary').classList.remove('active');
