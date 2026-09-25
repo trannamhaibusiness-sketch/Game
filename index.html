@@ -1,744 +1,935 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Đấu Trường Học Tập - Toán & Tiếng Anh SGK</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#4F46E5" />
+<title>🤖 Vui Học - Đấu trường kiến thức</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          baloo: ['"Baloo 2"', 'cursive'],
+          nunito: ['Nunito', 'sans-serif'],
+        },
+        colors: {
+          brand: {
+            50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe',
+            300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1',
+            600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81',
+          },
+          sunny: '#FCD34D',
+          coral: '#FB7185',
+          mint: '#34D399',
+          sky: '#38BDF8',
+        },
+        animation: {
+          'bounce-slow': 'bounce 2s infinite',
+          'float': 'float 3s ease-in-out infinite',
+          'wiggle': 'wiggle 0.5s ease-in-out',
+        },
+        keyframes: {
+          float: {
+            '0%, 100%': { transform: 'translateY(0)' },
+            '50%': { transform: 'translateY(-10px)' },
+          },
+          wiggle: {
+            '0%, 100%': { transform: 'rotate(0deg)' },
+            '25%': { transform: 'rotate(-5deg)' },
+            '75%': { transform: 'rotate(5deg)' },
+          },
+        },
+      },
+    },
+  };
+</script>
+
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-  body { background: #070d19; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 12px; }
-  #app-card { width: 100%; max-width: 840px; background: #131c31; border-radius: 16px; padding: 22px; box-shadow: 0 12px 35px rgba(0,0,0,0.6); border: 1px solid #233252; text-align: center; }
-  .screen { display: none; }
-  .active { display: block; }
+* { -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Nunito', sans-serif; overscroll-behavior: none; }
 
-  h1 { color: #f59e0b; font-size: 21px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-  p.desc { font-size: 13px; color: #94a3b8; margin-bottom: 14px; }
+.screen { animation: screenFadeIn 0.3s ease-out; }
+@keyframes screenFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hidden-screen { display: none !important; }
 
-  /* Đăng nhập */
-  .auth-form { display: flex; flex-direction: column; gap: 12px; max-width: 320px; margin: 15px auto; }
-  .auth-input { padding: 12px; border-radius: 8px; border: 2px solid #3b82f6; background: #0b1329; color: #fff; font-size: 15px; outline: none; text-align: center; }
-  .btn-primary { background: #f59e0b; color: #000; border: none; padding: 12px 22px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 15px; transition: 0.2s; }
-  .btn-primary:hover { background: #d97706; }
-  .btn-secondary { background: #334155; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 13px; margin: 4px; }
-  .btn-secondary:hover { background: #475569; }
-  .btn-danger { background: #dc2626; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px; transition: 0.2s; }
-  .btn-danger:hover { background: #b91c1c; }
+.role-btn { transition: all 0.2s ease; }
+.role-btn.role-active {
+  border-color: #6366f1 !important;
+  background: #6366f1 !important;
+  color: white !important;
+  box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.5);
+  transform: translateY(-2px);
+}
 
-  /* Thanh trạng thái người dùng */
-  .user-header-bar { display: flex; justify-content: space-between; align-items: center; background: #0b1222; padding: 10px 16px; border-radius: 8px; margin-bottom: 14px; font-size: 14px; border: 1px solid #1e293b; }
-  .user-header-bar span b { color: #f59e0b; }
+.answer-option {
+  transition: all 0.15s ease;
+  cursor: pointer;
+  user-select: none;
+}
+.answer-option:hover:not(.answer-disabled):not(.answer-correct):not(.answer-wrong) {
+  transform: translateX(6px);
+  border-color: #6366f1;
+  background: #eef2ff;
+}
+.answer-option.answer-correct {
+  border-color: #34D399 !important;
+  background: #d1fae5 !important;
+  animation: correctPulse 0.4s ease;
+}
+.answer-option.answer-wrong {
+  border-color: #FB7185 !important;
+  background: #ffe4e6 !important;
+  animation: wrongShake 0.4s ease;
+}
+.answer-option.answer-disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+  pointer-events: none;
+}
+@keyframes correctPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.05); }
+}
+@keyframes wrongShake {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-8px); }
+  75%      { transform: translateX(8px); }
+}
 
-  /* Cổng chọn môn học */
-  .portal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
-  .portal-card { background: #1c2744; border: 2px solid #2d3f66; padding: 25px 15px; border-radius: 12px; cursor: pointer; transition: 0.25s; }
-  .portal-card:hover { transform: translateY(-3px); border-color: #38bdf8; background: #223259; }
-  .portal-icon { font-size: 42px; margin-bottom: 10px; }
-  .portal-title { font-size: 18px; font-weight: bold; color: #f8fafc; }
-  .portal-desc { font-size: 12.5px; color: #94a3b8; margin-top: 6px; }
+.timer-bar { transition: width 1s linear, background-color 0.3s ease; }
 
-  /* Tabs phân loại */
-  .tab-container { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
-  .tab-btn { flex: 1; min-width: 120px; padding: 10px 6px; background: #0b1222; border: 2px solid #1e293b; color: #94a3b8; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 12.5px; }
-  .tab-btn.active-tab { background: #2563eb; color: #fff; border-color: #60a5fa; }
-  .tab-btn.tab-gold.active-tab { background: #d97706; border-color: #fbbf24; }
+.toast { animation: toastSlideIn 0.3s ease-out; }
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-  /* Danh sách bài tập / Unit */
-  .topics-wrapper { display: flex; flex-direction: column; gap: 8px; max-height: 320px; overflow-y: auto; text-align: left; padding-right: 4px; }
-  .topic-card { background: #1c2744; border: 1px solid #2d3f66; color: #fff; padding: 12px 15px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
-  .topic-card:hover { background: #1d4ed8; border-color: #38bdf8; }
-  .topic-card b { font-size: 14px; }
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 100;
+  animation: confettiFall 2.5s linear forwards;
+}
+@keyframes confettiFall {
+  0%   { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
 
-  /* Phân cấp Unit -> Lesson -> Activity */
-  .unit-section-title { background: #0f172a; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: bold; color: #38bdf8; margin-top: 6px; }
+.animate-pop { animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+@keyframes popIn {
+  0%   { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1);   opacity: 1; }
+}
 
-  /* Đấu trường đua xe (Môn Toán) */
-  #arena-track { background: #080d1a; border-radius: 12px; padding: 12px; margin: 14px 0; border: 2px solid #223150; position: relative; }
-  .lane { height: 42px; position: relative; border-bottom: 2px dashed #1e293b; display: flex; align-items: center; }
-  .lane:last-child { border-bottom: none; }
-  .flag-gate { position: absolute; right: 24px; top: 0; bottom: 0; width: 10px; background: repeating-linear-gradient(to bottom, #fff, #fff 8px, #000 8px, #000 16px); z-index: 1; }
-  .race-car { position: absolute; left: 4px; font-size: 26px; transition: left 0.4s ease-out; z-index: 2; transform: scaleX(-1); display: inline-block; }
+.spinner {
+  border: 4px solid #e0e7ff;
+  border-top: 4px solid #6366f1;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
 
-  /* Bảng trạng thái làm bài */
-  .stats-board { display: flex; justify-content: space-between; align-items: center; background: #0b1222; padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; font-weight: bold; font-size: 13px; }
-  .timer-highlight { color: #ef4444; font-size: 15px; font-weight: 800; animation: blink 1s infinite alternate; }
-  @keyframes blink { from { opacity: 1; } to { opacity: 0.7; } }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #eef2ff; }
+::-webkit-scrollbar-thumb { background: #a5b4fc; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #6366f1; }
 
-  /* Bảng câu hỏi & Đáp án */
-  .q-panel { background: #1c2744; border-radius: 10px; padding: 16px; min-height: 85px; margin-bottom: 14px; display: flex; flex-direction: column; justify-content: center; }
-  #q-title { font-size: 15.5px; font-weight: 600; line-height: 1.45; }
-  .answers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .ans-btn { background: #0f172a; border: 2px solid #223150; color: #f8fafc; padding: 12px; border-radius: 8px; font-size: 14px; cursor: pointer; transition: 0.2s; text-align: left; font-weight: 500; }
-  .ans-btn:hover:not([disabled]) { border-color: #38bdf8; background: #1e293b; }
-  .ans-btn.right-ans { background: #059669 !important; border-color: #10b981 !important; color: #fff; }
-  .ans-btn.wrong-ans { background: #dc2626 !important; border-color: #ef4444 !important; color: #fff; }
-
-  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
-  th, td { border: 1px solid #223150; padding: 8px 10px; text-align: left; }
-  th { background: #0b1222; color: #f59e0b; }
-  .history-section { margin-top: 18px; border-top: 1px dashed #2d3f66; padding-top: 12px; text-align: left; }
-  .scroll-table { max-height: 160px; overflow-y: auto; }
+button { user-select: none; }
 </style>
 </head>
-<body>
 
-<div id="app-card">
-  <!-- MÀN HÌNH 1: ĐĂNG NHẬP -->
-  <div id="screen-auth" class="screen active">
-    <h1>🏁 ĐĂNG NHẬP TAY ĐUA TOÁN & TIẾNG ANH 🏎️</h1>
-    <p class="desc">Học và luyện tập chuẩn SGK & Đấu trường ViOlympic</p>
-    <div class="auth-form">
-      <input type="text" id="input-username" class="auth-input" placeholder="Tên thí sinh (VD: Minh Anh)...">
-      <input type="password" id="input-pin" class="auth-input" placeholder="Mã PIN bí mật (VD: 1234)...">
-      <button class="btn-primary" onclick="handleLogin()">VÀO PHÒNG CHỜ</button>
-    </div>
-  </div>
+<body class="font-nunito bg-gradient-to-br from-brand-100 via-sky-100 to-sunny/30 min-h-screen overflow-x-hidden">
 
-  <!-- MÀN HÌNH 2: CHỌN MÔN THI ĐẤU -->
-  <div id="screen-portal" class="screen">
-    <div class="user-header-bar">
-      <span>Thí sinh: <b id="portal-user-tag"></b></span>
-      <span>Điểm tích lũy: <b id="portal-cum-tag">0</b> đ</span>
-      <button class="btn-secondary" onclick="handleLogout()">Đăng xuất</button>
-    </div>
-    <h1>📚 LỰA CHỌN MÔN HỌC</h1>
-    <p class="desc">Chọn môn bạn muốn rèn luyện hôm nay:</p>
-
-    <div class="portal-grid">
-      <div class="portal-card" onclick="openSubjectMenu('math')">
-        <div class="portal-icon">📐</div>
-        <div class="portal-title">MÔN TOÁN HỌC</div>
-        <div class="portal-desc">Đua xe đối kháng: SGK (Tập 1, 2) & ViOlympic (Đảo câu hỏi)</div>
-      </div>
-      <div class="portal-card" onclick="openSubjectMenu('english')">
-        <div class="portal-icon">🌍</div>
-        <div class="portal-title">TIẾNG ANH (ENGLISH)</div>
-        <div class="portal-desc">Chuẩn SGK: Chia theo từng Unit & từng Bài tập (Không đảo bài)</div>
-      </div>
-    </div>
-
-    <div class="history-section">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <span style="font-weight:bold; color:#38bdf8;">📜 Lịch sử kết quả:</span>
-        <button class="btn-secondary" style="font-size:11px; padding:3px 8px;" onclick="clearHistoryLog()">Xóa lịch sử</button>
-      </div>
-      <div class="scroll-table">
-        <table id="history-log-table">
-          <thead><tr><th>Thời gian</th><th>Nội dung</th><th>Điểm</th><th>Kết quả</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- MÀN HÌNH 3: CHỌN BÀI TẬP / CHUYÊN ĐỀ -->
-  <div id="screen-topics" class="screen">
-    <div class="user-header-bar">
-      <span>Thí sinh: <b id="user-name-tag"></b></span>
-      <span>Điểm tích lũy: <b id="cum-score-tag">0</b> đ</span>
-      <button class="btn-secondary" onclick="returnToPortal()">⬅ Đổi môn học</button>
-    </div>
-    <h1 id="topics-title-header">DANH MỤC BÀI HỌC</h1>
-    <p class="desc" id="topics-desc-header">Chọn bài tập để bắt đầu luyện tập:</p>
-
-    <div class="tab-container" id="tabs-wrapper"></div>
-    <div class="topics-wrapper" id="topics-list"></div>
-  </div>
-
-  <!-- MÀN HÌNH 4: GIAO DIỆN LÀM BÀI THI -->
-  <div id="screen-race" class="screen">
-    <div class="stats-board">
-      <span style="color:#ef4444;">Bài này: <b id="disp-round-score">0</b> đ</span>
-      <span class="timer-highlight" id="disp-total-timer">⏱️ 05:00</span>
-      <span style="color:#10b981;" id="disp-progress">Câu: 1/5</span>
-      <!-- NÚT DỪNG THI / THOÁT RA MÀN HÌNH GẦN NHẤT -->
-      <button class="btn-danger" onclick="abortSessionAndExit()">🚪 Dừng bài</button>
-    </div>
-
-    <!-- Đấu trường xe (chỉ hiển thị đua bot khi thi Toán) -->
-    <div id="arena-track">
-      <div class="flag-gate"></div>
-      <div class="lane"><span class="race-car" id="car-player">🏎️</span></div>
-      <div class="lane" id="bot-lane"><span class="race-car" id="car-bot">🚙</span></div>
-    </div>
-
-    <div class="q-panel">
-      <div id="q-title">Đang tải câu hỏi...</div>
-      <button onclick="readQuestionTTS()" style="background:transparent; border:none; color:#38bdf8; cursor:pointer; font-size:12px; margin-top:8px;">🔊 Nghe Google đọc đề</button>
-    </div>
-
-    <div class="answers-grid" id="answers-container"></div>
-    <div id="feedback-txt" style="min-height: 22px; margin-top: 10px; font-weight: bold;"></div>
-  </div>
-
-  <!-- MÀN HÌNH 5: TỔNG KẾT BÀI LÀM -->
-  <div id="screen-summary" class="screen">
-    <h1 id="win-status-title">🏆 HOÀN THÀNH BÀI LÀM!</h1>
-    <p style="margin: 10px 0;">Điểm vừa đạt: <b id="sum-round-gain" style="color:#10b981;">0</b> | Tổng điểm tích lũy: <b id="sum-cum-total" style="color:#f59e0b;">0</b> đ</p>
-    <div class="scroll-table">
-      <table id="summary-table">
-        <thead><tr><th>STT</th><th>Nội dung câu</th><th>Đánh giá</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
-    <br>
-    <button class="btn-primary" onclick="restartCurrentTask()">🔄 Làm lại bài này</button>
-    <button class="btn-secondary" onclick="backToTaskMenu()">🗺️ Trở về danh sách bài</button>
-  </div>
+<div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+  <div class="absolute top-10 left-10 text-6xl opacity-20 animate-float">⭐</div>
+  <div class="absolute top-32 right-16 text-5xl opacity-20 animate-float" style="animation-delay: 0.5s">✨</div>
+  <div class="absolute bottom-20 left-20 text-6xl opacity-20 animate-float" style="animation-delay: 1s">🎈</div>
+  <div class="absolute bottom-40 right-10 text-5xl opacity-20 animate-float" style="animation-delay: 1.5s">🌟</div>
 </div>
 
+<div id="app" class="min-h-screen flex flex-col">
+  <section id="screen-login" class="screen flex-1 flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+      <div class="text-center mb-6">
+        <div class="inline-block relative">
+          <div class="text-8xl animate-bounce-slow select-none">🤖</div>
+          <div class="absolute -top-2 -right-2 text-3xl animate-wiggle">✨</div>
+        </div>
+        <h1 class="font-baloo text-4xl font-extrabold text-brand-700 mt-3">Vui Học</h1>
+        <p class="font-nunito text-brand-600 mt-1">Đấu trường kiến thức cho bé 🎯</p>
+      </div>
+
+      <div class="bg-white/90 backdrop-blur rounded-3xl shadow-2xl p-6 border-4 border-white">
+        <h2 class="font-baloo text-2xl font-bold text-brand-700 text-center mb-5">Đăng nhập 👋</h2>
+
+        <div class="mb-5">
+          <label class="block font-bold text-brand-700 mb-2 text-sm">Bạn là:</label>
+          <div class="grid grid-cols-2 gap-3">
+            <button type="button" data-role="student" class="role-btn role-active rounded-2xl py-3 font-bold text-lg transition-all border-4 border-brand-500 bg-brand-500 text-white shadow-lg">🎓 Học sinh</button>
+            <button type="button" data-role="parent" class="role-btn rounded-2xl py-3 font-bold text-lg transition-all border-4 border-brand-200 bg-white text-brand-600">👨‍👩‍👧 Phụ huynh</button>
+          </div>
+          <input type="hidden" id="role-input" value="student" />
+        </div>
+
+        <div class="mb-4">
+          <label class="block font-bold text-brand-700 mb-2 text-sm">Tên đăng nhập:</label>
+          <input type="text" id="username-input" autocomplete="username" placeholder="Ví dụ: minh" class="w-full px-4 py-3 rounded-2xl border-4 border-brand-200 focus:border-brand-500 focus:outline-none font-nunito text-lg bg-brand-50/50" />
+        </div>
+
+        <div class="mb-5">
+          <label class="block font-bold text-brand-700 mb-2 text-sm">Mật khẩu:</label>
+          <div class="relative">
+            <input type="password" id="password-input" autocomplete="current-password" placeholder="••••••" class="w-full px-4 py-3 rounded-2xl border-4 border-brand-200 focus:border-brand-500 focus:outline-none font-nunito text-lg bg-brand-50/50 pr-12" />
+            <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-2xl hover:scale-110 transition-transform">👁️</button>
+          </div>
+        </div>
+
+        <div id="login-error" class="hidden mb-4 p-3 rounded-2xl bg-coral/20 border-2 border-coral text-coral font-bold text-center text-sm">
+          ⚠️ <span id="login-error-text">Sai tên hoặc mật khẩu!</span>
+        </div>
+
+        <button type="button" id="login-btn" class="w-full bg-gradient-to-r from-brand-500 to-brand-700 hover:from-brand-600 hover:to-brand-800 text-white font-baloo font-bold text-xl py-4 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-95 transition-all">
+          <span id="login-btn-text">🚀 Vào chơi!</span>
+        </button>
+
+        <p class="text-center text-xs text-brand-500 mt-4">
+          💡 Demo: <code class="bg-brand-100 px-1 rounded">minh / 1234</code> •
+          <code class="bg-brand-100 px-1 rounded">bome / 1234</code> •
+          <code class="bg-brand-100 px-1 rounded">admin / 1234</code>
+        </p>
+      </div>
+
+      <p class="text-center text-xs text-brand-500 mt-4">
+        Phiên bản 2.0 • <span id="connection-status">Đang kiểm tra kết nối...</span>
+      </p>
+    </div>
+  </section>
+</div>
+
+<div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 items-center"></div>
+
 <script>
-// Web Audio API
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-function playTone(freq, dur, type="sine") {
+// ============================================
+// CẤU HÌNH API
+// ============================================
+const API_URL = 'https://script.google.com/macros/s/AKfycbztO88kMMXwKGgBkLfxZ-HiyCUxbXZYc1A-lfnOjJKV3DDXMFPEUpKOVdycJKoNyvrL/exec';
+const API_KEY = 'vuihoc_family_2026';
+
+// ============================================
+// API CLIENT
+// ============================================
+async function apiCall(action, payload = {}, method = 'GET') {
   try {
-    const osc = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    osc.type = type; osc.frequency.value = freq;
-    osc.connect(g); g.connect(audioCtx.destination);
-    osc.start();
-    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
-    osc.stop(audioCtx.currentTime + dur);
-  } catch(e) {}
-}
-function sfxCorrect() { playTone(587, 0.1); setTimeout(() => playTone(880, 0.2), 90); }
-function sfxWrong() { playTone(140, 0.3, "sawtooth"); }
-function sfxWin() { [523, 659, 783, 1046].forEach((f, i) => setTimeout(() => playTone(f, 0.2), i * 110)); }
+    let url = API_URL;
+    const options = { method };
 
-// Quản lý người dùng & LocalStorage
-let currentUser = null;
-let currentSubject = 'math';
-let currentCategory = 'vol1';
+    if (method === 'GET') {
+      const params = new URLSearchParams({ key: API_KEY, action, ...payload });
+      url += '?' + params.toString();
+      options.redirect = 'follow';
+    } else {
+      options.headers = { 'Content-Type': 'text/plain;charset=utf-8' };
+      options.body = JSON.stringify({ key: API_KEY, action, payload });
+      options.redirect = 'follow';
+    }
 
-function handleLogin() {
-  const uName = document.getElementById('input-username').value.trim();
-  const pin = document.getElementById('input-pin').value.trim();
-  if (!uName || !pin) return alert("Vui lòng nhập đầy đủ tên và mã PIN!");
-
-  const raw = localStorage.getItem(`super_arena_study_${uName}`);
-  if (raw) {
-    const data = JSON.parse(raw);
-    if (data.pin !== pin) return alert("Mã PIN không khớp với tài khoản này!");
-    currentUser = data;
-    if (!currentUser.history) currentUser.history = [];
-  } else {
-    currentUser = { username: uName, pin: pin, cumScore: 0, history: [] };
-    saveUser();
-  }
-  refreshUserHeader();
-  renderHistoryTable();
-  document.getElementById('screen-auth').classList.remove('active');
-  document.getElementById('screen-portal').classList.add('active');
-}
-
-function saveUser() {
-  if (currentUser) {
-    localStorage.setItem(`super_arena_study_${currentUser.username}`, JSON.stringify(currentUser));
+    const res = await fetch(url, options);
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error || 'API error');
+    return json.data;
+  } catch (err) {
+    console.error('[API]', action, err);
+    throw err;
   }
 }
 
-function refreshUserHeader() {
-  document.getElementById('portal-user-tag').innerText = currentUser.username;
-  document.getElementById('portal-cum-tag').innerText = currentUser.cumScore;
-  document.getElementById('user-name-tag').innerText = currentUser.username;
-  document.getElementById('cum-score-tag').innerText = currentUser.cumScore;
-}
-
-function handleLogout() {
-  currentUser = null;
-  document.getElementById('screen-topics').classList.remove('active');
-  document.getElementById('screen-portal').classList.remove('active');
-  document.getElementById('screen-auth').classList.add('active');
-}
-
-function returnToPortal() {
-  refreshUserHeader();
-  renderHistoryTable();
-  document.getElementById('screen-topics').classList.remove('active');
-  document.getElementById('screen-portal').classList.add('active');
-}
-
-function renderHistoryTable() {
-  const tbody = document.querySelector('#history-log-table tbody');
-  tbody.innerHTML = '';
-  if (!currentUser.history || currentUser.history.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8;">Chưa có kết quả làm bài nào. Hãy bắt đầu chọn bài để luyện tập!</td></tr>`;
-    return;
-  }
-  currentUser.history.slice().reverse().forEach(h => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${h.time}</td><td>${h.topic}</td><td style="color:#10b981; font-weight:bold;">+${h.score}đ</td><td style="color:${h.win ? '#10b981' : '#ef4444'}; font-weight:bold;">${h.win ? 'Đạt 🏆' : 'Chưa đạt ⚠️'}</td>`;
-    tbody.appendChild(tr);
-  });
-}
-
-function clearHistoryLog() {
-  if (confirm("Bạn có chắc chắn muốn xóa toàn bộ lịch sử của tài khoản này?")) {
-    currentUser.history = [];
-    saveUser();
-    renderHistoryTable();
-  }
-}
-
-// Chuyển menu theo môn
-function openSubjectMenu(subject) {
-  currentSubject = subject;
-  document.getElementById('screen-portal').classList.remove('active');
-  document.getElementById('screen-topics').classList.add('active');
-
-  const tabsWrapper = document.getElementById('tabs-wrapper');
-  tabsWrapper.innerHTML = '';
-
-  if (subject === 'math') {
-    document.getElementById('topics-title-header').innerText = "📐 MÔN TOÁN HỌC LỚP 4";
-    document.getElementById('topics-desc-header').innerText = "Đua xe tính giờ: Bốc ngẫu nhiên 10 câu hỏi để thi đấu:";
-    currentCategory = 'vol1';
-    tabsWrapper.innerHTML = `
-      <button class="tab-btn active-tab" id="tab-math-v1" onclick="switchCategory('vol1')">📘 SGK TẬP 1</button>
-      <button class="tab-btn" id="tab-math-v2" onclick="switchCategory('vol2')">📙 SGK TẬP 2</button>
-      <button class="tab-btn tab-gold" id="tab-math-vio" onclick="switchCategory('vio')">🏆 VIOLYMPIC TOÁN 4</button>
-    `;
-  } else {
-    document.getElementById('topics-title-header').innerText = "🌍 TIẾNG ANH 4 - GLOBAL SUCCESS";
-    document.getElementById('topics-desc-header').innerText = "Theo từng Unit & Lesson - Chọn chính xác bài tập để luyện (Không đảo câu):";
-    currentCategory = 'unit7';
-    tabsWrapper.innerHTML = `
-      <button class="tab-btn active-tab" id="tab-eng-u7" onclick="switchCategory('unit7')">📖 UNIT 7: OUR TIMETABLES</button>
-    `;
-  }
-  renderTopicCards();
-}
-
-function switchCategory(cat) {
-  currentCategory = cat;
-  if (currentSubject === 'math') {
-    document.getElementById('tab-math-v1').classList.toggle('active-tab', cat === 'vol1');
-    document.getElementById('tab-math-v2').classList.toggle('active-tab', cat === 'vol2');
-    document.getElementById('tab-math-vio').classList.toggle('active-tab', cat === 'vio');
-  } else {
-    document.getElementById('tab-eng-u7').classList.toggle('active-tab', cat === 'unit7');
-  }
-  renderTopicCards();
-}
-
-// =========================================================================
-// CƠ SỞ DỮ LIỆU: TIẾNG ANH PHÂN CHIA CHUẨN UNIT -> LESSON -> BÀI TẬP SGK
-// =========================================================================
-const MASTER_DATABASE = [
-  // --- TIẾNG ANH: UNIT 7 - OUR TIMETABLES (BÁM SÁT TỪNG HOẠT ĐỘNG SGK TRANG 50, 52, 54) ---
-  {
-    subject: 'english', cat: 'unit7', id: 'eng_u7_l1_act1',
-    title: 'Unit 7 - Lesson 1: Act 1. Look, listen and repeat (Trang 50)',
-    lesson: 'Lesson 1', lang: 'en-US', isFixedOrder: true,
-    pool: [
-      { q: "Mẹ hỏi: 'What time do you have class today, Minh?' Minh trả lời:", opts: ["At eight, Mum.", "At seven, Mum.", "At nine, Mum.", "At ten, Mum."], a: 0 },
-      { q: "Mẹ hỏi: 'What subjects do you have today?' Minh trả lời:", opts: ["I have English and maths.", "I have music and art.", "I have science.", "I have Vietnamese."], a: 0 },
-      { q: "Trong đoạn hội thoại trên, Minh có môn học nào vào hôm nay?", opts: ["English and maths", "Vietnamese and art", "Science and PE", "Music and history"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'unit7', id: 'eng_u7_l1_act2',
-    title: 'Unit 7 - Lesson 1: Act 2. Listen, point and say (Trang 50)',
-    lesson: 'Lesson 1', lang: 'en-US', isFixedOrder: true,
-    pool: [
-      { q: "Q: What subjects do you have today? - A: I have ______ . (Sách Tiếng Việt 4)", opts: ["Vietnamese", "English", "maths", "science"], a: 0 },
-      { q: "Q: What subjects do you have today? - A: I have ______ . (Sách Tiếng Anh 4)", opts: ["English", "Vietnamese", "science", "maths"], a: 0 },
-      { q: "Q: What subjects do you have today? - A: I have ______ . (Sách Toán 4)", opts: ["maths", "science", "English", "Vietnamese"], a: 0 },
-      { q: "Q: What subjects do you have today? - A: I have ______ . (Sách Khoa học 4)", opts: ["science", "Vietnamese", "English", "maths"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'unit7', id: 'eng_u7_l1_act3',
-    title: "Unit 7 - Lesson 1: Act 3. Let's talk (Trang 50)",
-    lesson: 'Lesson 1', lang: 'en-US', isFixedOrder: true,
-    pool: [
-      { q: "Hoàn thiện mẫu câu hỏi trong phần Let's talk: 'What ______ do you have today?'", opts: ["subjects", "time", "clocks", "lessons"], a: 0 },
-      { q: "Trả lời câu hỏi theo mẫu: 'I have ______ and science.'", opts: ["maths", "on", "at", "time"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'unit7', id: 'eng_u7_l2_act1',
-    title: 'Unit 7 - Lesson 2: Act 1. Look, listen and repeat (Trang 52)',
-    lesson: 'Lesson 2', lang: 'en-US', isFixedOrder: true,
-    pool: [
-      { q: "Bạn nữ hỏi: 'What subjects do you have today?' Bạn nam trả lời:", opts: ["I have Vietnamese and science.", "I have maths and English.", "I have music.", "I have art."], a: 0 },
-      { q: "Bạn nam hỏi: 'When do you have maths?' Bạn nữ trả lời:", opts: ["I have it on Mondays and Fridays.", "I have it on Tuesday.", "I have it at eight.", "I have it today."], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'unit7', id: 'eng_u7_l2_act2',
-    title: 'Unit 7 - Lesson 2: Act 2. Listen, point and say (Trang 52)',
-    lesson: 'Lesson 2', lang: 'en-US', isFixedOrder: true,
-    pool: [
-      { q: "Môn Mỹ thuật (Lịch ghi: 16 Monday): 'When do you have art?' - 'I have it on ______ .'", opts: ["Mondays", "Wednesdays", "Tuesdays", "Fridays"], a: 0 },
-      { q: "Môn Âm nhạc (Lịch ghi: 18 Wednesday): 'When do you have music?' - 'I have it on ______ .'", opts: ["Wednesdays", "Mondays", "Thursdays", "Fridays"], a: 0 },
-      { q: "Môn Lịch sử & Địa lí (Lịch ghi: 17 Tuesday, 20 Friday): 'When do you have history and geography?'", opts: ["I have it on Tuesdays and Fridays.", "I have it on Mondays.", "I have it on Wednesdays.", "I have it on Thursdays."], a: 0 },
-      { q: "Môn Tiếng Anh (Lịch ghi: 16, 17, 19, 20): 'When do you have English?'", opts: ["On Mondays, Tuesdays, Thursdays and Fridays.", "On Saturdays and Sundays.", "Only on Monday.", "On Wednesday."], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'unit7', id: 'eng_u7_l2_act3',
-    title: "Unit 7 - Lesson 2: Act 3. Let's talk & Timetable (Trang 52)",
-    lesson: 'Lesson 2', lang: 'en-US', isFixedOrder: true,
-    pool: [
-      { q: "Theo bảng thời khóa biểu trang 52, vào ngày thứ Hai (Monday) có môn nào?", opts: ["Vietnamese, maths, science, English", "art, music", "history and geography", "PE, IT"], a: 0 },
-      { q: "Theo bảng thời khóa biểu trang 52, học sinh có môn Mỹ thuật (art) vào thứ mấy?", opts: ["Thursday", "Monday", "Tuesday", "Wednesday"], a: 0 },
-      { q: "Theo bảng thời khóa biểu trang 52, học sinh có môn Âm nhạc (music) vào thứ mấy?", opts: ["Tuesday", "Monday", "Thursday", "Friday"], a: 0 }
-    ]
-  },
-  {
-    subject: 'english', cat: 'unit7', id: 'eng_u7_l3_act12',
-    title: 'Unit 7 - Lesson 3: Act 1 & 2. Phonics & Listen and circle (Trang 54)',
-    lesson: 'Lesson 3', lang: 'en-US', isFixedOrder: true,
-    pool: [
-      { q: "Âm 'se' trong từ nào? 'When do you have ______ ?' (Trang 54)", opts: ["Vietnamese", "science", "maths", "English"], a: 0 },
-      { q: "Âm 'ce' trong từ nào? 'We have ______ today.' (Trang 54)", opts: ["science", "Vietnamese", "art", "music"], a: 0 },
-      { q: "Listen and circle (Bài 2.1 trang 54): 'When do you have ______ ?'", opts: ["science", "Vietnamese", "maths", "English"], a: 0 },
-      { q: "Listen and circle (Bài 2.2 trang 54): 'They have ______ today.'", opts: ["maths", "science", "Vietnamese", "history"], a: 0 }
-    ]
-  },
-
-  // --- MÔN TOÁN: VIOLYMPIC TOÁN 4 (GIỮ NGUYÊN LUẬT ĐUA BOT & ĐẢO CÂU) ---
-  {
-    subject: 'math', cat: 'vio', id: 'vio_tap1', title: '🏆 ViOlympic: Cấu tạo số, Dãy số & TBC (Đảo 10 câu)',
-    lang: 'vi-VN', isFixedOrder: false,
-    pool: [
-      { q: "Bài ViO4.01: Khi viết chữ số 5 vào bên trái một số có ba chữ số thì số mới hơn số cũ bao nhiêu đơn vị?", opts: ["500 đơn vị", "5 000 đơn vị", "50 đơn vị", "5 đơn vị"], a: 0 },
-      { q: "Bài ViO4.02: Tìm số có ba chữ số có tổng các chữ số bằng 26, khi đổi chỗ hàng trăm và hàng đơn vị cho nhau thì số đó không đổi:", opts: ["989", "899", "998", "889"], a: 0 },
-      { q: "Bài ViO4.73: Hai số có tích bằng 12878. Nếu thừa số thứ nhất tăng thêm 63 đơn vị thì tích mới bằng 21509. Tổng hai số là:", opts: ["228", "230", "225", "210"], a: 0 },
-      { q: "Bài ViO4.74: Phân xưởng A có 75 người dệt được 192 áo/người. Phân xưởng B có 120 người dệt bằng số áo xưởng A. Trung bình người xưởng B dệt được:", opts: ["120 cái áo", "125 cái áo", "110 cái áo", "130 cái áo"], a: 0 },
-      { q: "Bài ViO4.75: Vòi nước chảy vào bể: 45 phút đầu chảy 84 l/phút, 45 phút sau chảy 100 l/phút. Trung bình mỗi phút vòi chảy được:", opts: ["92 lít nước", "90 lít", "95 lít", "88 lít"], a: 0 },
-      { q: "ViOlympic: Khi viết thêm chữ số 2 vào bên trái của một số có năm chữ số thì số đó tăng thêm bao nhiêu đơn vị?", opts: ["200 000 đơn vị", "20 000 đơn vị", "2 000 000 đơn vị", "20 đơn vị"], a: 0 },
-      { q: "ViOlympic: Dãy số tự nhiên liên tiếp từ 325 đến 796 có tất cả bao nhiêu số lẻ?", opts: ["236 số lẻ", "235 số lẻ", "472 số lẻ", "237 số lẻ"], a: 0 },
-      { q: "ViOlympic: Khi viết thêm chữ số 3 vào bên phải số 8723 thì số này tăng thêm bao nhiêu đơn vị?", opts: ["78 510 đơn vị", "30 000 đơn vị", "87 233 đơn vị", "78 500 đơn vị"], a: 0 },
-      { q: "ViOlympic: Dãy số tự nhiên liên tiếp từ 324 đến 987 có tất cả bao nhiêu số chẵn?", opts: ["332 số chẵn", "331 số chẵn", "664 số chẵn", "333 số chẵn"], a: 0 },
-      { q: "ViOlympic: Khi xóa đi chữ số 7 ở hàng đơn vị của một số tự nhiên thì số đó thay đổi thế nào?", opts: ["Giảm 10 lần và 7 đơn vị", "Giảm 70 đơn vị", "Giảm 10 lần", "Giảm 7 đơn vị"], a: 0 },
-      { q: "ViOlympic: Viết thêm chữ số 0 vào bên phải một số tự nhiên thì số đó:", opts: ["Tăng gấp 10 lần", "Tăng 10 đơn vị", "Tăng 100 lần", "Không đổi"], a: 0 },
-      { q: "ViOlympic: Dãy số tự nhiên từ 1 đến 100 có tất cả bao nhiêu chữ số?", opts: ["192 chữ số", "189 chữ số", "100 chữ số", "190 chữ số"], a: 0 },
-      { q: "ViOlympic: Tìm số chẵn lớn nhất có 4 chữ số khác nhau:", opts: ["9 876", "9 998", "9 874", "9 864"], a: 0 },
-      { q: "ViOlympic: Tìm số lẻ bé nhất có 5 chữ số khác nhau:", opts: ["10 235", "10 001", "10 237", "12 345"], a: 0 },
-      { q: "ViOlympic: Dãy số chẵn từ 2 đến 200 có tất cả bao nhiêu số hạng?", opts: ["100 số", "99 số", "101 số", "198 số"], a: 0 }
-    ]
-  },
-
-  // --- MÔN TOÁN: SGK TẬP 1 & TẬP 2 ---
-  {
-    subject: 'math', cat: 'vol1', id: 'math_t1_all', title: 'Toán 4 Tập 1: Ôn tập, Góc, Lớp triệu & Hình học',
-    lang: 'vi-VN', isFixedOrder: false,
-    pool: [
-      { q: "Tính nhẩm: 8 000 + 7 000 = ?", opts: ["15 000", "14 000", "16 000", "150 000"], a: 0 },
-      { q: "Kim đồng hồ lúc 3 giờ đúng tạo thành góc gì? (SGK trang 113)", opts: ["Góc vuông", "Góc nhọn", "Góc tù", "Góc bẹt"], a: 0 },
-      { q: "Số liền sau của 999 999 999 là số nào?", opts: ["1 000 000 000", "999 999 990", "1 000 000 001", "100 000 000"], a: 0 },
-      { q: "1 tạ bằng bao nhiêu ki-lô-gam (kg)?", opts: ["100 kg", "10 kg", "1 000 kg", "10 000 kg"], a: 0 },
-      { q: "1 tấn bằng bao nhiêu tạ?", opts: ["10 tạ", "100 tạ", "1 tạ", "1 000 tạ"], a: 0 },
-      { q: "Hình bình hành ABCD có đặc điểm gì nổi bật?", opts: ["Hai cặp cạnh đối diện song song và bằng nhau", "Có 4 cạnh bằng nhau", "Có 4 góc vuông", "Không có cạnh nào song song"], a: 0 },
-      { q: "Một thế kỉ bằng bao nhiêu năm? (SGK trang 66)", opts: ["100 năm", "10 năm", "50 năm", "1 000 năm"], a: 0 },
-      { q: "Kim đồng hồ lúc 6 giờ đúng tạo thành góc gì?", opts: ["Góc bẹt", "Góc vuông", "Góc nhọn", "Góc tù"], a: 0 },
-      { q: "Tính nhẩm đặt tính: 83 738 + 12 533 = ?", opts: ["96 271", "95 271", "96 171", "97 271"], a: 0 },
-      { q: "Tổng của 2 số là 100, hiệu là 20. Số lớn là:", opts: ["60", "40", "80", "70"], a: 0 },
-      { q: "Đoạn thẳng MN song song với đoạn thẳng PQ thì chúng:", opts: ["Không bao giờ cắt nhau", "Cắt nhau tạo góc vuông", "Cắt nhau tạo góc nhọn", "Trùng khớp nhau"], a: 0 },
-      { q: "Chu vi mảnh đất hình vuông có cạnh 25 m là:", opts: ["100 m", "50 m", "625 m", "125 m"], a: 0 }
-    ]
-  },
-  {
-    subject: 'math', cat: 'vol2', id: 'math_t2_all', title: 'Toán 4 Tập 2: Nhân chia, Phân số & Thống kê',
-    lang: 'vi-VN', isFixedOrder: false,
-    pool: [
-      { q: "Tính chất phân phối: a x (b + c) = ?", opts: ["a x b + a x c", "a x b x c", "a + b + c", "(a + b) x c"], a: 0 },
-      { q: "Tính thuận tiện: 67 x 3 + 67 x 7 = 67 x (3 + 7) = ?", opts: ["670", "67", "6 700", "607"], a: 0 },
-      { q: "Tính nhẩm: 48 256 x 10 = ? (SGK trang 33)", opts: ["482 560", "48 256", "482 500", "4 825 600"], a: 0 },
-      { q: "Tính nhẩm: 625 400 : 100 = ? (SGK trang 33)", opts: ["6 254", "62 540", "625,4", "625"], a: 0 },
-      { q: "Rút gọn phân số 6/9 về tối giản ta được:", opts: ["2/3", "3/2", "1/3", "3/9"], a: 0 },
-      { q: "Rút gọn phân số 8/20 về tối giản ta được:", opts: ["2/5", "4/10", "1/5", "4/5"], a: 0 },
-      { q: "Tính: 7/8 - 1/4 = 7/8 - 2/8 = ? (SGK trang 81)", opts: ["5/8", "6/4", "6/8", "1/2"], a: 0 },
-      { q: "Tính: 1/2 - 1/6 = 3/6 - 1/6 = ? (SGK trang 82)", opts: ["2/6 (= 1/3)", "0/4", "1/4", "2/3"], a: 0 },
-      { q: "Tính: 2/3 x 4/5 = ?", opts: ["8/15", "6/8", "6/15", "10/12"], a: 0 },
-      { q: "Tính: 5/8 : 3/4 = 5/8 x 4/3 = ?", opts: ["5/6", "20/24", "15/32", "5/8"], a: 0 },
-      { q: "Tìm 2/3 của 18 quả cam là bao nhiêu quả cam?", opts: ["12 quả", "6 quả", "9 quả", "15 quả"], a: 0 },
-      { q: "Hình bình hành có đáy 18 cm, chiều cao 10 cm. Diện tích là:", opts: ["180 cm²", "90 cm²", "56 cm²", "28 cm²"], a: 0 }
-    ]
-  }
+// ============================================
+// FALLBACK LOCAL (khi mất mạng)
+// ============================================
+const FALLBACK_QUESTIONS = [
+  { id: 'q001', subject: 'toan', question: 'Khi viết chữ số 5 vào bên trái một số có ba chữ số thì số mới hơn số cũ bao nhiêu đơn vị?', options: ['500', '5000', '50000', '500000'], correct: 1 },
+  { id: 'q002', subject: 'toan', question: 'Số bé nhất có năm chữ số là số nào?', options: ['10000', '11111', '12345', '99999'], correct: 0 },
+  { id: 'q003', subject: 'toan', question: 'Số lớn nhất có sáu chữ số là số nào?', options: ['100000', '999999', '987654', '999998'], correct: 1 },
+  { id: 'q004', subject: 'toan', question: 'Số lớn nhất có sáu chữ số khác nhau là số nào?', options: ['987654', '999999', '987655', '987650'], correct: 0 },
+  { id: 'q005', subject: 'toan', question: 'Số nhỏ nhất có năm chữ số khác nhau là số nào?', options: ['10234', '12345', '10000', '11111'], correct: 0 },
+  { id: 'q006', subject: 'toan', question: 'Dãy số tự nhiên liên tiếp từ 325 đến 796 có tất cả bao nhiêu số lẻ?', options: ['236', '235', '237', '234'], correct: 0 },
+  { id: 'q007', subject: 'toan', question: 'Dãy số tự nhiên liên tiếp từ 324 đến 987 có tất cả bao nhiêu số chẵn?', options: ['331', '332', '333', '334'], correct: 1 },
+  { id: 'q008', subject: 'toan', question: 'Tìm trung bình cộng của các số lẻ có hai chữ số lớn hơn 79.', options: ['89', '90', '91', '92'], correct: 0 },
+  { id: 'q009', subject: 'toan', question: 'Trung bình cộng của ba số là 25, trung bình cộng của số thứ nhất và số thứ hai là 22. Tìm số thứ ba.', options: ['28', '29', '30', '31'], correct: 2 },
+  { id: 'q010', subject: 'toan', question: 'Tổng của hai số tự nhiên là 346. Biết số bé là số có hai chữ số và khi viết thêm chữ số 2 vào trước số bé thì được số lớn. Tìm hai số đó.', options: ['123 và 223', '146 và 200', '150 và 196', '173 và 173'], correct: 0 },
 ];
 
-function shuffleArray(arr) {
-  const array = [...arr];
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
+const FALLBACK_USERS = [
+  { id: 'a001', username: 'admin', password: '1234', role: 'admin',   display_name: 'Quản trị viên', total_score: 0 },
+  { id: 'u001', username: 'minh',  password: '1234', role: 'student', display_name: 'Bé Minh',        total_score: 0 },
+  { id: 'u002', username: 'lan',   password: '1234', role: 'student', display_name: 'Bé Lan',         total_score: 0 },
+  { id: 'p001', username: 'bome',  password: '1234', role: 'parent',  display_name: 'Bố Mẹ',          total_score: 0 },
+];
+
+function shuffleOptions(q) {
+  const indices = [0, 1, 2, 3].sort(() => Math.random() - 0.5);
+  const newOptions = indices.map((i) => q.options[i]);
+  const newCorrect = indices.indexOf(q.correct);
+  return { ...q, options: newOptions, correct: newCorrect };
 }
 
-// Chuẩn bị câu hỏi: Toán thì đảo ngẫu nhiên; Tiếng Anh giữ nguyên thứ tự bài tập SGK
-function prepareQuestions(topic) {
-  if (topic.isFixedOrder) {
-    return topic.pool.map(item => ({
-      q: item.q,
-      opts: item.opts,
-      correct: item.a
-    }));
-  } else {
-    const shuffledPool = shuffleArray(topic.pool);
-    const selected = shuffledPool.slice(0, Math.min(10, shuffledPool.length));
-    return selected.map(item => {
-      const originalAnswerText = item.opts[item.a];
-      const shuffledOpts = shuffleArray(item.opts);
-      const newCorrectIdx = shuffledOpts.indexOf(originalAnswerText);
-      return { q: item.q, opts: shuffledOpts, correct: newCorrectIdx };
+function getLocalQuestions(subject, n) {
+  const pool = FALLBACK_QUESTIONS.filter((q) => q.subject === subject);
+  return [...pool].sort(() => Math.random() - 0.5).slice(0, n).map(shuffleOptions);
+}
+
+// ============================================
+// UI HELPERS
+// ============================================
+function showToast(message, type = 'info', duration = 2500) {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+  const colors = {
+    success: 'bg-mint text-white',
+    error: 'bg-coral text-white',
+    warning: 'bg-sunny text-brand-900',
+    info: 'bg-brand-500 text-white',
+  };
+  const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+  const toast = document.createElement('div');
+  toast.className = `toast ${colors[type]} font-bold px-5 py-3 rounded-2xl shadow-2xl text-sm max-w-xs text-center`;
+  toast.textContent = `${icons[type]} ${message}`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.transition = 'opacity 0.3s, transform 0.3s';
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(-20px)';
+    setTimeout(() => toast.remove(), 300);
+  }, duration);
+}
+
+function playSound(type = 'click') {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+    const playTone = (freq, start, duration, wave = 'sine', volume = 0.15) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = wave;
+      osc.frequency.setValueAtTime(freq, now + start);
+      gain.gain.setValueAtTime(volume, now + start);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + start + duration);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now + start);
+      osc.stop(now + start + duration);
+    };
+    switch (type) {
+      case 'click': playTone(600, 0, 0.08, 'sine', 0.08); break;
+      case 'tick':  playTone(1000, 0, 0.03, 'square', 0.05); break;
+      case 'win':
+        [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => playTone(f, i * 0.12, 0.2, 'sine', 0.18));
+        break;
+    }
+    setTimeout(() => ctx.close(), 2000);
+  } catch (e) { console.warn('[Sound]', e); }
+}
+
+function playCorrectSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+    const playNote = (freq, start, duration, volume = 0.15) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + start);
+      gain.gain.setValueAtTime(volume, now + start);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + start + duration);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(now + start); osc.stop(now + start + duration);
+    };
+    playNote(1046.5, 0, 0.15, 0.2);
+    playNote(1318.5, 0.12, 0.25, 0.2);
+    playNote(2093, 0, 0.1, 0.08);
+    playNote(2637, 0.12, 0.15, 0.08);
+    setTimeout(() => ctx.close(), 1500);
+  } catch (e) { console.warn('[Sound]', e); }
+}
+
+function playWrongSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(400, now);
+    osc.frequency.exponentialRampToValueAtTime(120, now + 0.45);
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1200, now);
+    filter.frequency.exponentialRampToValueAtTime(400, now + 0.45);
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.setValueAtTime(0.18, now + 0.35);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+    osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+    osc.start(now); osc.stop(now + 0.5);
+    setTimeout(() => ctx.close(), 1000);
+  } catch (e) { console.warn('[Sound]', e); }
+}
+
+function fireConfetti(count = 30) {
+  const colors = ['#FCD34D', '#FB7185', '#34D399', '#38BDF8', '#A78BFA', '#F472B6'];
+  for (let i = 0; i < count; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.left = Math.random() * 100 + 'vw';
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+    confetti.style.animationDuration = 2 + Math.random() * 1.5 + 's';
+    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+    document.body.appendChild(confetti);
+    setTimeout(() => confetti.remove(), 4000);
+  }
+}
+
+function showConfirm(title, message, okText = 'Đồng ý', cancelText = 'Hủy') {
+  return new Promise((resolve) => {
+    const overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4';
+    overlay.style.animation = 'screenFadeIn 0.2s ease-out';
+    overlay.innerHTML = `
+      <div class="bg-white rounded-3xl shadow-2xl p-6 max-w-sm w-full text-center animate-pop">
+        <div class="text-5xl mb-3">🤔</div>
+        <h3 class="font-baloo text-2xl font-bold text-brand-700 mb-2">${title}</h3>
+        <p class="text-brand-600 mb-6">${message}</p>
+        <div class="grid grid-cols-2 gap-3">
+          <button id="confirm-cancel" class="bg-gray-200 text-gray-700 font-bold py-3 rounded-2xl hover:bg-gray-300 transition">${cancelText}</button>
+          <button id="confirm-ok" class="bg-gradient-to-r from-brand-500 to-brand-700 text-white font-bold py-3 rounded-2xl hover:scale-105 transition">${okText}</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    const cleanup = (result) => {
+      overlay.style.opacity = '0';
+      overlay.style.transition = 'opacity 0.2s';
+      setTimeout(() => overlay.remove(), 200);
+      resolve(result);
+    };
+    overlay.querySelector('#confirm-ok').addEventListener('click', () => { playSound('click'); cleanup(true); });
+    overlay.querySelector('#confirm-cancel').addEventListener('click', () => { playSound('click'); cleanup(false); });
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) cleanup(false); });
+  });
+}
+
+// ============================================
+// APP STATE
+// ============================================
+const state = {
+  currentUser: null,
+  selectedRole: 'student',
+  currentRound: null,
+  isOnline: false,
+  subjects: [],
+};
+
+// ============================================
+// KHỞI TẠO
+// ============================================
+document.addEventListener('DOMContentLoaded', () => {
+  initLoginScreen();
+  checkAPIConnection();
+});
+
+async function checkAPIConnection() {
+  const statusEl = document.getElementById('connection-status');
+  try {
+    const data = await apiCall('ping');
+    state.isOnline = true;
+    if (statusEl) statusEl.innerHTML = '🟢 Đã kết nối Google Sheets';
+    console.log('[API] Ping OK:', data);
+  } catch (err) {
+    state.isOnline = false;
+    if (statusEl) statusEl.innerHTML = '🟡 Offline (dùng dữ liệu demo)';
+    console.warn('[API] Không kết nối được:', err);
+  }
+}
+
+// ============================================
+// LOGIN
+// ============================================
+function initLoginScreen() {
+  const roleBtns = document.querySelectorAll('.role-btn');
+  const roleInput = document.getElementById('role-input');
+  const togglePwd = document.getElementById('toggle-password');
+  const pwdInput = document.getElementById('password-input');
+  const loginBtn = document.getElementById('login-btn');
+  const loginBtnText = document.getElementById('login-btn-text');
+  const errorBox = document.getElementById('login-error');
+  const errorText = document.getElementById('login-error-text');
+
+  roleBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      playSound('click');
+      roleBtns.forEach((b) => {
+        b.classList.remove('role-active', 'bg-brand-500', 'text-white', 'border-brand-500');
+        b.classList.add('bg-white', 'text-brand-600', 'border-brand-200');
+      });
+      btn.classList.add('role-active', 'bg-brand-500', 'text-white', 'border-brand-500');
+      btn.classList.remove('bg-white', 'text-brand-600', 'border-brand-200');
+      state.selectedRole = btn.dataset.role;
+      roleInput.value = btn.dataset.role;
+      errorBox.classList.add('hidden');
+    });
+  });
+
+  togglePwd.addEventListener('click', () => {
+    playSound('click');
+    const isPwd = pwdInput.type === 'password';
+    pwdInput.type = isPwd ? 'text' : 'password';
+    togglePwd.textContent = isPwd ? '🙈' : '👁️';
+  });
+
+  loginBtn.addEventListener('click', handleLogin);
+  [document.getElementById('username-input'), pwdInput].forEach((el) => {
+    el.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleLogin(); });
+  });
+
+  function showError(msg) {
+    errorText.textContent = msg;
+    errorBox.classList.remove('hidden');
+  }
+
+  async function handleLogin() {
+    const username = document.getElementById('username-input').value.trim().toLowerCase();
+    const password = pwdInput.value.trim();
+    const role = state.selectedRole;
+    errorBox.classList.add('hidden');
+
+    if (!username || !password) {
+      showError('Vui lòng nhập đầy đủ tên và mật khẩu!');
+      playSound('wrong');
+      return;
+    }
+
+    loginBtn.disabled = true;
+    loginBtnText.innerHTML = '<div class="spinner" style="width:24px;height:24px;border-width:3px;"></div>';
+
+    let user = null;
+    try {
+      if (state.isOnline) {
+        const data = await apiCall('login', { username, password });
+        if (data.user) user = data.user;
+      }
+    } catch (err) {
+      console.warn('[Login] API lỗi, dùng fallback:', err);
+    }
+
+    // Fallback local
+    if (!user) {
+      const localUser = FALLBACK_USERS.find(
+        (u) => u.username === username && u.password === password
+      );
+      if (localUser) {
+        const { password: _, ...rest } = localUser;
+        user = rest;
+      }
+    }
+
+    loginBtn.disabled = false;
+    loginBtnText.textContent = '🚀 Vào chơi!';
+
+    if (!user) {
+      showError('Sai tên hoặc mật khẩu!');
+      playSound('wrong');
+      return;
+    }
+
+    // Check role: admin có thể vào mọi role
+    if (user.role !== 'admin' && user.role !== role) {
+      showError(`Tài khoản này là "${user.role}", không phải "${role}"!`);
+      playSound('wrong');
+      return;
+    }
+
+    playSound('win');
+    state.currentUser = user;
+    showToast(`Chào ${user.display_name || user.displayName}! 🎉`, 'success');
+
+    setTimeout(() => {
+      if (user.role === 'student') showStudentHome();
+      else if (user.role === 'parent') showParentHome();
+      else showAdminHome();
+    }, 500);
+  }
+}
+
+// ============================================
+// STUDENT HOME
+// ============================================
+async function showStudentHome() {
+  const u = state.currentUser;
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <section class="flex-1 flex items-center justify-center p-4">
+      <div class="max-w-2xl w-full bg-white/90 rounded-3xl shadow-2xl p-6 text-center">
+        <div class="text-7xl mb-4">🎓</div>
+        <h2 class="font-baloo text-3xl font-bold text-brand-700">Chào ${u.display_name || u.displayName}!</h2>
+        <p class="text-brand-500 mt-2 mb-2">Điểm tổng: <span class="font-bold text-sunny">⭐ ${u.total_score || 0}</span></p>
+        <p class="text-brand-500 mb-6 text-sm">${state.isOnline ? '🟢 Đã kết nối' : '🟡 Offline'}</p>
+        <div class="grid grid-cols-1 gap-3">
+          <button onclick="startRound('toan')" class="bg-gradient-to-r from-brand-500 to-brand-700 text-white font-bold py-4 rounded-2xl shadow-lg hover:scale-105 transition">🧮 Chơi Toán</button>
+          <button onclick="showToast('Sẽ có ở Phase 5!', 'info')" class="bg-gray-200 text-gray-500 font-bold py-4 rounded-2xl">🇬🇧 Toán tiếng Anh (sắp có)</button>
+          <button onclick="showToast('Sẽ có ở Phase 5!', 'info')" class="bg-gray-200 text-gray-500 font-bold py-4 rounded-2xl">📚 Tiếng Anh (sắp có)</button>
+          <button onclick="logout()" class="bg-coral text-white font-bold py-3 rounded-2xl mt-4">🚪 Đăng xuất</button>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function showParentHome() {
+  const u = state.currentUser;
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <section class="flex-1 flex items-center justify-center p-4">
+      <div class="max-w-2xl w-full bg-white/90 rounded-3xl shadow-2xl p-6 text-center">
+        <div class="text-7xl mb-4">👨‍👩‍👧</div>
+        <h2 class="font-baloo text-3xl font-bold text-brand-700">Xin chào ${u.display_name || u.displayName}!</h2>
+        <p class="text-brand-500 mt-2 mb-6">Dashboard phụ huynh — Phase 4 🚧</p>
+        <button onclick="logout()" class="bg-coral text-white font-bold py-3 px-8 rounded-2xl">🚪 Đăng xuất</button>
+      </div>
+    </section>
+  `;
+}
+
+function showAdminHome() {
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <section class="flex-1 flex items-center justify-center p-4">
+      <div class="max-w-2xl w-full bg-white/90 rounded-3xl shadow-2xl p-6 text-center">
+        <div class="text-7xl mb-4">🛠️</div>
+        <h2 class="font-baloo text-3xl font-bold text-brand-700">Admin Dashboard</h2>
+        <p class="text-brand-500 mt-2 mb-6">Phase 6 🚧</p>
+        <button onclick="logout()" class="bg-coral text-white font-bold py-3 px-8 rounded-2xl">🚪 Đăng xuất</button>
+      </div>
+    </section>
+  `;
+}
+
+function logout() {
+  playSound('click');
+  state.currentUser = null;
+  state.currentRound = null;
+  showToast('Đã đăng xuất', 'info');
+  setTimeout(() => location.reload(), 500);
+}
+
+// ============================================
+// QUIZ
+// ============================================
+async function startRound(subject = 'toan') {
+  playSound('click');
+
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <section class="flex-1 flex items-center justify-center p-4">
+      <div class="text-center">
+        <div class="spinner"></div>
+        <p class="text-brand-600 font-bold mt-4">Đang tải câu hỏi...</p>
+      </div>
+    </section>
+  `;
+
+  let questions = [];
+  try {
+    if (state.isOnline) {
+      const data = await apiCall('getQuestions', { subject, limit: 10 });
+      questions = (data || []).map((q) => shuffleOptions(q));
+    }
+  } catch (err) {
+    console.warn('[Quiz] API lỗi, dùng local:', err);
+  }
+
+  if (!questions || questions.length === 0) {
+    questions = getLocalQuestions(subject, 10);
+  }
+
+  if (questions.length === 0) {
+    showToast('Chưa có câu hỏi cho môn này!', 'warning');
+    showStudentHome();
+    return;
+  }
+
+  state.currentRound = {
+    subject, questions,
+    answers: new Array(questions.length).fill(null),
+    currentIndex: 0, score: 0,
+    timeLeft: 600, timerId: null, locked: false,
+  };
+  renderQuizScreen();
+  startTimer();
+}
+
+function renderQuizScreen() {
+  const r = state.currentRound;
+  if (!r) return;
+  const q = r.questions[r.currentIndex];
+  const app = document.getElementById('app');
+
+  app.innerHTML = `
+    <section class="flex-1 p-4">
+      <div class="max-w-2xl mx-auto w-full">
+        <div class="bg-white/90 rounded-2xl shadow-lg p-4 mb-4">
+          <div class="flex justify-between items-center mb-2">
+            <span class="font-bold text-brand-700">Câu ${r.currentIndex + 1}/${r.questions.length}</span>
+            <span class="font-bold text-sunny text-lg" id="score-display">⭐ ${r.score} điểm</span>
+            <span id="timer-text" class="font-bold text-brand-700 text-lg">⏱️ 10:00</span>
+          </div>
+          <div class="w-full bg-brand-100 rounded-full h-3 overflow-hidden mb-3">
+            <div id="timer-bar" class="timer-bar h-full bg-gradient-to-r from-mint to-sky" style="width: 100%"></div>
+          </div>
+          <button id="submit-btn" class="w-full bg-coral hover:bg-coral/90 text-white font-bold py-2 rounded-xl text-sm transition">📤 Nộp bài</button>
+        </div>
+
+        <div class="bg-white/90 rounded-3xl shadow-2xl p-6 mb-4">
+          <p class="font-baloo text-xl font-bold text-brand-700 mb-5 leading-relaxed">${q.question}</p>
+          <div class="grid gap-3" id="options-container">
+            ${q.options.map((opt, i) => `
+              <button class="answer-option w-full text-left px-5 py-4 rounded-2xl border-4 border-brand-200 bg-white font-bold text-lg text-brand-700" data-index="${i}">
+                <span class="inline-block w-8 h-8 rounded-full bg-brand-100 text-brand-700 text-center leading-8 mr-3 font-bold">${String.fromCharCode(65 + i)}</span>
+                <span>${opt}</span>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+
+        <div id="feedback-area" class="hidden mb-4"></div>
+      </div>
+    </section>
+  `;
+
+  if (r.answers[r.currentIndex] !== null) revealAnswer(r.answers[r.currentIndex]);
+  bindQuizEvents();
+  updateTimerUI();
+}
+
+function bindQuizEvents() {
+  const r = state.currentRound;
+  const options = document.querySelectorAll('.answer-option');
+  const submitBtn = document.getElementById('submit-btn');
+  if (!r.locked) {
+    options.forEach((btn) => {
+      btn.addEventListener('click', () => handleAnswer(parseInt(btn.dataset.index)));
     });
   }
+  submitBtn.addEventListener('click', confirmSubmit);
 }
 
-// Biến điều khiển phiên làm bài
-let activeTopic = null;
-let currentSessionQuestions = [];
-let curQIdx = 0, roundScore = 0, streak = 0;
-let playerProgress = 4, botProgress = 4;
-let roundHistory = [];
-let totalSecondsLeft = 300;
-let totalGameTimer = null, botInterval = null;
+function handleAnswer(selectedIdx) {
+  const r = state.currentRound;
+  if (r.locked) return;
+  const q = r.questions[r.currentIndex];
+  r.answers[r.currentIndex] = selectedIdx;
+  r.locked = true;
 
-function renderTopicCards() {
-  const box = document.getElementById('topics-list');
-  box.innerHTML = '';
-  const filtered = MASTER_DATABASE.filter(t => t.subject === currentSubject && t.cat === currentCategory);
-  
-  filtered.forEach(topic => {
-    const card = document.createElement('div');
-    card.className = 'topic-card';
-    if (topic.isFixedOrder) {
-      card.innerHTML = `<div><b>${topic.title}</b><br><small style="color:#38bdf8;">Chuẩn bài tập SGK (${topic.pool.length} câu - Đúng thứ tự)</small></div> <span>▶ Làm bài</span>`;
-    } else {
-      card.innerHTML = `<div><b>${topic.title}</b><br><small style="color:#94a3b8;">Đua xe tính giờ (Bốc ngẫu nhiên 10 câu)</small></div> <span>🏁 Vào Đua</span>`;
-    }
-    card.onclick = () => startTask(topic);
-    box.appendChild(card);
-  });
-}
-
-function startTask(topic) {
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  activeTopic = topic;
-  
-  currentSessionQuestions = prepareQuestions(topic);
-  curQIdx = 0; roundScore = 0; streak = 0;
-  playerProgress = 4; botProgress = 4;
-  roundHistory = [];
-  totalSecondsLeft = 300;
-
-  document.getElementById('screen-topics').classList.remove('active');
-  document.getElementById('screen-race').classList.add('active');
-
-  document.getElementById('disp-round-score').innerText = roundScore;
-
-  // Ẩn xe đối thủ nếu là bài học tiếng Anh (để làm bài tập trung không bị áp lực đua bot)
-  const botLane = document.getElementById('bot-lane');
-  if (topic.isFixedOrder) {
-    botLane.style.display = 'none';
+  if (selectedIdx === q.correct) {
+    playCorrectSound();
+    r.score++;
+    fireConfetti(15);
   } else {
-    botLane.style.display = 'flex';
+    playWrongSound();
   }
-  updatePositionsUI();
+  revealAnswer(selectedIdx);
 
-  // Đếm ngược 5 phút
-  clearInterval(totalGameTimer);
-  updateTimerDisplay();
-  totalGameTimer = setInterval(() => {
-    totalSecondsLeft--;
-    updateTimerDisplay();
-    if (totalSecondsLeft <= 0) {
-      clearInterval(totalGameTimer);
-      clearInterval(botInterval);
-      alert("⏱️ ĐÃ HẾT 5 PHÚT!");
-      finishSession(playerProgress >= botProgress ? "BẠN" : "MÁY");
-    }
-  }, 1000);
-
-  // Bot chạy đối kháng với môn Toán
-  clearInterval(botInterval);
-  if (!topic.isFixedOrder) {
-    botInterval = setInterval(() => {
-      botProgress += 0.28;
-      document.getElementById('car-bot').style.left = `${Math.min(botProgress, 88)}%`;
-      if (botProgress >= 88) {
-        clearInterval(botInterval);
-        finishSession("MÁY");
-      }
-    }, 1000);
-  }
-
-  loadQuestionUI();
-}
-
-// NÚT DỪNG BÀI VÀ THOÁT RA MÀN HÌNH GẦN NHẤT
-function abortSessionAndExit() {
-  const confirmExit = confirm("Bạn có chắc chắn muốn dừng làm bài và thoát ra không?\nKết quả bài làm hiện tại sẽ không được lưu.");
-  if (confirmExit) {
-    clearInterval(totalGameTimer);
-    clearInterval(botInterval);
-
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-    }
-
-    document.getElementById('screen-race').classList.remove('active');
-    document.getElementById('screen-topics').classList.add('active');
-    refreshUserHeader();
-    renderTopicCards();
-  }
-}
-
-function updateTimerDisplay() {
-  const m = Math.floor(totalSecondsLeft / 60);
-  const s = totalSecondsLeft % 60;
-  document.getElementById('disp-total-timer').innerText = `⏱️ ${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
-}
-
-function loadQuestionUI() {
-  document.getElementById('disp-progress').innerText = `Câu: ${curQIdx + 1}/${currentSessionQuestions.length}`;
-  document.getElementById('feedback-txt').innerText = '';
-
-  const qData = currentSessionQuestions[curQIdx];
-  document.getElementById('q-title').innerText = `Câu ${curQIdx + 1}: ${qData.q}`;
-
-  const container = document.getElementById('answers-container');
-  container.innerHTML = '';
-  qData.opts.forEach((opt, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'ans-btn';
-    btn.innerText = opt;
-    btn.onclick = () => handleChoice(idx, btn);
-    container.appendChild(btn);
-  });
-
-  readQuestionTTS();
-}
-
-function readQuestionTTS() {
-  const text = currentSessionQuestions[curQIdx].q;
-  const langCode = activeTopic.lang || 'vi-VN';
-
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = langCode;
-    utter.rate = langCode.startsWith('en') ? 0.88 : 0.92;
-
-    const voices = window.speechSynthesis.getVoices();
-    const voice = voices.find(v => v.lang.includes(langCode.substring(0, 2)));
-    if (voice) utter.voice = voice;
-
-    utter.onerror = function() {
-      playFallbackAudio(text, langCode);
-    };
-    window.speechSynthesis.speak(utter);
-  } else {
-    playFallbackAudio(text, langCode);
-  }
-}
-
-function playFallbackAudio(text, langCode) {
-  const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${langCode.substring(0, 2)}&client=tw-ob&q=${encodeURIComponent(text)}`;
-  const audio = new Audio(url);
-  audio.play().catch(e => console.log("Lỗi audio:", e));
-}
-
-function handleChoice(selectedIdx, btnEl) {
-  const qData = currentSessionQuestions[curQIdx];
-  const isRight = (selectedIdx === qData.correct);
-  const fb = document.getElementById('feedback-txt');
-
-  document.querySelectorAll('.ans-btn').forEach(b => b.disabled = true);
-
-  if (isRight) {
-    if (btnEl) btnEl.classList.add('right-ans');
-    streak++;
-    const bonus = streak > 1 ? 5 : 0;
-    roundScore += (10 + bonus);
-    playerProgress += (84 / currentSessionQuestions.length);
-    sfxCorrect();
-    fb.innerHTML = `<span style="color:#10b981;">Chính xác! ${streak > 1 ? '⚡ TĂNG TỐC (+5đ thưởng)' : '🏎️ Rất tốt!'}</span>`;
-  } else {
-    if (btnEl) btnEl.classList.add('wrong-ans');
-    streak = 0;
-    sfxWrong();
-    fb.innerHTML = `<span style="color:#ef4444;">Chưa chính xác! Đáp án đúng: ${qData.opts[qData.correct]}</span>`;
-  }
-
-  roundHistory.push({ q: qData.q, correct: isRight });
-  document.getElementById('disp-round-score').innerText = roundScore;
-  updatePositionsUI();
+  const scoreEl = document.getElementById('score-display');
+  if (scoreEl) scoreEl.textContent = `⭐ ${r.score} điểm`;
 
   setTimeout(() => {
-    curQIdx++;
-    if (curQIdx < currentSessionQuestions.length && playerProgress < 88) {
-      loadQuestionUI();
+    if (r.currentIndex === r.questions.length - 1) {
+      showToast('Đã hết câu! Bấm "Nộp bài" để xem kết quả', 'info', 3000);
     } else {
-      finishSession(playerProgress >= botProgress ? "BẠN" : "MÁY");
+      r.currentIndex++;
+      r.locked = false;
+      renderQuizScreen();
     }
-  }, 1400);
+  }, 1500);
 }
 
-function updatePositionsUI() {
-  document.getElementById('car-player').style.left = `${Math.min(playerProgress, 88)}%`;
-  document.getElementById('car-bot').style.left = `${Math.min(botProgress, 88)}%`;
-}
-
-function finishSession(winner) {
-  clearInterval(totalGameTimer);
-  clearInterval(botInterval);
-
-  currentUser.cumScore += roundScore;
-  const isPass = activeTopic.isFixedOrder ? (roundScore >= currentSessionQuestions.length * 7) : (winner === "BẠN");
-  const now = new Date();
-  const timeStr = `${now.getHours()}:${now.getMinutes() < 10 ? '0' : ''}${now.getMinutes()} - ${now.getDate()}/${now.getMonth() + 1}`;
-  
-  currentUser.history.push({
-    time: timeStr,
-    topic: activeTopic.title.split(':')[0],
-    score: roundScore,
-    win: isPass
+function revealAnswer(selectedIdx) {
+  const r = state.currentRound;
+  const q = r.questions[r.currentIndex];
+  const options = document.querySelectorAll('.answer-option');
+  options.forEach((btn, i) => {
+    btn.classList.add('answer-disabled');
+    if (i === q.correct) btn.classList.add('answer-correct');
+    else if (i === selectedIdx && selectedIdx !== q.correct) btn.classList.add('answer-wrong');
   });
-  saveUser();
 
-  document.getElementById('screen-race').classList.remove('active');
-  document.getElementById('screen-summary').classList.add('active');
+  const feedbackArea = document.getElementById('feedback-area');
+  if (feedbackArea) {
+    feedbackArea.classList.remove('hidden');
+    if (selectedIdx === q.correct) {
+      feedbackArea.innerHTML = `
+        <div class="bg-mint/20 border-4 border-mint rounded-2xl p-4 text-center animate-pop">
+          <p class="font-baloo text-xl font-bold text-mint">🎉 Chính xác! +1 điểm</p>
+        </div>
+      `;
+    } else {
+      feedbackArea.innerHTML = `
+        <div class="bg-coral/20 border-4 border-coral rounded-2xl p-4 text-center animate-pop">
+          <p class="font-baloo text-xl font-bold text-coral">😢 Chưa đúng!</p>
+          <p class="text-brand-700 mt-1 font-bold">Đáp án đúng: <span class="text-mint">${String.fromCharCode(65 + q.correct)}. ${q.options[q.correct]}</span></p>
+        </div>
+      `;
+    }
+  }
+}
 
-  const title = document.getElementById('win-status-title');
-  if (isPass) {
-    sfxWin();
-    title.innerText = "🏆 XUẤT SẮC HOÀN THÀNH BÀI LÀM! 🎆";
+async function confirmSubmit() {
+  const r = state.currentRound;
+  if (!r) return;
+  const answered = r.answers.filter((a) => a !== null).length;
+  const unanswered = r.questions.length - answered;
+  let message = `Bé đã làm ${answered}/${r.questions.length} câu.`;
+  if (unanswered > 0) message += ` Còn ${unanswered} câu chưa trả lời!`;
+  message += ' Bé có chắc muốn nộp bài?';
+  const ok = await showConfirm('Nộp bài?', message, '📤 Nộp', '↩️ Tiếp tục');
+  if (ok) submitRound();
+}
+
+function startTimer() {
+  const r = state.currentRound;
+  if (r.timerId) clearInterval(r.timerId);
+  updateTimerUI();
+  r.timerId = setInterval(() => {
+    r.timeLeft--;
+    updateTimerUI();
+    if (r.timeLeft <= 10 && r.timeLeft > 0) playSound('tick');
+    if (r.timeLeft <= 0) {
+      clearInterval(r.timerId);
+      showToast('Hết giờ! Tự động nộp bài', 'warning');
+      submitRound();
+    }
+  }, 1000);
+}
+
+function updateTimerUI() {
+  const r = state.currentRound;
+  if (!r) return;
+  const text = document.getElementById('timer-text');
+  const bar = document.getElementById('timer-bar');
+  if (!text || !bar) return;
+  const min = Math.floor(r.timeLeft / 60);
+  const sec = r.timeLeft % 60;
+  text.textContent = `⏱️ ${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+  const pct = (r.timeLeft / 600) * 100;
+  bar.style.width = pct + '%';
+  if (pct < 10) {
+    bar.style.background = '#FB7185';
+    text.classList.add('text-coral', 'animate-pulse');
+  } else if (pct < 30) {
+    bar.style.background = '#FCD34D';
+    text.classList.remove('text-coral', 'animate-pulse');
   } else {
-    sfxWrong();
-    title.innerText = "🏁 CHƯA ĐẠT KẾT QUẢ TỐI ƯU!";
+    bar.style.background = 'linear-gradient(to right, #34D399, #38BDF8)';
+    text.classList.remove('text-coral', 'animate-pulse');
+  }
+}
+
+async function submitRound() {
+  const r = state.currentRound;
+  if (r.timerId) clearInterval(r.timerId);
+  const score = r.score;
+  const total = r.questions.length;
+
+  if (score >= 7) { playSound('win'); fireConfetti(50); }
+  else if (score >= 4) { playSound('click'); }
+
+  // Lưu điểm: online → API, offline → localStorage
+  if (state.currentUser) {
+    const prevTotal = parseInt(state.currentUser.total_score) || 0;
+    state.currentUser.total_score = prevTotal + score;
+
+    if (state.isOnline) {
+      try {
+        await apiCall('saveResult', {
+          user_id: state.currentUser.id,
+          subject_id: r.subject,
+          score,
+          total_questions: total,
+          round_number: 1,
+        }, 'POST');
+        console.log('[Save] Đã lưu lên Sheets');
+      } catch (err) {
+        console.warn('[Save] Lỗi API, lưu local:', err);
+        saveScoreLocal(state.currentUser.username, score);
+      }
+    } else {
+      saveScoreLocal(state.currentUser.username, score);
+    }
   }
 
-  document.getElementById('sum-round-gain').innerText = `+${roundScore} đ`;
-  document.getElementById('sum-cum-total').innerText = currentUser.cumScore;
-
-  const tbody = document.querySelector('#summary-table tbody');
-  tbody.innerHTML = '';
-  roundHistory.forEach((item, idx) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${idx + 1}</td><td>${item.q}</td><td style="color:${item.correct ? '#10b981' : '#ef4444'}; font-weight:bold;">${item.correct ? 'Đúng (+10)' : 'Sai'}</td>`;
-    tbody.appendChild(tr);
-  });
+  setTimeout(() => renderResultScreen(score, total), 300);
 }
 
-function restartCurrentTask() {
-  document.getElementById('screen-summary').classList.remove('active');
-  startTask(activeTopic);
+function saveScoreLocal(username, score) {
+  try {
+    const key = 'vuihoc_scores';
+    const data = JSON.parse(localStorage.getItem(key) || '{}');
+    if (!data[username]) data[username] = { total: 0, history: [] };
+    data[username].total += score;
+    data[username].history.push({ score, at: new Date().toISOString() });
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (e) { console.warn('[Save]', e); }
 }
 
-function backToTaskMenu() {
-  refreshUserHeader();
-  renderHistoryTable();
-  document.getElementById('screen-summary').classList.remove('active');
-  document.getElementById('screen-topics').classList.add('active');
+function renderResultScreen(score, total) {
+  const app = document.getElementById('app');
+  const pct = (score / total) * 100;
+  let emoji, msg, color;
+  if (pct >= 90) { emoji = '🏆'; msg = 'Xuất sắc!'; color = 'text-sunny'; }
+  else if (pct >= 70) { emoji = '🎉'; msg = 'Giỏi lắm!'; color = 'text-mint'; }
+  else if (pct >= 50) { emoji = '👍'; msg = 'Cố gắng thêm!'; color = 'text-sky'; }
+  else { emoji = '💪'; msg = 'Thử lại nhé!'; color = 'text-coral'; }
+
+  app.innerHTML = `
+    <section class="flex-1 flex items-center justify-center p-4">
+      <div class="max-w-md w-full bg-white/90 rounded-3xl shadow-2xl p-8 text-center">
+        <div class="text-8xl mb-3 animate-bounce-slow">${emoji}</div>
+        <h2 class="font-baloo text-3xl font-bold ${color} mb-2">${msg}</h2>
+        <p class="text-brand-500 mb-6">Kết quả của bé</p>
+        <div class="bg-gradient-to-br from-brand-50 to-sky-50 rounded-3xl p-6 mb-6">
+          <div class="text-6xl font-baloo font-extrabold text-brand-700">${score}<span class="text-3xl text-brand-400">/${total}</span></div>
+          <p class="text-brand-500 mt-2">câu đúng</p>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <button onclick="startRound('toan')" class="bg-gradient-to-r from-brand-500 to-brand-700 text-white font-bold py-3 rounded-2xl shadow-lg hover:scale-105 transition">🔄 Chơi lại</button>
+          <button onclick="showStudentHome()" class="bg-white text-brand-600 font-bold py-3 rounded-2xl shadow-lg border-2 border-brand-200">🏠 Trang chủ</button>
+        </div>
+      </div>
+    </section>
+  `;
 }
 
-if ('speechSynthesis' in window) {
-  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
-}
+// ============================================
+// EXPORTS
+// ============================================
+window.startRound = startRound;
+window.showStudentHome = showStudentHome;
+window.logout = logout;
 </script>
+
 </body>
 </html>
