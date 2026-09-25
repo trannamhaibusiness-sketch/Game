@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="theme-color" content="#4F46E5" />
-<title>🤖 Vui Học - Đấu trường kiến thức</title>
+<title>🤖 Vui Học</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,27 +21,19 @@
         },
         colors: {
           brand: {
-            50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe',
-            300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1',
-            600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81',
+            50:'#eef2ff',100:'#e0e7ff',200:'#c7d2fe',300:'#a5b4fc',400:'#818cf8',
+            500:'#6366f1',600:'#4f46e5',700:'#4338ca',800:'#3730a3',900:'#312e81',
           },
-          sunny: '#FCD34D', coral: '#FB7185', mint: '#34D399', sky: '#38BDF8',
+          sunny:'#FCD34D', coral:'#FB7185', mint:'#34D399', sky:'#38BDF8',
         },
         animation: {
-          'bounce-slow': 'bounce 2s infinite',
-          'float': 'float 3s ease-in-out infinite',
-          'wiggle': 'wiggle 0.5s ease-in-out',
+          'bounce-slow':'bounce 2s infinite',
+          'float':'float 3s ease-in-out infinite',
+          'wiggle':'wiggle 0.5s ease-in-out',
         },
         keyframes: {
-          float: {
-            '0%, 100%': { transform: 'translateY(0)' },
-            '50%': { transform: 'translateY(-10px)' },
-          },
-          wiggle: {
-            '0%, 100%': { transform: 'rotate(0deg)' },
-            '25%': { transform: 'rotate(-5deg)' },
-            '75%': { transform: 'rotate(5deg)' },
-          },
+          float: { '0%,100%':{transform:'translateY(0)'}, '50%':{transform:'translateY(-10px)'} },
+          wiggle: { '0%,100%':{transform:'rotate(0deg)'}, '25%':{transform:'rotate(-5deg)'}, '75%':{transform:'rotate(5deg)'} },
         },
       },
     },
@@ -52,19 +44,12 @@
 * { -webkit-tap-highlight-color: transparent; }
 body { font-family: 'Nunito', sans-serif; overscroll-behavior: none; }
 
-.screen { animation: screenFadeIn 0.3s ease-out; }
-@keyframes screenFadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.hidden-screen { display: none !important; }
-
 .role-btn { transition: all 0.2s ease; }
 .role-btn.role-active {
   border-color: #6366f1 !important;
   background: #6366f1 !important;
   color: white !important;
-  box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.5);
+  box-shadow: 0 10px 20px -5px rgba(99,102,241,0.5);
   transform: translateY(-2px);
 }
 
@@ -93,39 +78,31 @@ body { font-family: 'Nunito', sans-serif; overscroll-behavior: none; }
   opacity: 0.75;
   pointer-events: none;
 }
-@keyframes correctPulse {
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.05); }
-}
-@keyframes wrongShake {
-  0%, 100% { transform: translateX(0); }
-  25%      { transform: translateX(-8px); }
-  75%      { transform: translateX(8px); }
-}
+@keyframes correctPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+@keyframes wrongShake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
 
 .timer-bar { transition: width 1s linear, background-color 0.3s ease; }
 
 .toast { animation: toastSlideIn 0.3s ease-out; }
 @keyframes toastSlideIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity:0; transform:translateY(-20px); }
+  to   { opacity:1; transform:translateY(0); }
 }
 
 .confetti {
-  position: fixed;
-  width: 10px; height: 10px;
+  position: fixed; width: 10px; height: 10px;
   pointer-events: none; z-index: 100;
   animation: confettiFall 2.5s linear forwards;
 }
 @keyframes confettiFall {
-  0%   { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  0%   { transform:translateY(-100vh) rotate(0deg); opacity:1; }
+  100% { transform:translateY(100vh) rotate(720deg); opacity:0; }
 }
 
-.animate-pop { animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+.animate-pop { animation: popIn 0.3s cubic-bezier(0.68,-0.55,0.27,1.55); }
 @keyframes popIn {
-  0%   { transform: scale(0.5); opacity: 0; }
-  100% { transform: scale(1);   opacity: 1; }
+  0%   { transform:scale(0.5); opacity:0; }
+  100% { transform:scale(1); opacity:1; }
 }
 
 .spinner {
@@ -136,24 +113,21 @@ body { font-family: 'Nunito', sans-serif; overscroll-behavior: none; }
   animation: spin 1s linear infinite;
   margin: 0 auto;
 }
-@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes spin { 100% { transform:rotate(360deg); } }
 
 .nav-back-btn, .nav-home-btn {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255,255,255,0.95);
   backdrop-filter: blur(8px);
   border: 2px solid #c7d2fe;
   color: #4338ca;
   font-weight: 700;
   padding: 8px 14px;
   border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 4px 12px rgba(99,102,241,0.2);
   transition: all 0.2s;
   font-size: 14px;
 }
-.nav-back-btn:hover, .nav-home-btn:hover {
-  background: #eef2ff;
-  transform: translateY(-2px);
-}
+.nav-back-btn:hover, .nav-home-btn:hover { background:#eef2ff; transform:translateY(-2px); }
 
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: #eef2ff; }
@@ -168,25 +142,24 @@ button { user-select: none; }
 
 <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
   <div class="absolute top-10 left-10 text-6xl opacity-20 animate-float">⭐</div>
-  <div class="absolute top-32 right-16 text-5xl opacity-20 animate-float" style="animation-delay: 0.5s">✨</div>
-  <div class="absolute bottom-20 left-20 text-6xl opacity-20 animate-float" style="animation-delay: 1s">🎈</div>
-  <div class="absolute bottom-40 right-10 text-5xl opacity-20 animate-float" style="animation-delay: 1.5s">🌟</div>
+  <div class="absolute top-32 right-16 text-5xl opacity-20 animate-float" style="animation-delay:0.5s">✨</div>
+  <div class="absolute bottom-20 left-20 text-6xl opacity-20 animate-float" style="animation-delay:1s">🎈</div>
+  <div class="absolute bottom-40 right-10 text-5xl opacity-20 animate-float" style="animation-delay:1.5s">🌟</div>
 </div>
 
 <div id="app" class="min-h-screen flex flex-col"></div>
-
 <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 items-center"></div>
 
 <script>
 // ============================================
-// CONFIG
+// VUI HỌC — APP LOGIC
+// Version: 2.5
 // ============================================
+
 const API_URL = 'https://script.google.com/macros/s/AKfycbztO88kMMXwKGgBkLfxZ-HiyCUxbXZYc1A-lfnOjJKV3DDXMFPEUpKOVdycJKoNyvrL/exec';
 const API_KEY = 'vuihoc_family_2026';
 
-// ============================================
-// API CLIENT
-// ============================================
+// ===== API CLIENT =====
 async function apiCall(action, payload = {}, method = 'GET') {
   try {
     let url = API_URL;
@@ -210,41 +183,37 @@ async function apiCall(action, payload = {}, method = 'GET') {
   }
 }
 
-// ============================================
-// FALLBACK LOCAL
-// ============================================
+// ===== FALLBACK =====
 const FALLBACK_USERS = [
-  { id: 'a001', username: 'admin', password: '1234', role: 'admin',   display_name: 'Quản trị viên', total_score: 0 },
-  { id: 'u001', username: 'minh',  password: '1234', role: 'student', display_name: 'Bé Minh',        total_score: 0 },
-  { id: 'u002', username: 'lan',   password: '1234', role: 'student', display_name: 'Bé Lan',         total_score: 0 },
-  { id: 'p001', username: 'bome',  password: '1234', role: 'parent',  display_name: 'Bố Mẹ',          total_score: 0 },
+  { id:'a001', username:'admin', password:'1234', role:'admin',   display_name:'Quản trị viên', total_score:0 },
+  { id:'u001', username:'minh',  password:'1234', role:'student', display_name:'Bé Minh',        total_score:0 },
+  { id:'u002', username:'lan',   password:'1234', role:'student', display_name:'Bé Lan',         total_score:0 },
+  { id:'p001', username:'bome',  password:'1234', role:'parent',  display_name:'Bố Mẹ',          total_score:0 },
 ];
 
 const FALLBACK_SUBJECTS = [
-  { id: 'toan', name: 'Toán', description: 'Toán lớp 4' },
+  { id:'toan', name:'Toán', description:'Toán lớp 4' },
 ];
 
 const FALLBACK_TRACKS = {
-  toan: [
-    { id: 'vio4', subject_id: 'toan', name: 'Violympic lớp 4', description: 'Bộ đề Violympic Toán 4' },
-  ],
+  toan: [{ id:'vio4', subject_id:'toan', name:'Violympic lớp 4', description:'Bộ đề Violympic Toán 4' }],
 };
 
 const FALLBACK_QUESTIONS = [
-  { id: 'q001', subject: 'toan', track: 'vio4', question: 'Khi viết chữ số 5 vào bên trái một số có ba chữ số thì số mới hơn số cũ bao nhiêu đơn vị?', options: ['500', '5000', '50000', '500000'], correct: 1 },
-  { id: 'q002', subject: 'toan', track: 'vio4', question: 'Số bé nhất có năm chữ số là số nào?', options: ['10000', '11111', '12345', '99999'], correct: 0 },
-  { id: 'q003', subject: 'toan', track: 'vio4', question: 'Số lớn nhất có sáu chữ số là số nào?', options: ['100000', '999999', '987654', '999998'], correct: 1 },
-  { id: 'q004', subject: 'toan', track: 'vio4', question: 'Số lớn nhất có sáu chữ số khác nhau là số nào?', options: ['987654', '999999', '987655', '987650'], correct: 0 },
-  { id: 'q005', subject: 'toan', track: 'vio4', question: 'Số nhỏ nhất có năm chữ số khác nhau là số nào?', options: ['10234', '12345', '10000', '11111'], correct: 0 },
-  { id: 'q006', subject: 'toan', track: 'vio4', question: 'Dãy số tự nhiên liên tiếp từ 325 đến 796 có tất cả bao nhiêu số lẻ?', options: ['236', '235', '237', '234'], correct: 0 },
-  { id: 'q007', subject: 'toan', track: 'vio4', question: 'Dãy số tự nhiên liên tiếp từ 324 đến 987 có tất cả bao nhiêu số chẵn?', options: ['331', '332', '333', '334'], correct: 1 },
-  { id: 'q008', subject: 'toan', track: 'vio4', question: 'Tìm trung bình cộng của các số lẻ có hai chữ số lớn hơn 79.', options: ['89', '90', '91', '92'], correct: 0 },
-  { id: 'q009', subject: 'toan', track: 'vio4', question: 'Trung bình cộng của ba số là 25, trung bình cộng của số thứ nhất và số thứ hai là 22. Tìm số thứ ba.', options: ['28', '29', '30', '31'], correct: 2 },
-  { id: 'q010', subject: 'toan', track: 'vio4', question: 'Tổng của hai số tự nhiên là 346. Biết số bé là số có hai chữ số và khi viết thêm chữ số 2 vào trước số bé thì được số lớn. Tìm hai số đó.', options: ['123 và 223', '146 và 200', '150 và 196', '173 và 173'], correct: 0 },
+  { id:'q001', subject:'toan', track:'vio4', question:'Khi viết chữ số 5 vào bên trái một số có ba chữ số thì số mới hơn số cũ bao nhiêu đơn vị?', options:['500','5000','50000','500000'], correct:1 },
+  { id:'q002', subject:'toan', track:'vio4', question:'Số bé nhất có năm chữ số là số nào?', options:['10000','11111','12345','99999'], correct:0 },
+  { id:'q003', subject:'toan', track:'vio4', question:'Số lớn nhất có sáu chữ số là số nào?', options:['100000','999999','987654','999998'], correct:1 },
+  { id:'q004', subject:'toan', track:'vio4', question:'Số lớn nhất có sáu chữ số khác nhau là số nào?', options:['987654','999999','987655','987650'], correct:0 },
+  { id:'q005', subject:'toan', track:'vio4', question:'Số nhỏ nhất có năm chữ số khác nhau là số nào?', options:['10234','12345','10000','11111'], correct:0 },
+  { id:'q006', subject:'toan', track:'vio4', question:'Dãy số tự nhiên liên tiếp từ 325 đến 796 có tất cả bao nhiêu số lẻ?', options:['236','235','237','234'], correct:0 },
+  { id:'q007', subject:'toan', track:'vio4', question:'Dãy số tự nhiên liên tiếp từ 324 đến 987 có tất cả bao nhiêu số chẵn?', options:['331','332','333','334'], correct:1 },
+  { id:'q008', subject:'toan', track:'vio4', question:'Tìm trung bình cộng của các số lẻ có hai chữ số lớn hơn 79.', options:['89','90','91','92'], correct:0 },
+  { id:'q009', subject:'toan', track:'vio4', question:'Trung bình cộng của ba số là 25, trung bình cộng của số thứ nhất và số thứ hai là 22. Tìm số thứ ba.', options:['28','29','30','31'], correct:2 },
+  { id:'q010', subject:'toan', track:'vio4', question:'Tổng của hai số tự nhiên là 346. Biết số bé là số có hai chữ số và khi viết thêm chữ số 2 vào trước số bé thì được số lớn. Tìm hai số đó.', options:['123 và 223','146 và 200','150 và 196','173 và 173'], correct:0 },
 ];
 
 function shuffleOptions(q) {
-  const indices = [0, 1, 2, 3].sort(() => Math.random() - 0.5);
+  const indices = [0,1,2,3].sort(() => Math.random() - 0.5);
   const newOptions = indices.map((i) => q.options[i]);
   const newCorrect = indices.indexOf(q.correct);
   return { ...q, options: newOptions, correct: newCorrect };
@@ -255,17 +224,15 @@ function getLocalQuestions(subject, track, n) {
   return [...pool].sort(() => Math.random() - 0.5).slice(0, n).map(shuffleOptions);
 }
 
-// ============================================
-// UI HELPERS
-// ============================================
+// ===== UI HELPERS =====
 function showToast(message, type = 'info', duration = 2500) {
   const container = document.getElementById('toast-container');
   if (!container) return;
   const colors = {
-    success: 'bg-mint text-white', error: 'bg-coral text-white',
-    warning: 'bg-sunny text-brand-900', info: 'bg-brand-500 text-white',
+    success:'bg-mint text-white', error:'bg-coral text-white',
+    warning:'bg-sunny text-brand-900', info:'bg-brand-500 text-white',
   };
-  const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+  const icons = { success:'✅', error:'❌', warning:'⚠️', info:'ℹ️' };
   const toast = document.createElement('div');
   toast.className = `toast ${colors[type]} font-bold px-5 py-3 rounded-2xl shadow-2xl text-sm max-w-xs text-center`;
   toast.textContent = `${icons[type]} ${message}`;
@@ -292,11 +259,9 @@ function playSound(type = 'click') {
       osc.connect(gain); gain.connect(ctx.destination);
       osc.start(now + start); osc.stop(now + start + duration);
     };
-    switch (type) {
-      case 'click': playTone(600, 0, 0.08, 'sine', 0.08); break;
-      case 'tick':  playTone(1000, 0, 0.03, 'square', 0.05); break;
-      case 'win':   [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => playTone(f, i * 0.12, 0.2, 'sine', 0.18)); break;
-    }
+    if (type === 'click') playTone(600, 0, 0.08, 'sine', 0.08);
+    else if (type === 'tick') playTone(1000, 0, 0.03, 'square', 0.05);
+    else if (type === 'win') [523.25,659.25,783.99,1046.5].forEach((f,i) => playTone(f, i*0.12, 0.2, 'sine', 0.18));
     setTimeout(() => ctx.close(), 2000);
   } catch (e) {}
 }
@@ -346,7 +311,7 @@ function playWrongSound() {
 }
 
 function fireConfetti(count = 30) {
-  const colors = ['#FCD34D', '#FB7185', '#34D399', '#38BDF8', '#A78BFA', '#F472B6'];
+  const colors = ['#FCD34D','#FB7185','#34D399','#38BDF8','#A78BFA','#F472B6'];
   for (let i = 0; i < count; i++) {
     const c = document.createElement('div');
     c.className = 'confetti';
@@ -364,7 +329,6 @@ function showConfirm(title, message, okText = 'Đồng ý', cancelText = 'Hủy'
   return new Promise((resolve) => {
     const overlay = document.createElement('div');
     overlay.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4';
-    overlay.style.animation = 'screenFadeIn 0.2s ease-out';
     overlay.innerHTML = `
       <div class="bg-white rounded-3xl shadow-2xl p-6 max-w-sm w-full text-center animate-pop">
         <div class="text-5xl mb-3">🤔</div>
@@ -374,8 +338,7 @@ function showConfirm(title, message, okText = 'Đồng ý', cancelText = 'Hủy'
           <button id="confirm-cancel" class="bg-gray-200 text-gray-700 font-bold py-3 rounded-2xl hover:bg-gray-300 transition">${cancelText}</button>
           <button id="confirm-ok" class="bg-gradient-to-r from-brand-500 to-brand-700 text-white font-bold py-3 rounded-2xl hover:scale-105 transition">${okText}</button>
         </div>
-      </div>
-    `;
+      </div>`;
     document.body.appendChild(overlay);
     const cleanup = (result) => {
       overlay.style.opacity = '0';
@@ -389,25 +352,24 @@ function showConfirm(title, message, okText = 'Đồng ý', cancelText = 'Hủy'
   });
 }
 
-// ============================================
-// NAV BAR
-// ============================================
 function renderNavBar({ showBack = true, showHome = true }) {
   return `
     <div class="fixed top-4 left-4 right-4 flex justify-between z-30 pointer-events-none">
-      <div class="pointer-events-auto">
-        ${showBack ? '<button id="nav-back" class="nav-back-btn">⬅️ Quay lại</button>' : ''}
-      </div>
-      <div class="pointer-events-auto">
-        ${showHome ? '<button id="nav-home" class="nav-home-btn">🏠 Trang chủ</button>' : ''}
-      </div>
-    </div>
-  `;
+      <div class="pointer-events-auto">${showBack ? '<button id="nav-back" class="nav-back-btn">⬅️ Quay lại</button>' : ''}</div>
+      <div class="pointer-events-auto">${showHome ? '<button id="nav-home" class="nav-home-btn">🏠 Trang chủ</button>' : ''}</div>
+    </div>`;
 }
 
-// ============================================
-// APP STATE
-// ============================================
+function attachNavEvents({ onBack, onHome }) {
+  setTimeout(() => {
+    const backBtn = document.getElementById('nav-back');
+    const homeBtn = document.getElementById('nav-home');
+    if (backBtn && onBack) backBtn.addEventListener('click', () => { playSound('click'); onBack(); });
+    if (homeBtn && onHome) homeBtn.addEventListener('click', () => { playSound('click'); onHome(); });
+  }, 0);
+}
+
+// ===== STATE =====
 const state = {
   currentUser: null,
   selectedRole: 'student',
@@ -419,10 +381,9 @@ const state = {
   selectedTrack: null,
 };
 
-// ============================================
-// INIT
-// ============================================
+// ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('[App] Vui Học v2.5 🚀');
   renderLoginScreen();
   checkAPIConnection();
 });
@@ -440,9 +401,7 @@ async function checkAPIConnection() {
   }
 }
 
-// ============================================
-// SCREEN: LOGIN
-// ============================================
+// ===== LOGIN SCREEN =====
 function renderLoginScreen() {
   const app = document.getElementById('app');
   app.innerHTML = `
@@ -471,13 +430,13 @@ function renderLoginScreen() {
 
           <div class="mb-4">
             <label class="block font-bold text-brand-700 mb-2 text-sm">Tên đăng nhập:</label>
-            <input type="text" id="username-input" autocomplete="username" placeholder="Ví dụ: minh" class="w-full px-4 py-3 rounded-2xl border-4 border-brand-200 focus:border-brand-500 focus:outline-none font-nunito text-lg bg-brand-50/50" />
+            <input type="text" id="username-input" placeholder="Ví dụ: minh" class="w-full px-4 py-3 rounded-2xl border-4 border-brand-200 focus:border-brand-500 focus:outline-none font-nunito text-lg bg-brand-50/50" />
           </div>
 
           <div class="mb-5">
             <label class="block font-bold text-brand-700 mb-2 text-sm">Mật khẩu:</label>
             <div class="relative">
-              <input type="password" id="password-input" autocomplete="current-password" placeholder="••••••" class="w-full px-4 py-3 rounded-2xl border-4 border-brand-200 focus:border-brand-500 focus:outline-none font-nunito text-lg bg-brand-50/50 pr-12" />
+              <input type="password" id="password-input" placeholder="••••••" class="w-full px-4 py-3 rounded-2xl border-4 border-brand-200 focus:border-brand-500 focus:outline-none font-nunito text-lg bg-brand-50/50 pr-12" />
               <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-2xl hover:scale-110 transition-transform">👁️</button>
             </div>
           </div>
@@ -501,8 +460,7 @@ function renderLoginScreen() {
           Phiên bản 2.5 • <span id="connection-status">Đang kiểm tra...</span>
         </p>
       </div>
-    </section>
-  `;
+    </section>`;
   initLoginEvents();
 }
 
@@ -520,11 +478,11 @@ function initLoginEvents() {
     btn.addEventListener('click', () => {
       playSound('click');
       roleBtns.forEach((b) => {
-        b.classList.remove('role-active', 'bg-brand-500', 'text-white', 'border-brand-500');
-        b.classList.add('bg-white', 'text-brand-600', 'border-brand-200');
+        b.classList.remove('role-active','bg-brand-500','text-white','border-brand-500');
+        b.classList.add('bg-white','text-brand-600','border-brand-200');
       });
-      btn.classList.add('role-active', 'bg-brand-500', 'text-white', 'border-brand-500');
-      btn.classList.remove('bg-white', 'text-brand-600', 'border-brand-200');
+      btn.classList.add('role-active','bg-brand-500','text-white','border-brand-500');
+      btn.classList.remove('bg-white','text-brand-600','border-brand-200');
       state.selectedRole = btn.dataset.role;
       roleInput.value = btn.dataset.role;
       errorBox.classList.add('hidden');
@@ -569,10 +527,7 @@ function initLoginEvents() {
 
     if (!user) {
       const localUser = FALLBACK_USERS.find((u) => u.username === username && u.password === password);
-      if (localUser) {
-        const { password: _, ...rest } = localUser;
-        user = rest;
-      }
+      if (localUser) { const { password: _, ...rest } = localUser; user = rest; }
     }
 
     loginBtn.disabled = false;
@@ -603,526 +558,3 @@ function initLoginEvents() {
     }, 500);
   }
 }
-
-// ============================================
-// SCREEN: STUDENT HOME
-// ============================================
-async function renderStudentHome() {
-  const u = state.currentUser;
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    ${renderNavBar({ showBack: false, showHome: false })}
-    <section class="flex-1 flex items-center justify-center p-4 pt-20">
-      <div class="max-w-2xl w-full bg-white/90 rounded-3xl shadow-2xl p-6 text-center">
-        <div class="text-7xl mb-4">🎓</div>
-        <h2 class="font-baloo text-3xl font-bold text-brand-700">Chào ${u.display_name}!</h2>
-        <p class="text-brand-500 mt-2 mb-2">Điểm tổng: <span class="font-bold text-sunny">⭐ ${u.total_score || 0}</span></p>
-        <p class="text-brand-500 mb-6 text-sm">${state.isOnline ? '🟢 Đã kết nối' : '🟡 Offline'}</p>
-        <div class="grid grid-cols-1 gap-3">
-          <button id="btn-play" class="bg-gradient-to-r from-brand-500 to-brand-700 text-white font-bold py-4 rounded-2xl shadow-lg hover:scale-105 transition">🎮 Chơi ngay</button>
-          <button id="btn-logout" class="bg-coral text-white font-bold py-3 rounded-2xl mt-4">🚪 Đăng xuất</button>
-        </div>
-      </div>
-    </section>
-  `;
-  document.getElementById('btn-play').addEventListener('click', () => { playSound('click'); renderSubjectScreen(); });
-  document.getElementById('btn-logout').addEventListener('click', logout);
-}
-
-// ============================================
-// SCREEN: CHỌN MÔN
-// ============================================
-async function renderSubjectScreen() {
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    ${renderNavBar({ showBack: true, showHome: true })}
-    <section class="flex-1 flex items-center justify-center p-4 pt-20">
-      <div class="max-w-2xl w-full bg-white/90 rounded-3xl shadow-2xl p-6">
-        <h2 class="font-baloo text-3xl font-bold text-brand-700 text-center mb-2">Chọn môn 📚</h2>
-        <p class="text-brand-500 text-center mb-6">Bé muốn học môn gì hôm nay?</p>
-        <div id="subjects-list" class="grid gap-3">
-          <div class="spinner"></div>
-        </div>
-      </div>
-    </section>
-  `;
-  attachNavEvents({
-    onBack: () => { renderStudentHome(); },
-    onHome: () => { renderStudentHome(); },
-  });
-
-  let subjects = [];
-  try {
-    if (state.isOnline) {
-      const data = await apiCall('getSubjects');
-      subjects = data || [];
-    }
-  } catch (err) { console.warn('[Subjects]', err); }
-
-  if (!subjects.length) subjects = FALLBACK_SUBJECTS;
-  state.subjects = subjects;
-
-  const list = document.getElementById('subjects-list');
-  if (!list) return;
-
-  const icons = { toan: '🧮', toan_en: '🇬🇧', en: '📚', tin: '💻' };
-  list.innerHTML = subjects.map((s) => `
-    <button data-subject-id="${s.id}" class="subject-btn bg-white hover:bg-brand-50 border-4 border-brand-200 hover:border-brand-500 rounded-3xl p-5 text-left transition-all hover:scale-[1.02] shadow-md">
-      <div class="flex items-center gap-4">
-        <div class="text-4xl">${icons[s.id] || '📖'}</div>
-        <div class="flex-1">
-          <div class="font-baloo text-xl font-bold text-brand-700">${s.name}</div>
-          <div class="text-sm text-brand-500">${s.description || ''}</div>
-        </div>
-        <div class="text-2xl text-brand-400">➡️</div>
-      </div>
-    </button>
-  `).join('');
-
-  list.querySelectorAll('.subject-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      playSound('click');
-      const subjectId = btn.dataset.subjectId;
-      state.selectedSubject = subjects.find((s) => s.id === subjectId);
-      renderTrackScreen();
-    });
-  });
-}
-
-// ============================================
-// SCREEN: CHỌN TRACK (LOẠI HÌNH)
-// ============================================
-async function renderTrackScreen() {
-  const subject = state.selectedSubject;
-  if (!subject) return renderSubjectScreen();
-
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    ${renderNavBar({ showBack: true, showHome: true })}
-    <section class="flex-1 flex items-center justify-center p-4 pt-20">
-      <div class="max-w-2xl w-full bg-white/90 rounded-3xl shadow-2xl p-6">
-        <div class="text-center mb-6">
-          <div class="text-sm text-brand-500 mb-1">Môn: ${subject.name}</div>
-          <h2 class="font-baloo text-3xl font-bold text-brand-700">Chọn loại hình 🎯</h2>
-        </div>
-        <div id="tracks-list" class="grid gap-3">
-          <div class="spinner"></div>
-        </div>
-      </div>
-    </section>
-  `;
-  attachNavEvents({
-    onBack: () => { renderSubjectScreen(); },
-    onHome: () => { renderStudentHome(); },
-  });
-
-  let tracks = [];
-  try {
-    if (state.isOnline) {
-      const data = await apiCall('getTracks', { subject: subject.id });
-      tracks = data || [];
-    }
-  } catch (err) { console.warn('[Tracks]', err); }
-
-  if (!tracks.length) tracks = FALLBACK_TRACKS[subject.id] || [];
-  state.tracks = tracks;
-
-  const list = document.getElementById('tracks-list');
-  if (!list) return;
-
-  if (tracks.length === 0) {
-    list.innerHTML = `
-      <div class="text-center p-6">
-        <div class="text-5xl mb-3">🚧</div>
-        <p class="text-brand-500 font-bold">Chưa có loại hình nào cho môn này</p>
-      </div>
-    `;
-    return;
-  }
-
-  const trackIcons = { vio4: '🏆', sgk4: '📘', nc4: '🚀' };
-  list.innerHTML = tracks.map((t) => `
-    <button data-track-id="${t.id}" class="track-btn bg-white hover:bg-brand-50 border-4 border-brand-200 hover:border-brand-500 rounded-3xl p-5 text-left transition-all hover:scale-[1.02] shadow-md">
-      <div class="flex items-center gap-4">
-        <div class="text-4xl">${trackIcons[t.id] || '📄'}</div>
-        <div class="flex-1">
-          <div class="font-baloo text-xl font-bold text-brand-700">${t.name}</div>
-          <div class="text-sm text-brand-500">${t.description || ''}</div>
-        </div>
-        <div class="text-2xl text-brand-400">➡️</div>
-      </div>
-    </button>
-  `).join('');
-
-  list.querySelectorAll('.track-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      playSound('click');
-      const trackId = btn.dataset.trackId;
-      state.selectedTrack = tracks.find((t) => t.id === trackId);
-      startRound();
-    });
-  });
-}
-
-// ============================================
-// PARENT / ADMIN HOME
-// ============================================
-function renderParentHome() {
-  const u = state.currentUser;
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    <section class="flex-1 flex items-center justify-center p-4">
-      <div class="max-w-2xl w-full bg-white/90 rounded-3xl shadow-2xl p-6 text-center">
-        <div class="text-7xl mb-4">👨‍👩‍👧</div>
-        <h2 class="font-baloo text-3xl font-bold text-brand-700">Xin chào ${u.display_name}!</h2>
-        <p class="text-brand-500 mt-2 mb-6">Dashboard phụ huynh — Phase 4 🚧</p>
-        <button onclick="logout()" class="bg-coral text-white font-bold py-3 px-8 rounded-2xl">🚪 Đăng xuất</button>
-      </div>
-    </section>
-  `;
-}
-
-function renderAdminHome() {
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    <section class="flex-1 flex items-center justify-center p-4">
-      <div class="max-w-2xl w-full bg-white/90 rounded-3xl shadow-2xl p-6 text-center">
-        <div class="text-7xl mb-4">🛠️</div>
-        <h2 class="font-baloo text-3xl font-bold text-brand-700">Admin Dashboard</h2>
-        <p class="text-brand-500 mt-2 mb-6">Phase 6 🚧</p>
-        <button onclick="logout()" class="bg-coral text-white font-bold py-3 px-8 rounded-2xl">🚪 Đăng xuất</button>
-      </div>
-    </section>
-  `;
-}
-
-function logout() {
-  playSound('click');
-  state.currentUser = null;
-  state.currentRound = null;
-  state.selectedSubject = null;
-  state.selectedTrack = null;
-  showToast('Đã đăng xuất', 'info');
-  setTimeout(() => location.reload(), 500);
-}
-
-// ============================================
-// QUIZ
-// ============================================
-async function startRound() {
-  playSound('click');
-  const subject = state.selectedSubject;
-  const track = state.selectedTrack;
-  if (!subject || !track) return;
-
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    <section class="flex-1 flex items-center justify-center p-4">
-      <div class="text-center">
-        <div class="spinner"></div>
-        <p class="text-brand-600 font-bold mt-4">Đang tải câu hỏi...</p>
-      </div>
-    </section>
-  `;
-
-  let questions = [];
-  try {
-    if (state.isOnline) {
-      const data = await apiCall('getQuestions', { subject: subject.id, track: track.id, limit: 10 });
-      questions = (data || []).map((q) => shuffleOptions(q));
-    }
-  } catch (err) { console.warn('[Quiz]', err); }
-
-  if (!questions || questions.length === 0) {
-    questions = getLocalQuestions(subject.id, track.id, 10);
-  }
-
-  if (questions.length === 0) {
-    showToast('Chưa có câu hỏi cho loại này!', 'warning');
-    renderTrackScreen();
-    return;
-  }
-
-  state.currentRound = {
-    subject, track, questions,
-    answers: new Array(questions.length).fill(null),
-    currentIndex: 0, score: 0,
-    timeLeft: 600, timerId: null, locked: false,
-  };
-  renderQuizScreen();
-  startTimer();
-}
-
-function renderQuizScreen() {
-  const r = state.currentRound;
-  if (!r) return;
-  const q = r.questions[r.currentIndex];
-  const app = document.getElementById('app');
-
-  // KHÔNG nav bar khi đang thi
-  app.innerHTML = `
-    <section class="flex-1 p-4">
-      <div class="max-w-2xl mx-auto w-full">
-        <div class="bg-white/90 rounded-2xl shadow-lg p-4 mb-4">
-          <div class="flex justify-between items-center mb-2">
-            <span class="font-bold text-brand-700 text-sm">${r.subject.name} • ${r.track.name}</span>
-            <span class="font-bold text-sunny text-lg" id="score-display">⭐ ${r.score}</span>
-          </div>
-          <div class="flex justify-between items-center mb-2">
-            <span class="font-bold text-brand-700">Câu ${r.currentIndex + 1}/${r.questions.length}</span>
-            <span id="timer-text" class="font-bold text-brand-700 text-lg">⏱️ 10:00</span>
-          </div>
-          <div class="w-full bg-brand-100 rounded-full h-3 overflow-hidden mb-3">
-            <div id="timer-bar" class="timer-bar h-full bg-gradient-to-r from-mint to-sky" style="width: 100%"></div>
-          </div>
-          <button id="submit-btn" class="w-full bg-coral hover:bg-coral/90 text-white font-bold py-2 rounded-xl text-sm transition">📤 Nộp bài</button>
-        </div>
-
-        <div class="bg-white/90 rounded-3xl shadow-2xl p-6 mb-4">
-          <p class="font-baloo text-xl font-bold text-brand-700 mb-5 leading-relaxed">${q.question}</p>
-          <div class="grid gap-3" id="options-container">
-            ${q.options.map((opt, i) => `
-              <button class="answer-option w-full text-left px-5 py-4 rounded-2xl border-4 border-brand-200 bg-white font-bold text-lg text-brand-700" data-index="${i}">
-                <span class="inline-block w-8 h-8 rounded-full bg-brand-100 text-brand-700 text-center leading-8 mr-3 font-bold">${String.fromCharCode(65 + i)}</span>
-                <span>${opt}</span>
-              </button>
-            `).join('')}
-          </div>
-        </div>
-
-        <div id="feedback-area" class="hidden mb-4"></div>
-      </div>
-    </section>
-  `;
-
-  if (r.answers[r.currentIndex] !== null) revealAnswer(r.answers[r.currentIndex]);
-  bindQuizEvents();
-  updateTimerUI();
-}
-
-function bindQuizEvents() {
-  const r = state.currentRound;
-  const options = document.querySelectorAll('.answer-option');
-  const submitBtn = document.getElementById('submit-btn');
-  if (!r.locked) {
-    options.forEach((btn) => {
-      btn.addEventListener('click', () => handleAnswer(parseInt(btn.dataset.index)));
-    });
-  }
-  submitBtn.addEventListener('click', confirmSubmit);
-}
-
-function handleAnswer(selectedIdx) {
-  const r = state.currentRound;
-  if (r.locked) return;
-  const q = r.questions[r.currentIndex];
-  r.answers[r.currentIndex] = selectedIdx;
-  r.locked = true;
-
-  if (selectedIdx === q.correct) {
-    playCorrectSound();
-    r.score++;
-    fireConfetti(15);
-  } else {
-    playWrongSound();
-  }
-  revealAnswer(selectedIdx);
-
-  const scoreEl = document.getElementById('score-display');
-  if (scoreEl) scoreEl.textContent = `⭐ ${r.score}`;
-
-  setTimeout(() => {
-    if (r.currentIndex === r.questions.length - 1) {
-      showToast('Đã hết câu! Bấm "Nộp bài"', 'info', 3000);
-    } else {
-      r.currentIndex++;
-      r.locked = false;
-      renderQuizScreen();
-    }
-  }, 1500);
-}
-
-function revealAnswer(selectedIdx) {
-  const r = state.currentRound;
-  const q = r.questions[r.currentIndex];
-  const options = document.querySelectorAll('.answer-option');
-  options.forEach((btn, i) => {
-    btn.classList.add('answer-disabled');
-    if (i === q.correct) btn.classList.add('answer-correct');
-    else if (i === selectedIdx && selectedIdx !== q.correct) btn.classList.add('answer-wrong');
-  });
-
-  const feedbackArea = document.getElementById('feedback-area');
-  if (feedbackArea) {
-    feedbackArea.classList.remove('hidden');
-    if (selectedIdx === q.correct) {
-      feedbackArea.innerHTML = `
-        <div class="bg-mint/20 border-4 border-mint rounded-2xl p-4 text-center animate-pop">
-          <p class="font-baloo text-xl font-bold text-mint">🎉 Chính xác! +1 điểm</p>
-        </div>
-      `;
-    } else {
-      feedbackArea.innerHTML = `
-        <div class="bg-coral/20 border-4 border-coral rounded-2xl p-4 text-center animate-pop">
-          <p class="font-baloo text-xl font-bold text-coral">😢 Chưa đúng!</p>
-          <p class="text-brand-700 mt-1 font-bold">Đáp án đúng: <span class="text-mint">${String.fromCharCode(65 + q.correct)}. ${q.options[q.correct]}</span></p>
-        </div>
-      `;
-    }
-  }
-}
-
-async function confirmSubmit() {
-  const r = state.currentRound;
-  if (!r) return;
-  const answered = r.answers.filter((a) => a !== null).length;
-  const unanswered = r.questions.length - answered;
-  let message = `Bé đã làm ${answered}/${r.questions.length} câu.`;
-  if (unanswered > 0) message += ` Còn ${unanswered} câu chưa trả lời!`;
-  message += ' Bé có chắc muốn nộp bài?';
-  const ok = await showConfirm('Nộp bài?', message, '📤 Nộp', '↩️ Tiếp tục');
-  if (ok) submitRound();
-}
-
-function startTimer() {
-  const r = state.currentRound;
-  if (r.timerId) clearInterval(r.timerId);
-  updateTimerUI();
-  r.timerId = setInterval(() => {
-    r.timeLeft--;
-    updateTimerUI();
-    if (r.timeLeft <= 10 && r.timeLeft > 0) playSound('tick');
-    if (r.timeLeft <= 0) {
-      clearInterval(r.timerId);
-      showToast('Hết giờ! Tự động nộp bài', 'warning');
-      submitRound();
-    }
-  }, 1000);
-}
-
-function updateTimerUI() {
-  const r = state.currentRound;
-  if (!r) return;
-  const text = document.getElementById('timer-text');
-  const bar = document.getElementById('timer-bar');
-  if (!text || !bar) return;
-  const min = Math.floor(r.timeLeft / 60);
-  const sec = r.timeLeft % 60;
-  text.textContent = `⏱️ ${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
-  const pct = (r.timeLeft / 600) * 100;
-  bar.style.width = pct + '%';
-  if (pct < 10) {
-    bar.style.background = '#FB7185';
-    text.classList.add('text-coral', 'animate-pulse');
-  } else if (pct < 30) {
-    bar.style.background = '#FCD34D';
-    text.classList.remove('text-coral', 'animate-pulse');
-  } else {
-    bar.style.background = 'linear-gradient(to right, #34D399, #38BDF8)';
-    text.classList.remove('text-coral', 'animate-pulse');
-  }
-}
-
-async function submitRound() {
-  const r = state.currentRound;
-  if (r.timerId) clearInterval(r.timerId);
-  const score = r.score;
-  const total = r.questions.length;
-
-  if (score >= 7) { playSound('win'); fireConfetti(50); }
-  else if (score >= 4) { playSound('click'); }
-
-  if (state.currentUser) {
-    const prevTotal = parseInt(state.currentUser.total_score) || 0;
-    state.currentUser.total_score = prevTotal + score;
-
-    if (state.isOnline) {
-      try {
-        await apiCall('saveResult', {
-          user_id: state.currentUser.id,
-          subject_id: r.subject.id,
-          track_id: r.track.id,
-          score,
-          total_questions: total,
-          round_number: 1,
-        }, 'POST');
-      } catch (err) {
-        console.warn('[Save]', err);
-        saveScoreLocal(state.currentUser.username, score);
-      }
-    } else {
-      saveScoreLocal(state.currentUser.username, score);
-    }
-  }
-
-  setTimeout(() => renderResultScreen(score, total), 300);
-}
-
-function saveScoreLocal(username, score) {
-  try {
-    const key = 'vuihoc_scores';
-    const data = JSON.parse(localStorage.getItem(key) || '{}');
-    if (!data[username]) data[username] = { total: 0, history: [] };
-    data[username].total += score;
-    data[username].history.push({ score, at: new Date().toISOString() });
-    localStorage.setItem(key, JSON.stringify(data));
-  } catch (e) {}
-}
-
-function renderResultScreen(score, total) {
-  const r = state.currentRound;
-  const app = document.getElementById('app');
-  const pct = (score / total) * 100;
-  let emoji, msg, color;
-  if (pct >= 90) { emoji = '🏆'; msg = 'Xuất sắc!'; color = 'text-sunny'; }
-  else if (pct >= 70) { emoji = '🎉'; msg = 'Giỏi lắm!'; color = 'text-mint'; }
-  else if (pct >= 50) { emoji = '👍'; msg = 'Cố gắng thêm!'; color = 'text-sky'; }
-  else { emoji = '💪'; msg = 'Thử lại nhé!'; color = 'text-coral'; }
-
-  app.innerHTML = `
-    ${renderNavBar({ showBack: true, showHome: true })}
-    <section class="flex-1 flex items-center justify-center p-4 pt-20">
-      <div class="max-w-md w-full bg-white/90 rounded-3xl shadow-2xl p-8 text-center">
-        <div class="text-8xl mb-3 animate-bounce-slow">${emoji}</div>
-        <h2 class="font-baloo text-3xl font-bold ${color} mb-2">${msg}</h2>
-        <p class="text-brand-500 mb-6">${r.subject.name} • ${r.track.name}</p>
-        <div class="bg-gradient-to-br from-brand-50 to-sky-50 rounded-3xl p-6 mb-6">
-          <div class="text-6xl font-baloo font-extrabold text-brand-700">${score}<span class="text-3xl text-brand-400">/${total}</span></div>
-          <p class="text-brand-500 mt-2">câu đúng</p>
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <button id="btn-replay" class="bg-gradient-to-r from-brand-500 to-brand-700 text-white font-bold py-3 rounded-2xl shadow-lg hover:scale-105 transition">🔄 Chơi lại</button>
-          <button id="btn-home2" class="bg-white text-brand-600 font-bold py-3 rounded-2xl shadow-lg border-2 border-brand-200">🏠 Trang chủ</button>
-        </div>
-      </div>
-    </section>
-  `;
-
-  attachNavEvents({
-    onBack: () => { renderTrackScreen(); },
-    onHome: () => { renderStudentHome(); },
-  });
-  document.getElementById('btn-replay').addEventListener('click', () => { playSound('click'); startRound(); });
-  document.getElementById('btn-home2').addEventListener('click', () => { playSound('click'); renderStudentHome(); });
-}
-
-// ============================================
-// NAV EVENTS
-// ============================================
-function attachNavEvents({ onBack, onHome }) {
-  setTimeout(() => {
-    const backBtn = document.getElementById('nav-back');
-    const homeBtn = document.getElementById('nav-home');
-    if (backBtn && onBack) backBtn.addEventListener('click', () => { playSound('click'); onBack(); });
-    if (homeBtn && onHome) homeBtn.addEventListener('click', () => { playSound('click'); onHome(); });
-  }, 0);
-}
-
-// ============================================
-// EXPORTS
-// ============================================
-window.logout = logout;
-</script>
-
-</body>
-</html>
