@@ -25,10 +25,7 @@
             300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1',
             600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81',
           },
-          sunny: '#FCD34D',
-          coral: '#FB7185',
-          mint: '#34D399',
-          sky: '#38BDF8',
+          sunny: '#FCD34D', coral: '#FB7185', mint: '#34D399', sky: '#38BDF8',
         },
         animation: {
           'bounce-slow': 'bounce 2s infinite',
@@ -116,10 +113,8 @@ body { font-family: 'Nunito', sans-serif; overscroll-behavior: none; }
 
 .confetti {
   position: fixed;
-  width: 10px;
-  height: 10px;
-  pointer-events: none;
-  z-index: 100;
+  width: 10px; height: 10px;
+  pointer-events: none; z-index: 100;
   animation: confettiFall 2.5s linear forwards;
 }
 @keyframes confettiFall {
@@ -137,12 +132,28 @@ body { font-family: 'Nunito', sans-serif; overscroll-behavior: none; }
   border: 4px solid #e0e7ff;
   border-top: 4px solid #6366f1;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 40px; height: 40px;
   animation: spin 1s linear infinite;
   margin: 0 auto;
 }
 @keyframes spin { 100% { transform: rotate(360deg); } }
+
+.nav-back-btn, .nav-home-btn {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 2px solid #c7d2fe;
+  color: #4338ca;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+  transition: all 0.2s;
+  font-size: 14px;
+}
+.nav-back-btn:hover, .nav-home-btn:hover {
+  background: #eef2ff;
+  transform: translateY(-2px);
+}
 
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: #eef2ff; }
@@ -162,70 +173,13 @@ button { user-select: none; }
   <div class="absolute bottom-40 right-10 text-5xl opacity-20 animate-float" style="animation-delay: 1.5s">🌟</div>
 </div>
 
-<div id="app" class="min-h-screen flex flex-col">
-  <section id="screen-login" class="screen flex-1 flex items-center justify-center p-4">
-    <div class="w-full max-w-md">
-      <div class="text-center mb-6">
-        <div class="inline-block relative">
-          <div class="text-8xl animate-bounce-slow select-none">🤖</div>
-          <div class="absolute -top-2 -right-2 text-3xl animate-wiggle">✨</div>
-        </div>
-        <h1 class="font-baloo text-4xl font-extrabold text-brand-700 mt-3">Vui Học</h1>
-        <p class="font-nunito text-brand-600 mt-1">Đấu trường kiến thức cho bé 🎯</p>
-      </div>
-
-      <div class="bg-white/90 backdrop-blur rounded-3xl shadow-2xl p-6 border-4 border-white">
-        <h2 class="font-baloo text-2xl font-bold text-brand-700 text-center mb-5">Đăng nhập 👋</h2>
-
-        <div class="mb-5">
-          <label class="block font-bold text-brand-700 mb-2 text-sm">Bạn là:</label>
-          <div class="grid grid-cols-2 gap-3">
-            <button type="button" data-role="student" class="role-btn role-active rounded-2xl py-3 font-bold text-lg transition-all border-4 border-brand-500 bg-brand-500 text-white shadow-lg">🎓 Học sinh</button>
-            <button type="button" data-role="parent" class="role-btn rounded-2xl py-3 font-bold text-lg transition-all border-4 border-brand-200 bg-white text-brand-600">👨‍👩‍👧 Phụ huynh</button>
-          </div>
-          <input type="hidden" id="role-input" value="student" />
-        </div>
-
-        <div class="mb-4">
-          <label class="block font-bold text-brand-700 mb-2 text-sm">Tên đăng nhập:</label>
-          <input type="text" id="username-input" autocomplete="username" placeholder="Ví dụ: minh" class="w-full px-4 py-3 rounded-2xl border-4 border-brand-200 focus:border-brand-500 focus:outline-none font-nunito text-lg bg-brand-50/50" />
-        </div>
-
-        <div class="mb-5">
-          <label class="block font-bold text-brand-700 mb-2 text-sm">Mật khẩu:</label>
-          <div class="relative">
-            <input type="password" id="password-input" autocomplete="current-password" placeholder="••••••" class="w-full px-4 py-3 rounded-2xl border-4 border-brand-200 focus:border-brand-500 focus:outline-none font-nunito text-lg bg-brand-50/50 pr-12" />
-            <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-2xl hover:scale-110 transition-transform">👁️</button>
-          </div>
-        </div>
-
-        <div id="login-error" class="hidden mb-4 p-3 rounded-2xl bg-coral/20 border-2 border-coral text-coral font-bold text-center text-sm">
-          ⚠️ <span id="login-error-text">Sai tên hoặc mật khẩu!</span>
-        </div>
-
-        <button type="button" id="login-btn" class="w-full bg-gradient-to-r from-brand-500 to-brand-700 hover:from-brand-600 hover:to-brand-800 text-white font-baloo font-bold text-xl py-4 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-95 transition-all">
-          <span id="login-btn-text">🚀 Vào chơi!</span>
-        </button>
-
-        <p class="text-center text-xs text-brand-500 mt-4">
-          💡 Demo: <code class="bg-brand-100 px-1 rounded">minh / 1234</code> •
-          <code class="bg-brand-100 px-1 rounded">bome / 1234</code> •
-          <code class="bg-brand-100 px-1 rounded">admin / 1234</code>
-        </p>
-      </div>
-
-      <p class="text-center text-xs text-brand-500 mt-4">
-        Phiên bản 2.0 • <span id="connection-status">Đang kiểm tra kết nối...</span>
-      </p>
-    </div>
-  </section>
-</div>
+<div id="app" class="min-h-screen flex flex-col"></div>
 
 <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 items-center"></div>
 
 <script>
 // ============================================
-// CẤU HÌNH API
+// CONFIG
 // ============================================
 const API_URL = 'https://script.google.com/macros/s/AKfycbztO88kMMXwKGgBkLfxZ-HiyCUxbXZYc1A-lfnOjJKV3DDXMFPEUpKOVdycJKoNyvrL/exec';
 const API_KEY = 'vuihoc_family_2026';
@@ -237,7 +191,6 @@ async function apiCall(action, payload = {}, method = 'GET') {
   try {
     let url = API_URL;
     const options = { method };
-
     if (method === 'GET') {
       const params = new URLSearchParams({ key: API_KEY, action, ...payload });
       url += '?' + params.toString();
@@ -247,7 +200,6 @@ async function apiCall(action, payload = {}, method = 'GET') {
       options.body = JSON.stringify({ key: API_KEY, action, payload });
       options.redirect = 'follow';
     }
-
     const res = await fetch(url, options);
     const json = await res.json();
     if (!json.ok) throw new Error(json.error || 'API error');
@@ -259,26 +211,36 @@ async function apiCall(action, payload = {}, method = 'GET') {
 }
 
 // ============================================
-// FALLBACK LOCAL (khi mất mạng)
+// FALLBACK LOCAL
 // ============================================
-const FALLBACK_QUESTIONS = [
-  { id: 'q001', subject: 'toan', question: 'Khi viết chữ số 5 vào bên trái một số có ba chữ số thì số mới hơn số cũ bao nhiêu đơn vị?', options: ['500', '5000', '50000', '500000'], correct: 1 },
-  { id: 'q002', subject: 'toan', question: 'Số bé nhất có năm chữ số là số nào?', options: ['10000', '11111', '12345', '99999'], correct: 0 },
-  { id: 'q003', subject: 'toan', question: 'Số lớn nhất có sáu chữ số là số nào?', options: ['100000', '999999', '987654', '999998'], correct: 1 },
-  { id: 'q004', subject: 'toan', question: 'Số lớn nhất có sáu chữ số khác nhau là số nào?', options: ['987654', '999999', '987655', '987650'], correct: 0 },
-  { id: 'q005', subject: 'toan', question: 'Số nhỏ nhất có năm chữ số khác nhau là số nào?', options: ['10234', '12345', '10000', '11111'], correct: 0 },
-  { id: 'q006', subject: 'toan', question: 'Dãy số tự nhiên liên tiếp từ 325 đến 796 có tất cả bao nhiêu số lẻ?', options: ['236', '235', '237', '234'], correct: 0 },
-  { id: 'q007', subject: 'toan', question: 'Dãy số tự nhiên liên tiếp từ 324 đến 987 có tất cả bao nhiêu số chẵn?', options: ['331', '332', '333', '334'], correct: 1 },
-  { id: 'q008', subject: 'toan', question: 'Tìm trung bình cộng của các số lẻ có hai chữ số lớn hơn 79.', options: ['89', '90', '91', '92'], correct: 0 },
-  { id: 'q009', subject: 'toan', question: 'Trung bình cộng của ba số là 25, trung bình cộng của số thứ nhất và số thứ hai là 22. Tìm số thứ ba.', options: ['28', '29', '30', '31'], correct: 2 },
-  { id: 'q010', subject: 'toan', question: 'Tổng của hai số tự nhiên là 346. Biết số bé là số có hai chữ số và khi viết thêm chữ số 2 vào trước số bé thì được số lớn. Tìm hai số đó.', options: ['123 và 223', '146 và 200', '150 và 196', '173 và 173'], correct: 0 },
-];
-
 const FALLBACK_USERS = [
   { id: 'a001', username: 'admin', password: '1234', role: 'admin',   display_name: 'Quản trị viên', total_score: 0 },
   { id: 'u001', username: 'minh',  password: '1234', role: 'student', display_name: 'Bé Minh',        total_score: 0 },
   { id: 'u002', username: 'lan',   password: '1234', role: 'student', display_name: 'Bé Lan',         total_score: 0 },
   { id: 'p001', username: 'bome',  password: '1234', role: 'parent',  display_name: 'Bố Mẹ',          total_score: 0 },
+];
+
+const FALLBACK_SUBJECTS = [
+  { id: 'toan', name: 'Toán', description: 'Toán lớp 4' },
+];
+
+const FALLBACK_TRACKS = {
+  toan: [
+    { id: 'vio4', subject_id: 'toan', name: 'Violympic lớp 4', description: 'Bộ đề Violympic Toán 4' },
+  ],
+};
+
+const FALLBACK_QUESTIONS = [
+  { id: 'q001', subject: 'toan', track: 'vio4', question: 'Khi viết chữ số 5 vào bên trái một số có ba chữ số thì số mới hơn số cũ bao nhiêu đơn vị?', options: ['500', '5000', '50000', '500000'], correct: 1 },
+  { id: 'q002', subject: 'toan', track: 'vio4', question: 'Số bé nhất có năm chữ số là số nào?', options: ['10000', '11111', '12345', '99999'], correct: 0 },
+  { id: 'q003', subject: 'toan', track: 'vio4', question: 'Số lớn nhất có sáu chữ số là số nào?', options: ['100000', '999999', '987654', '999998'], correct: 1 },
+  { id: 'q004', subject: 'toan', track: 'vio4', question: 'Số lớn nhất có sáu chữ số khác nhau là số nào?', options: ['987654', '999999', '987655', '987650'], correct: 0 },
+  { id: 'q005', subject: 'toan', track: 'vio4', question: 'Số nhỏ nhất có năm chữ số khác nhau là số nào?', options: ['10234', '12345', '10000', '11111'], correct: 0 },
+  { id: 'q006', subject: 'toan', track: 'vio4', question: 'Dãy số tự nhiên liên tiếp từ 325 đến 796 có tất cả bao nhiêu số lẻ?', options: ['236', '235', '237', '234'], correct: 0 },
+  { id: 'q007', subject: 'toan', track: 'vio4', question: 'Dãy số tự nhiên liên tiếp từ 324 đến 987 có tất cả bao nhiêu số chẵn?', options: ['331', '332', '333', '334'], correct: 1 },
+  { id: 'q008', subject: 'toan', track: 'vio4', question: 'Tìm trung bình cộng của các số lẻ có hai chữ số lớn hơn 79.', options: ['89', '90', '91', '92'], correct: 0 },
+  { id: 'q009', subject: 'toan', track: 'vio4', question: 'Trung bình cộng của ba số là 25, trung bình cộng của số thứ nhất và số thứ hai là 22. Tìm số thứ ba.', options: ['28', '29', '30', '31'], correct: 2 },
+  { id: 'q010', subject: 'toan', track: 'vio4', question: 'Tổng của hai số tự nhiên là 346. Biết số bé là số có hai chữ số và khi viết thêm chữ số 2 vào trước số bé thì được số lớn. Tìm hai số đó.', options: ['123 và 223', '146 và 200', '150 và 196', '173 và 173'], correct: 0 },
 ];
 
 function shuffleOptions(q) {
@@ -288,8 +250,8 @@ function shuffleOptions(q) {
   return { ...q, options: newOptions, correct: newCorrect };
 }
 
-function getLocalQuestions(subject, n) {
-  const pool = FALLBACK_QUESTIONS.filter((q) => q.subject === subject);
+function getLocalQuestions(subject, track, n) {
+  const pool = FALLBACK_QUESTIONS.filter((q) => q.subject === subject && q.track === track);
   return [...pool].sort(() => Math.random() - 0.5).slice(0, n).map(shuffleOptions);
 }
 
@@ -300,10 +262,8 @@ function showToast(message, type = 'info', duration = 2500) {
   const container = document.getElementById('toast-container');
   if (!container) return;
   const colors = {
-    success: 'bg-mint text-white',
-    error: 'bg-coral text-white',
-    warning: 'bg-sunny text-brand-900',
-    info: 'bg-brand-500 text-white',
+    success: 'bg-mint text-white', error: 'bg-coral text-white',
+    warning: 'bg-sunny text-brand-900', info: 'bg-brand-500 text-white',
   };
   const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
   const toast = document.createElement('div');
@@ -329,20 +289,16 @@ function playSound(type = 'click') {
       osc.frequency.setValueAtTime(freq, now + start);
       gain.gain.setValueAtTime(volume, now + start);
       gain.gain.exponentialRampToValueAtTime(0.001, now + start + duration);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now + start);
-      osc.stop(now + start + duration);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(now + start); osc.stop(now + start + duration);
     };
     switch (type) {
       case 'click': playTone(600, 0, 0.08, 'sine', 0.08); break;
       case 'tick':  playTone(1000, 0, 0.03, 'square', 0.05); break;
-      case 'win':
-        [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => playTone(f, i * 0.12, 0.2, 'sine', 0.18));
-        break;
+      case 'win':   [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => playTone(f, i * 0.12, 0.2, 'sine', 0.18)); break;
     }
     setTimeout(() => ctx.close(), 2000);
-  } catch (e) { console.warn('[Sound]', e); }
+  } catch (e) {}
 }
 
 function playCorrectSound() {
@@ -364,7 +320,7 @@ function playCorrectSound() {
     playNote(2093, 0, 0.1, 0.08);
     playNote(2637, 0.12, 0.15, 0.08);
     setTimeout(() => ctx.close(), 1500);
-  } catch (e) { console.warn('[Sound]', e); }
+  } catch (e) {}
 }
 
 function playWrongSound() {
@@ -386,21 +342,21 @@ function playWrongSound() {
     osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
     osc.start(now); osc.stop(now + 0.5);
     setTimeout(() => ctx.close(), 1000);
-  } catch (e) { console.warn('[Sound]', e); }
+  } catch (e) {}
 }
 
 function fireConfetti(count = 30) {
   const colors = ['#FCD34D', '#FB7185', '#34D399', '#38BDF8', '#A78BFA', '#F472B6'];
   for (let i = 0; i < count; i++) {
-    const confetti = document.createElement('div');
-    confetti.className = 'confetti';
-    confetti.style.left = Math.random() * 100 + 'vw';
-    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-    confetti.style.animationDelay = Math.random() * 0.5 + 's';
-    confetti.style.animationDuration = 2 + Math.random() * 1.5 + 's';
-    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-    document.body.appendChild(confetti);
-    setTimeout(() => confetti.remove(), 4000);
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    c.style.animationDelay = Math.random() * 0.5 + 's';
+    c.style.animationDuration = 2 + Math.random() * 1.5 + 's';
+    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
   }
 }
 
@@ -434,6 +390,22 @@ function showConfirm(title, message, okText = 'Đồng ý', cancelText = 'Hủy'
 }
 
 // ============================================
+// NAV BAR
+// ============================================
+function renderNavBar({ showBack = true, showHome = true }) {
+  return `
+    <div class="fixed top-4 left-4 right-4 flex justify-between z-30 pointer-events-none">
+      <div class="pointer-events-auto">
+        ${showBack ? '<button id="nav-back" class="nav-back-btn">⬅️ Quay lại</button>' : ''}
+      </div>
+      <div class="pointer-events-auto">
+        ${showHome ? '<button id="nav-home" class="nav-home-btn">🏠 Trang chủ</button>' : ''}
+      </div>
+    </div>
+  `;
+}
+
+// ============================================
 // APP STATE
 // ============================================
 const state = {
@@ -442,34 +414,99 @@ const state = {
   currentRound: null,
   isOnline: false,
   subjects: [],
+  tracks: [],
+  selectedSubject: null,
+  selectedTrack: null,
 };
 
 // ============================================
-// KHỞI TẠO
+// INIT
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
-  initLoginScreen();
+  renderLoginScreen();
   checkAPIConnection();
 });
 
 async function checkAPIConnection() {
-  const statusEl = document.getElementById('connection-status');
   try {
-    const data = await apiCall('ping');
+    await apiCall('ping');
     state.isOnline = true;
-    if (statusEl) statusEl.innerHTML = '🟢 Đã kết nối Google Sheets';
-    console.log('[API] Ping OK:', data);
+    const el = document.getElementById('connection-status');
+    if (el) el.textContent = '🟢 Đã kết nối Google Sheets';
   } catch (err) {
     state.isOnline = false;
-    if (statusEl) statusEl.innerHTML = '🟡 Offline (dùng dữ liệu demo)';
-    console.warn('[API] Không kết nối được:', err);
+    const el = document.getElementById('connection-status');
+    if (el) el.textContent = '🟡 Offline (dùng dữ liệu demo)';
   }
 }
 
 // ============================================
-// LOGIN
+// SCREEN: LOGIN
 // ============================================
-function initLoginScreen() {
+function renderLoginScreen() {
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <section class="flex-1 flex items-center justify-center p-4">
+      <div class="w-full max-w-md">
+        <div class="text-center mb-6">
+          <div class="inline-block relative">
+            <div class="text-8xl animate-bounce-slow select-none">🤖</div>
+            <div class="absolute -top-2 -right-2 text-3xl animate-wiggle">✨</div>
+          </div>
+          <h1 class="font-baloo text-4xl font-extrabold text-brand-700 mt-3">Vui Học</h1>
+          <p class="font-nunito text-brand-600 mt-1">Đấu trường kiến thức cho bé 🎯</p>
+        </div>
+
+        <div class="bg-white/90 backdrop-blur rounded-3xl shadow-2xl p-6 border-4 border-white">
+          <h2 class="font-baloo text-2xl font-bold text-brand-700 text-center mb-5">Đăng nhập 👋</h2>
+
+          <div class="mb-5">
+            <label class="block font-bold text-brand-700 mb-2 text-sm">Bạn là:</label>
+            <div class="grid grid-cols-2 gap-3">
+              <button type="button" data-role="student" class="role-btn role-active rounded-2xl py-3 font-bold text-lg transition-all border-4 border-brand-500 bg-brand-500 text-white shadow-lg">🎓 Học sinh</button>
+              <button type="button" data-role="parent" class="role-btn rounded-2xl py-3 font-bold text-lg transition-all border-4 border-brand-200 bg-white text-brand-600">👨‍👩‍👧 Phụ huynh</button>
+            </div>
+            <input type="hidden" id="role-input" value="student" />
+          </div>
+
+          <div class="mb-4">
+            <label class="block font-bold text-brand-700 mb-2 text-sm">Tên đăng nhập:</label>
+            <input type="text" id="username-input" autocomplete="username" placeholder="Ví dụ: minh" class="w-full px-4 py-3 rounded-2xl border-4 border-brand-200 focus:border-brand-500 focus:outline-none font-nunito text-lg bg-brand-50/50" />
+          </div>
+
+          <div class="mb-5">
+            <label class="block font-bold text-brand-700 mb-2 text-sm">Mật khẩu:</label>
+            <div class="relative">
+              <input type="password" id="password-input" autocomplete="current-password" placeholder="••••••" class="w-full px-4 py-3 rounded-2xl border-4 border-brand-200 focus:border-brand-500 focus:outline-none font-nunito text-lg bg-brand-50/50 pr-12" />
+              <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-2xl hover:scale-110 transition-transform">👁️</button>
+            </div>
+          </div>
+
+          <div id="login-error" class="hidden mb-4 p-3 rounded-2xl bg-coral/20 border-2 border-coral text-coral font-bold text-center text-sm">
+            ⚠️ <span id="login-error-text">Sai tên hoặc mật khẩu!</span>
+          </div>
+
+          <button type="button" id="login-btn" class="w-full bg-gradient-to-r from-brand-500 to-brand-700 hover:from-brand-600 hover:to-brand-800 text-white font-baloo font-bold text-xl py-4 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-95 transition-all">
+            <span id="login-btn-text">🚀 Vào chơi!</span>
+          </button>
+
+          <p class="text-center text-xs text-brand-500 mt-4">
+            💡 Demo: <code class="bg-brand-100 px-1 rounded">minh / 1234</code> •
+            <code class="bg-brand-100 px-1 rounded">bome / 1234</code> •
+            <code class="bg-brand-100 px-1 rounded">admin / 1234</code>
+          </p>
+        </div>
+
+        <p class="text-center text-xs text-brand-500 mt-4">
+          Phiên bản 2.5 • <span id="connection-status">Đang kiểm tra...</span>
+        </p>
+      </div>
+    </section>
+  `;
+  initLoginEvents();
+}
+
+function initLoginEvents() {
   const roleBtns = document.querySelectorAll('.role-btn');
   const roleInput = document.getElementById('role-input');
   const togglePwd = document.getElementById('toggle-password');
@@ -506,11 +543,6 @@ function initLoginScreen() {
     el.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleLogin(); });
   });
 
-  function showError(msg) {
-    errorText.textContent = msg;
-    errorBox.classList.remove('hidden');
-  }
-
   async function handleLogin() {
     const username = document.getElementById('username-input').value.trim().toLowerCase();
     const password = pwdInput.value.trim();
@@ -518,8 +550,9 @@ function initLoginScreen() {
     errorBox.classList.add('hidden');
 
     if (!username || !password) {
-      showError('Vui lòng nhập đầy đủ tên và mật khẩu!');
-      playSound('wrong');
+      errorText.textContent = 'Vui lòng nhập đầy đủ!';
+      errorBox.classList.remove('hidden');
+      playSound('click');
       return;
     }
 
@@ -532,15 +565,10 @@ function initLoginScreen() {
         const data = await apiCall('login', { username, password });
         if (data.user) user = data.user;
       }
-    } catch (err) {
-      console.warn('[Login] API lỗi, dùng fallback:', err);
-    }
+    } catch (err) { console.warn('[Login]', err); }
 
-    // Fallback local
     if (!user) {
-      const localUser = FALLBACK_USERS.find(
-        (u) => u.username === username && u.password === password
-      );
+      const localUser = FALLBACK_USERS.find((u) => u.username === username && u.password === password);
       if (localUser) {
         const { password: _, ...rest } = localUser;
         user = rest;
@@ -551,385 +579,73 @@ function initLoginScreen() {
     loginBtnText.textContent = '🚀 Vào chơi!';
 
     if (!user) {
-      showError('Sai tên hoặc mật khẩu!');
-      playSound('wrong');
+      errorText.textContent = 'Sai tên hoặc mật khẩu!';
+      errorBox.classList.remove('hidden');
+      playSound('click');
       return;
     }
 
-    // Check role: admin có thể vào mọi role
     if (user.role !== 'admin' && user.role !== role) {
-      showError(`Tài khoản này là "${user.role}", không phải "${role}"!`);
-      playSound('wrong');
+      errorText.textContent = `Tài khoản này là "${user.role}"!`;
+      errorBox.classList.remove('hidden');
+      playSound('click');
       return;
     }
 
     playSound('win');
     state.currentUser = user;
-    showToast(`Chào ${user.display_name || user.displayName}! 🎉`, 'success');
+    showToast(`Chào ${user.display_name}! 🎉`, 'success');
 
     setTimeout(() => {
-      if (user.role === 'student') showStudentHome();
-      else if (user.role === 'parent') showParentHome();
-      else showAdminHome();
+      if (user.role === 'student') renderStudentHome();
+      else if (user.role === 'parent') renderParentHome();
+      else renderAdminHome();
     }, 500);
   }
 }
 
 // ============================================
-// STUDENT HOME
+// SCREEN: STUDENT HOME
 // ============================================
-async function showStudentHome() {
+async function renderStudentHome() {
   const u = state.currentUser;
   const app = document.getElementById('app');
   app.innerHTML = `
-    <section class="flex-1 flex items-center justify-center p-4">
+    ${renderNavBar({ showBack: false, showHome: false })}
+    <section class="flex-1 flex items-center justify-center p-4 pt-20">
       <div class="max-w-2xl w-full bg-white/90 rounded-3xl shadow-2xl p-6 text-center">
         <div class="text-7xl mb-4">🎓</div>
-        <h2 class="font-baloo text-3xl font-bold text-brand-700">Chào ${u.display_name || u.displayName}!</h2>
+        <h2 class="font-baloo text-3xl font-bold text-brand-700">Chào ${u.display_name}!</h2>
         <p class="text-brand-500 mt-2 mb-2">Điểm tổng: <span class="font-bold text-sunny">⭐ ${u.total_score || 0}</span></p>
         <p class="text-brand-500 mb-6 text-sm">${state.isOnline ? '🟢 Đã kết nối' : '🟡 Offline'}</p>
         <div class="grid grid-cols-1 gap-3">
-          <button onclick="startRound('toan')" class="bg-gradient-to-r from-brand-500 to-brand-700 text-white font-bold py-4 rounded-2xl shadow-lg hover:scale-105 transition">🧮 Chơi Toán</button>
-          <button onclick="showToast('Sẽ có ở Phase 5!', 'info')" class="bg-gray-200 text-gray-500 font-bold py-4 rounded-2xl">🇬🇧 Toán tiếng Anh (sắp có)</button>
-          <button onclick="showToast('Sẽ có ở Phase 5!', 'info')" class="bg-gray-200 text-gray-500 font-bold py-4 rounded-2xl">📚 Tiếng Anh (sắp có)</button>
-          <button onclick="logout()" class="bg-coral text-white font-bold py-3 rounded-2xl mt-4">🚪 Đăng xuất</button>
+          <button id="btn-play" class="bg-gradient-to-r from-brand-500 to-brand-700 text-white font-bold py-4 rounded-2xl shadow-lg hover:scale-105 transition">🎮 Chơi ngay</button>
+          <button id="btn-logout" class="bg-coral text-white font-bold py-3 rounded-2xl mt-4">🚪 Đăng xuất</button>
         </div>
       </div>
     </section>
   `;
-}
-
-function showParentHome() {
-  const u = state.currentUser;
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    <section class="flex-1 flex items-center justify-center p-4">
-      <div class="max-w-2xl w-full bg-white/90 rounded-3xl shadow-2xl p-6 text-center">
-        <div class="text-7xl mb-4">👨‍👩‍👧</div>
-        <h2 class="font-baloo text-3xl font-bold text-brand-700">Xin chào ${u.display_name || u.displayName}!</h2>
-        <p class="text-brand-500 mt-2 mb-6">Dashboard phụ huynh — Phase 4 🚧</p>
-        <button onclick="logout()" class="bg-coral text-white font-bold py-3 px-8 rounded-2xl">🚪 Đăng xuất</button>
-      </div>
-    </section>
-  `;
-}
-
-function showAdminHome() {
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    <section class="flex-1 flex items-center justify-center p-4">
-      <div class="max-w-2xl w-full bg-white/90 rounded-3xl shadow-2xl p-6 text-center">
-        <div class="text-7xl mb-4">🛠️</div>
-        <h2 class="font-baloo text-3xl font-bold text-brand-700">Admin Dashboard</h2>
-        <p class="text-brand-500 mt-2 mb-6">Phase 6 🚧</p>
-        <button onclick="logout()" class="bg-coral text-white font-bold py-3 px-8 rounded-2xl">🚪 Đăng xuất</button>
-      </div>
-    </section>
-  `;
-}
-
-function logout() {
-  playSound('click');
-  state.currentUser = null;
-  state.currentRound = null;
-  showToast('Đã đăng xuất', 'info');
-  setTimeout(() => location.reload(), 500);
+  document.getElementById('btn-play').addEventListener('click', () => { playSound('click'); renderSubjectScreen(); });
+  document.getElementById('btn-logout').addEventListener('click', logout);
 }
 
 // ============================================
-// QUIZ
+// SCREEN: CHỌN MÔN
 // ============================================
-async function startRound(subject = 'toan') {
-  playSound('click');
-
+async function renderSubjectScreen() {
   const app = document.getElementById('app');
   app.innerHTML = `
-    <section class="flex-1 flex items-center justify-center p-4">
-      <div class="text-center">
-        <div class="spinner"></div>
-        <p class="text-brand-600 font-bold mt-4">Đang tải câu hỏi...</p>
-      </div>
-    </section>
-  `;
-
-  let questions = [];
-  try {
-    if (state.isOnline) {
-      const data = await apiCall('getQuestions', { subject, limit: 10 });
-      questions = (data || []).map((q) => shuffleOptions(q));
-    }
-  } catch (err) {
-    console.warn('[Quiz] API lỗi, dùng local:', err);
-  }
-
-  if (!questions || questions.length === 0) {
-    questions = getLocalQuestions(subject, 10);
-  }
-
-  if (questions.length === 0) {
-    showToast('Chưa có câu hỏi cho môn này!', 'warning');
-    showStudentHome();
-    return;
-  }
-
-  state.currentRound = {
-    subject, questions,
-    answers: new Array(questions.length).fill(null),
-    currentIndex: 0, score: 0,
-    timeLeft: 600, timerId: null, locked: false,
-  };
-  renderQuizScreen();
-  startTimer();
-}
-
-function renderQuizScreen() {
-  const r = state.currentRound;
-  if (!r) return;
-  const q = r.questions[r.currentIndex];
-  const app = document.getElementById('app');
-
-  app.innerHTML = `
-    <section class="flex-1 p-4">
-      <div class="max-w-2xl mx-auto w-full">
-        <div class="bg-white/90 rounded-2xl shadow-lg p-4 mb-4">
-          <div class="flex justify-between items-center mb-2">
-            <span class="font-bold text-brand-700">Câu ${r.currentIndex + 1}/${r.questions.length}</span>
-            <span class="font-bold text-sunny text-lg" id="score-display">⭐ ${r.score} điểm</span>
-            <span id="timer-text" class="font-bold text-brand-700 text-lg">⏱️ 10:00</span>
-          </div>
-          <div class="w-full bg-brand-100 rounded-full h-3 overflow-hidden mb-3">
-            <div id="timer-bar" class="timer-bar h-full bg-gradient-to-r from-mint to-sky" style="width: 100%"></div>
-          </div>
-          <button id="submit-btn" class="w-full bg-coral hover:bg-coral/90 text-white font-bold py-2 rounded-xl text-sm transition">📤 Nộp bài</button>
-        </div>
-
-        <div class="bg-white/90 rounded-3xl shadow-2xl p-6 mb-4">
-          <p class="font-baloo text-xl font-bold text-brand-700 mb-5 leading-relaxed">${q.question}</p>
-          <div class="grid gap-3" id="options-container">
-            ${q.options.map((opt, i) => `
-              <button class="answer-option w-full text-left px-5 py-4 rounded-2xl border-4 border-brand-200 bg-white font-bold text-lg text-brand-700" data-index="${i}">
-                <span class="inline-block w-8 h-8 rounded-full bg-brand-100 text-brand-700 text-center leading-8 mr-3 font-bold">${String.fromCharCode(65 + i)}</span>
-                <span>${opt}</span>
-              </button>
-            `).join('')}
-          </div>
-        </div>
-
-        <div id="feedback-area" class="hidden mb-4"></div>
-      </div>
-    </section>
-  `;
-
-  if (r.answers[r.currentIndex] !== null) revealAnswer(r.answers[r.currentIndex]);
-  bindQuizEvents();
-  updateTimerUI();
-}
-
-function bindQuizEvents() {
-  const r = state.currentRound;
-  const options = document.querySelectorAll('.answer-option');
-  const submitBtn = document.getElementById('submit-btn');
-  if (!r.locked) {
-    options.forEach((btn) => {
-      btn.addEventListener('click', () => handleAnswer(parseInt(btn.dataset.index)));
-    });
-  }
-  submitBtn.addEventListener('click', confirmSubmit);
-}
-
-function handleAnswer(selectedIdx) {
-  const r = state.currentRound;
-  if (r.locked) return;
-  const q = r.questions[r.currentIndex];
-  r.answers[r.currentIndex] = selectedIdx;
-  r.locked = true;
-
-  if (selectedIdx === q.correct) {
-    playCorrectSound();
-    r.score++;
-    fireConfetti(15);
-  } else {
-    playWrongSound();
-  }
-  revealAnswer(selectedIdx);
-
-  const scoreEl = document.getElementById('score-display');
-  if (scoreEl) scoreEl.textContent = `⭐ ${r.score} điểm`;
-
-  setTimeout(() => {
-    if (r.currentIndex === r.questions.length - 1) {
-      showToast('Đã hết câu! Bấm "Nộp bài" để xem kết quả', 'info', 3000);
-    } else {
-      r.currentIndex++;
-      r.locked = false;
-      renderQuizScreen();
-    }
-  }, 1500);
-}
-
-function revealAnswer(selectedIdx) {
-  const r = state.currentRound;
-  const q = r.questions[r.currentIndex];
-  const options = document.querySelectorAll('.answer-option');
-  options.forEach((btn, i) => {
-    btn.classList.add('answer-disabled');
-    if (i === q.correct) btn.classList.add('answer-correct');
-    else if (i === selectedIdx && selectedIdx !== q.correct) btn.classList.add('answer-wrong');
-  });
-
-  const feedbackArea = document.getElementById('feedback-area');
-  if (feedbackArea) {
-    feedbackArea.classList.remove('hidden');
-    if (selectedIdx === q.correct) {
-      feedbackArea.innerHTML = `
-        <div class="bg-mint/20 border-4 border-mint rounded-2xl p-4 text-center animate-pop">
-          <p class="font-baloo text-xl font-bold text-mint">🎉 Chính xác! +1 điểm</p>
-        </div>
-      `;
-    } else {
-      feedbackArea.innerHTML = `
-        <div class="bg-coral/20 border-4 border-coral rounded-2xl p-4 text-center animate-pop">
-          <p class="font-baloo text-xl font-bold text-coral">😢 Chưa đúng!</p>
-          <p class="text-brand-700 mt-1 font-bold">Đáp án đúng: <span class="text-mint">${String.fromCharCode(65 + q.correct)}. ${q.options[q.correct]}</span></p>
-        </div>
-      `;
-    }
-  }
-}
-
-async function confirmSubmit() {
-  const r = state.currentRound;
-  if (!r) return;
-  const answered = r.answers.filter((a) => a !== null).length;
-  const unanswered = r.questions.length - answered;
-  let message = `Bé đã làm ${answered}/${r.questions.length} câu.`;
-  if (unanswered > 0) message += ` Còn ${unanswered} câu chưa trả lời!`;
-  message += ' Bé có chắc muốn nộp bài?';
-  const ok = await showConfirm('Nộp bài?', message, '📤 Nộp', '↩️ Tiếp tục');
-  if (ok) submitRound();
-}
-
-function startTimer() {
-  const r = state.currentRound;
-  if (r.timerId) clearInterval(r.timerId);
-  updateTimerUI();
-  r.timerId = setInterval(() => {
-    r.timeLeft--;
-    updateTimerUI();
-    if (r.timeLeft <= 10 && r.timeLeft > 0) playSound('tick');
-    if (r.timeLeft <= 0) {
-      clearInterval(r.timerId);
-      showToast('Hết giờ! Tự động nộp bài', 'warning');
-      submitRound();
-    }
-  }, 1000);
-}
-
-function updateTimerUI() {
-  const r = state.currentRound;
-  if (!r) return;
-  const text = document.getElementById('timer-text');
-  const bar = document.getElementById('timer-bar');
-  if (!text || !bar) return;
-  const min = Math.floor(r.timeLeft / 60);
-  const sec = r.timeLeft % 60;
-  text.textContent = `⏱️ ${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
-  const pct = (r.timeLeft / 600) * 100;
-  bar.style.width = pct + '%';
-  if (pct < 10) {
-    bar.style.background = '#FB7185';
-    text.classList.add('text-coral', 'animate-pulse');
-  } else if (pct < 30) {
-    bar.style.background = '#FCD34D';
-    text.classList.remove('text-coral', 'animate-pulse');
-  } else {
-    bar.style.background = 'linear-gradient(to right, #34D399, #38BDF8)';
-    text.classList.remove('text-coral', 'animate-pulse');
-  }
-}
-
-async function submitRound() {
-  const r = state.currentRound;
-  if (r.timerId) clearInterval(r.timerId);
-  const score = r.score;
-  const total = r.questions.length;
-
-  if (score >= 7) { playSound('win'); fireConfetti(50); }
-  else if (score >= 4) { playSound('click'); }
-
-  // Lưu điểm: online → API, offline → localStorage
-  if (state.currentUser) {
-    const prevTotal = parseInt(state.currentUser.total_score) || 0;
-    state.currentUser.total_score = prevTotal + score;
-
-    if (state.isOnline) {
-      try {
-        await apiCall('saveResult', {
-          user_id: state.currentUser.id,
-          subject_id: r.subject,
-          score,
-          total_questions: total,
-          round_number: 1,
-        }, 'POST');
-        console.log('[Save] Đã lưu lên Sheets');
-      } catch (err) {
-        console.warn('[Save] Lỗi API, lưu local:', err);
-        saveScoreLocal(state.currentUser.username, score);
-      }
-    } else {
-      saveScoreLocal(state.currentUser.username, score);
-    }
-  }
-
-  setTimeout(() => renderResultScreen(score, total), 300);
-}
-
-function saveScoreLocal(username, score) {
-  try {
-    const key = 'vuihoc_scores';
-    const data = JSON.parse(localStorage.getItem(key) || '{}');
-    if (!data[username]) data[username] = { total: 0, history: [] };
-    data[username].total += score;
-    data[username].history.push({ score, at: new Date().toISOString() });
-    localStorage.setItem(key, JSON.stringify(data));
-  } catch (e) { console.warn('[Save]', e); }
-}
-
-function renderResultScreen(score, total) {
-  const app = document.getElementById('app');
-  const pct = (score / total) * 100;
-  let emoji, msg, color;
-  if (pct >= 90) { emoji = '🏆'; msg = 'Xuất sắc!'; color = 'text-sunny'; }
-  else if (pct >= 70) { emoji = '🎉'; msg = 'Giỏi lắm!'; color = 'text-mint'; }
-  else if (pct >= 50) { emoji = '👍'; msg = 'Cố gắng thêm!'; color = 'text-sky'; }
-  else { emoji = '💪'; msg = 'Thử lại nhé!'; color = 'text-coral'; }
-
-  app.innerHTML = `
-    <section class="flex-1 flex items-center justify-center p-4">
-      <div class="max-w-md w-full bg-white/90 rounded-3xl shadow-2xl p-8 text-center">
-        <div class="text-8xl mb-3 animate-bounce-slow">${emoji}</div>
-        <h2 class="font-baloo text-3xl font-bold ${color} mb-2">${msg}</h2>
-        <p class="text-brand-500 mb-6">Kết quả của bé</p>
-        <div class="bg-gradient-to-br from-brand-50 to-sky-50 rounded-3xl p-6 mb-6">
-          <div class="text-6xl font-baloo font-extrabold text-brand-700">${score}<span class="text-3xl text-brand-400">/${total}</span></div>
-          <p class="text-brand-500 mt-2">câu đúng</p>
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <button onclick="startRound('toan')" class="bg-gradient-to-r from-brand-500 to-brand-700 text-white font-bold py-3 rounded-2xl shadow-lg hover:scale-105 transition">🔄 Chơi lại</button>
-          <button onclick="showStudentHome()" class="bg-white text-brand-600 font-bold py-3 rounded-2xl shadow-lg border-2 border-brand-200">🏠 Trang chủ</button>
+    ${renderNavBar({ showBack: true, showHome: true })}
+    <section class="flex-1 flex items-center justify-center p-4 pt-20">
+      <div class="max-w-2xl w-full bg-white/90 rounded-3xl shadow-2xl p-6">
+        <h2 class="font-baloo text-3xl font-bold text-brand-700 text-center mb-2">Chọn môn 📚</h2>
+        <p class="text-brand-500 text-center mb-6">Bé muốn học môn gì hôm nay?</p>
+        <div id="subjects-list" class="grid gap-3">
+          <div class="spinner"></div>
         </div>
       </div>
     </section>
   `;
-}
-
-// ============================================
-// EXPORTS
-// ============================================
-window.startRound = startRound;
-window.showStudentHome = showStudentHome;
-window.logout = logout;
-</script>
-
-</body>
-</html>
+  attachNavEvents({
+    onBack: () => { renderStudentHome(); },
+    onHome: () => { render
