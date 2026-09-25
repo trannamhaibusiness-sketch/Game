@@ -648,4 +648,481 @@ async function renderSubjectScreen() {
   `;
   attachNavEvents({
     onBack: () => { renderStudentHome(); },
-    onHome: () => { render
+    onHome: () => { renderStudentHome(); },
+  });
+
+  let subjects = [];
+  try {
+    if (state.isOnline) {
+      const data = await apiCall('getSubjects');
+      subjects = data || [];
+    }
+  } catch (err) { console.warn('[Subjects]', err); }
+
+  if (!subjects.length) subjects = FALLBACK_SUBJECTS;
+  state.subjects = subjects;
+
+  const list = document.getElementById('subjects-list');
+  if (!list) return;
+
+  const icons = { toan: '🧮', toan_en: '🇬🇧', en: '📚', tin: '💻' };
+  list.innerHTML = subjects.map((s) => `
+    <button data-subject-id="${s.id}" class="subject-btn bg-white hover:bg-brand-50 border-4 border-brand-200 hover:border-brand-500 rounded-3xl p-5 text-left transition-all hover:scale-[1.02] shadow-md">
+      <div class="flex items-center gap-4">
+        <div class="text-4xl">${icons[s.id] || '📖'}</div>
+        <div class="flex-1">
+          <div class="font-baloo text-xl font-bold text-brand-700">${s.name}</div>
+          <div class="text-sm text-brand-500">${s.description || ''}</div>
+        </div>
+        <div class="text-2xl text-brand-400">➡️</div>
+      </div>
+    </button>
+  `).join('');
+
+  list.querySelectorAll('.subject-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      playSound('click');
+      const subjectId = btn.dataset.subjectId;
+      state.selectedSubject = subjects.find((s) => s.id === subjectId);
+      renderTrackScreen();
+    });
+  });
+}
+
+// ============================================
+// SCREEN: CHỌN TRACK (LOẠI HÌNH)
+// ============================================
+async function renderTrackScreen() {
+  const subject = state.selectedSubject;
+  if (!subject) return renderSubjectScreen();
+
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    ${renderNavBar({ showBack: true, showHome: true })}
+    <section class="flex-1 flex items-center justify-center p-4 pt-20">
+      <div class="max-w-2xl w-full bg-white/90 rounded-3xl shadow-2xl p-6">
+        <div class="text-center mb-6">
+          <div class="text-sm text-brand-500 mb-1">Môn: ${subject.name}</div>
+          <h2 class="font-baloo text-3xl font-bold text-brand-700">Chọn loại hình 🎯</h2>
+        </div>
+        <div id="tracks-list" class="grid gap-3">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </section>
+  `;
+  attachNavEvents({
+    onBack: () => { renderSubjectScreen(); },
+    onHome: () => { renderStudentHome(); },
+  });
+
+  let tracks = [];
+  try {
+    if (state.isOnline) {
+      const data = await apiCall('getTracks', { subject: subject.id });
+      tracks = data || [];
+    }
+  } catch (err) { console.warn('[Tracks]', err); }
+
+  if (!tracks.length) tracks = FALLBACK_TRACKS[subject.id] || [];
+  state.tracks = tracks;
+
+  const list = document.getElementById('tracks-list');
+  if (!list) return;
+
+  if (tracks.length === 0) {
+    list.innerHTML = `
+      <div class="text-center p-6">
+        <div class="text-5xl mb-3">🚧</div>
+        <p class="text-brand-500 font-bold">Chưa có loại hình nào cho môn này</p>
+      </div>
+    `;
+    return;
+  }
+
+  const trackIcons = { vio4: '🏆', sgk4: '📘', nc4: '🚀' };
+  list.innerHTML = tracks.map((t) => `
+    <button data-track-id="${t.id}" class="track-btn bg-white hover:bg-brand-50 border-4 border-brand-200 hover:border-brand-500 rounded-3xl p-5 text-left transition-all hover:scale-[1.02] shadow-md">
+      <div class="flex items-center gap-4">
+        <div class="text-4xl">${trackIcons[t.id] || '📄'}</div>
+        <div class="flex-1">
+          <div class="font-baloo text-xl font-bold text-brand-700">${t.name}</div>
+          <div class="text-sm text-brand-500">${t.description || ''}</div>
+        </div>
+        <div class="text-2xl text-brand-400">➡️</div>
+      </div>
+    </button>
+  `).join('');
+
+  list.querySelectorAll('.track-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      playSound('click');
+      const trackId = btn.dataset.trackId;
+      state.selectedTrack = tracks.find((t) => t.id === trackId);
+      startRound();
+    });
+  });
+}
+
+// ============================================
+// PARENT / ADMIN HOME
+// ============================================
+function renderParentHome() {
+  const u = state.currentUser;
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <section class="flex-1 flex items-center justify-center p-4">
+      <div class="max-w-2xl w-full bg-white/90 rounded-3xl shadow-2xl p-6 text-center">
+        <div class="text-7xl mb-4">👨‍👩‍👧</div>
+        <h2 class="font-baloo text-3xl font-bold text-brand-700">Xin chào ${u.display_name}!</h2>
+        <p class="text-brand-500 mt-2 mb-6">Dashboard phụ huynh — Phase 4 🚧</p>
+        <button onclick="logout()" class="bg-coral text-white font-bold py-3 px-8 rounded-2xl">🚪 Đăng xuất</button>
+      </div>
+    </section>
+  `;
+}
+
+function renderAdminHome() {
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <section class="flex-1 flex items-center justify-center p-4">
+      <div class="max-w-2xl w-full bg-white/90 rounded-3xl shadow-2xl p-6 text-center">
+        <div class="text-7xl mb-4">🛠️</div>
+        <h2 class="font-baloo text-3xl font-bold text-brand-700">Admin Dashboard</h2>
+        <p class="text-brand-500 mt-2 mb-6">Phase 6 🚧</p>
+        <button onclick="logout()" class="bg-coral text-white font-bold py-3 px-8 rounded-2xl">🚪 Đăng xuất</button>
+      </div>
+    </section>
+  `;
+}
+
+function logout() {
+  playSound('click');
+  state.currentUser = null;
+  state.currentRound = null;
+  state.selectedSubject = null;
+  state.selectedTrack = null;
+  showToast('Đã đăng xuất', 'info');
+  setTimeout(() => location.reload(), 500);
+}
+
+// ============================================
+// QUIZ
+// ============================================
+async function startRound() {
+  playSound('click');
+  const subject = state.selectedSubject;
+  const track = state.selectedTrack;
+  if (!subject || !track) return;
+
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <section class="flex-1 flex items-center justify-center p-4">
+      <div class="text-center">
+        <div class="spinner"></div>
+        <p class="text-brand-600 font-bold mt-4">Đang tải câu hỏi...</p>
+      </div>
+    </section>
+  `;
+
+  let questions = [];
+  try {
+    if (state.isOnline) {
+      const data = await apiCall('getQuestions', { subject: subject.id, track: track.id, limit: 10 });
+      questions = (data || []).map((q) => shuffleOptions(q));
+    }
+  } catch (err) { console.warn('[Quiz]', err); }
+
+  if (!questions || questions.length === 0) {
+    questions = getLocalQuestions(subject.id, track.id, 10);
+  }
+
+  if (questions.length === 0) {
+    showToast('Chưa có câu hỏi cho loại này!', 'warning');
+    renderTrackScreen();
+    return;
+  }
+
+  state.currentRound = {
+    subject, track, questions,
+    answers: new Array(questions.length).fill(null),
+    currentIndex: 0, score: 0,
+    timeLeft: 600, timerId: null, locked: false,
+  };
+  renderQuizScreen();
+  startTimer();
+}
+
+function renderQuizScreen() {
+  const r = state.currentRound;
+  if (!r) return;
+  const q = r.questions[r.currentIndex];
+  const app = document.getElementById('app');
+
+  // KHÔNG nav bar khi đang thi
+  app.innerHTML = `
+    <section class="flex-1 p-4">
+      <div class="max-w-2xl mx-auto w-full">
+        <div class="bg-white/90 rounded-2xl shadow-lg p-4 mb-4">
+          <div class="flex justify-between items-center mb-2">
+            <span class="font-bold text-brand-700 text-sm">${r.subject.name} • ${r.track.name}</span>
+            <span class="font-bold text-sunny text-lg" id="score-display">⭐ ${r.score}</span>
+          </div>
+          <div class="flex justify-between items-center mb-2">
+            <span class="font-bold text-brand-700">Câu ${r.currentIndex + 1}/${r.questions.length}</span>
+            <span id="timer-text" class="font-bold text-brand-700 text-lg">⏱️ 10:00</span>
+          </div>
+          <div class="w-full bg-brand-100 rounded-full h-3 overflow-hidden mb-3">
+            <div id="timer-bar" class="timer-bar h-full bg-gradient-to-r from-mint to-sky" style="width: 100%"></div>
+          </div>
+          <button id="submit-btn" class="w-full bg-coral hover:bg-coral/90 text-white font-bold py-2 rounded-xl text-sm transition">📤 Nộp bài</button>
+        </div>
+
+        <div class="bg-white/90 rounded-3xl shadow-2xl p-6 mb-4">
+          <p class="font-baloo text-xl font-bold text-brand-700 mb-5 leading-relaxed">${q.question}</p>
+          <div class="grid gap-3" id="options-container">
+            ${q.options.map((opt, i) => `
+              <button class="answer-option w-full text-left px-5 py-4 rounded-2xl border-4 border-brand-200 bg-white font-bold text-lg text-brand-700" data-index="${i}">
+                <span class="inline-block w-8 h-8 rounded-full bg-brand-100 text-brand-700 text-center leading-8 mr-3 font-bold">${String.fromCharCode(65 + i)}</span>
+                <span>${opt}</span>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+
+        <div id="feedback-area" class="hidden mb-4"></div>
+      </div>
+    </section>
+  `;
+
+  if (r.answers[r.currentIndex] !== null) revealAnswer(r.answers[r.currentIndex]);
+  bindQuizEvents();
+  updateTimerUI();
+}
+
+function bindQuizEvents() {
+  const r = state.currentRound;
+  const options = document.querySelectorAll('.answer-option');
+  const submitBtn = document.getElementById('submit-btn');
+  if (!r.locked) {
+    options.forEach((btn) => {
+      btn.addEventListener('click', () => handleAnswer(parseInt(btn.dataset.index)));
+    });
+  }
+  submitBtn.addEventListener('click', confirmSubmit);
+}
+
+function handleAnswer(selectedIdx) {
+  const r = state.currentRound;
+  if (r.locked) return;
+  const q = r.questions[r.currentIndex];
+  r.answers[r.currentIndex] = selectedIdx;
+  r.locked = true;
+
+  if (selectedIdx === q.correct) {
+    playCorrectSound();
+    r.score++;
+    fireConfetti(15);
+  } else {
+    playWrongSound();
+  }
+  revealAnswer(selectedIdx);
+
+  const scoreEl = document.getElementById('score-display');
+  if (scoreEl) scoreEl.textContent = `⭐ ${r.score}`;
+
+  setTimeout(() => {
+    if (r.currentIndex === r.questions.length - 1) {
+      showToast('Đã hết câu! Bấm "Nộp bài"', 'info', 3000);
+    } else {
+      r.currentIndex++;
+      r.locked = false;
+      renderQuizScreen();
+    }
+  }, 1500);
+}
+
+function revealAnswer(selectedIdx) {
+  const r = state.currentRound;
+  const q = r.questions[r.currentIndex];
+  const options = document.querySelectorAll('.answer-option');
+  options.forEach((btn, i) => {
+    btn.classList.add('answer-disabled');
+    if (i === q.correct) btn.classList.add('answer-correct');
+    else if (i === selectedIdx && selectedIdx !== q.correct) btn.classList.add('answer-wrong');
+  });
+
+  const feedbackArea = document.getElementById('feedback-area');
+  if (feedbackArea) {
+    feedbackArea.classList.remove('hidden');
+    if (selectedIdx === q.correct) {
+      feedbackArea.innerHTML = `
+        <div class="bg-mint/20 border-4 border-mint rounded-2xl p-4 text-center animate-pop">
+          <p class="font-baloo text-xl font-bold text-mint">🎉 Chính xác! +1 điểm</p>
+        </div>
+      `;
+    } else {
+      feedbackArea.innerHTML = `
+        <div class="bg-coral/20 border-4 border-coral rounded-2xl p-4 text-center animate-pop">
+          <p class="font-baloo text-xl font-bold text-coral">😢 Chưa đúng!</p>
+          <p class="text-brand-700 mt-1 font-bold">Đáp án đúng: <span class="text-mint">${String.fromCharCode(65 + q.correct)}. ${q.options[q.correct]}</span></p>
+        </div>
+      `;
+    }
+  }
+}
+
+async function confirmSubmit() {
+  const r = state.currentRound;
+  if (!r) return;
+  const answered = r.answers.filter((a) => a !== null).length;
+  const unanswered = r.questions.length - answered;
+  let message = `Bé đã làm ${answered}/${r.questions.length} câu.`;
+  if (unanswered > 0) message += ` Còn ${unanswered} câu chưa trả lời!`;
+  message += ' Bé có chắc muốn nộp bài?';
+  const ok = await showConfirm('Nộp bài?', message, '📤 Nộp', '↩️ Tiếp tục');
+  if (ok) submitRound();
+}
+
+function startTimer() {
+  const r = state.currentRound;
+  if (r.timerId) clearInterval(r.timerId);
+  updateTimerUI();
+  r.timerId = setInterval(() => {
+    r.timeLeft--;
+    updateTimerUI();
+    if (r.timeLeft <= 10 && r.timeLeft > 0) playSound('tick');
+    if (r.timeLeft <= 0) {
+      clearInterval(r.timerId);
+      showToast('Hết giờ! Tự động nộp bài', 'warning');
+      submitRound();
+    }
+  }, 1000);
+}
+
+function updateTimerUI() {
+  const r = state.currentRound;
+  if (!r) return;
+  const text = document.getElementById('timer-text');
+  const bar = document.getElementById('timer-bar');
+  if (!text || !bar) return;
+  const min = Math.floor(r.timeLeft / 60);
+  const sec = r.timeLeft % 60;
+  text.textContent = `⏱️ ${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+  const pct = (r.timeLeft / 600) * 100;
+  bar.style.width = pct + '%';
+  if (pct < 10) {
+    bar.style.background = '#FB7185';
+    text.classList.add('text-coral', 'animate-pulse');
+  } else if (pct < 30) {
+    bar.style.background = '#FCD34D';
+    text.classList.remove('text-coral', 'animate-pulse');
+  } else {
+    bar.style.background = 'linear-gradient(to right, #34D399, #38BDF8)';
+    text.classList.remove('text-coral', 'animate-pulse');
+  }
+}
+
+async function submitRound() {
+  const r = state.currentRound;
+  if (r.timerId) clearInterval(r.timerId);
+  const score = r.score;
+  const total = r.questions.length;
+
+  if (score >= 7) { playSound('win'); fireConfetti(50); }
+  else if (score >= 4) { playSound('click'); }
+
+  if (state.currentUser) {
+    const prevTotal = parseInt(state.currentUser.total_score) || 0;
+    state.currentUser.total_score = prevTotal + score;
+
+    if (state.isOnline) {
+      try {
+        await apiCall('saveResult', {
+          user_id: state.currentUser.id,
+          subject_id: r.subject.id,
+          track_id: r.track.id,
+          score,
+          total_questions: total,
+          round_number: 1,
+        }, 'POST');
+      } catch (err) {
+        console.warn('[Save]', err);
+        saveScoreLocal(state.currentUser.username, score);
+      }
+    } else {
+      saveScoreLocal(state.currentUser.username, score);
+    }
+  }
+
+  setTimeout(() => renderResultScreen(score, total), 300);
+}
+
+function saveScoreLocal(username, score) {
+  try {
+    const key = 'vuihoc_scores';
+    const data = JSON.parse(localStorage.getItem(key) || '{}');
+    if (!data[username]) data[username] = { total: 0, history: [] };
+    data[username].total += score;
+    data[username].history.push({ score, at: new Date().toISOString() });
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (e) {}
+}
+
+function renderResultScreen(score, total) {
+  const r = state.currentRound;
+  const app = document.getElementById('app');
+  const pct = (score / total) * 100;
+  let emoji, msg, color;
+  if (pct >= 90) { emoji = '🏆'; msg = 'Xuất sắc!'; color = 'text-sunny'; }
+  else if (pct >= 70) { emoji = '🎉'; msg = 'Giỏi lắm!'; color = 'text-mint'; }
+  else if (pct >= 50) { emoji = '👍'; msg = 'Cố gắng thêm!'; color = 'text-sky'; }
+  else { emoji = '💪'; msg = 'Thử lại nhé!'; color = 'text-coral'; }
+
+  app.innerHTML = `
+    ${renderNavBar({ showBack: true, showHome: true })}
+    <section class="flex-1 flex items-center justify-center p-4 pt-20">
+      <div class="max-w-md w-full bg-white/90 rounded-3xl shadow-2xl p-8 text-center">
+        <div class="text-8xl mb-3 animate-bounce-slow">${emoji}</div>
+        <h2 class="font-baloo text-3xl font-bold ${color} mb-2">${msg}</h2>
+        <p class="text-brand-500 mb-6">${r.subject.name} • ${r.track.name}</p>
+        <div class="bg-gradient-to-br from-brand-50 to-sky-50 rounded-3xl p-6 mb-6">
+          <div class="text-6xl font-baloo font-extrabold text-brand-700">${score}<span class="text-3xl text-brand-400">/${total}</span></div>
+          <p class="text-brand-500 mt-2">câu đúng</p>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <button id="btn-replay" class="bg-gradient-to-r from-brand-500 to-brand-700 text-white font-bold py-3 rounded-2xl shadow-lg hover:scale-105 transition">🔄 Chơi lại</button>
+          <button id="btn-home2" class="bg-white text-brand-600 font-bold py-3 rounded-2xl shadow-lg border-2 border-brand-200">🏠 Trang chủ</button>
+        </div>
+      </div>
+    </section>
+  `;
+
+  attachNavEvents({
+    onBack: () => { renderTrackScreen(); },
+    onHome: () => { renderStudentHome(); },
+  });
+  document.getElementById('btn-replay').addEventListener('click', () => { playSound('click'); startRound(); });
+  document.getElementById('btn-home2').addEventListener('click', () => { playSound('click'); renderStudentHome(); });
+}
+
+// ============================================
+// NAV EVENTS
+// ============================================
+function attachNavEvents({ onBack, onHome }) {
+  setTimeout(() => {
+    const backBtn = document.getElementById('nav-back');
+    const homeBtn = document.getElementById('nav-home');
+    if (backBtn && onBack) backBtn.addEventListener('click', () => { playSound('click'); onBack(); });
+    if (homeBtn && onHome) homeBtn.addEventListener('click', () => { playSound('click'); onHome(); });
+  }, 0);
+}
+
+// ============================================
+// EXPORTS
+// ============================================
+window.logout = logout;
+</script>
+
+</body>
+</html>
