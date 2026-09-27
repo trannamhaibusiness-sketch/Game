@@ -2414,6 +2414,180 @@ fetch('manifest.json')
 // ============================================
 // HẾT PATCH v3.3.1
 // ============================================
+// ============================================
+// PATCH v3.3.3 — FIX DAILY BONUS LOGIC
+// ============================================
+
+// Helper: ngày hôm nay theo giờ VN
+function getTodayVN_v333() {
+  const now = new Date();
+  const vn = new Date(now.getTime() + 7 * 60 * 60 * 1000);
+  return vn.toISOString().slice(0, 10);
+}
+
+// Biến throttle — tránh spam API khi user back/forward về Home
+let _lastClaimAttempt = 0;
+const CLAIM_THROTTLE_MS = 30 * 1000; // 30 giây
+
+// Override claimDailyBonusBackground — logic ĐÚNG
+async function claimDailyBonusBackground() {
+  const user = state.currentUser;
+  if (!user || user.role !== 'student' || !state.isOnline) return;
+
+  const today = getTodayVN_v333();
+  const lockKey = `vuihoc_daily_lock_${user.id}_${today}`;
+
+  // Nếu đã claim hôm nay → skip
+  if (localStorage.getItem(lockKey) === 'claimed') {
+    console.log('[Daily] Đã claim hôm nay (cache):', today);
+    return;
+  }
+
+  // Throttle — tránh spam khi back/forward
+  const now = Date.now();
+  if (now - _lastClaimAttempt < CLAIM_THROTTLE_MS) {
+    console.log('[Daily] Throttle — bỏ qua lần này');
+    return;
+  }
+  _lastClaimAttempt = now;
+
+  try {
+    const bonus = await apiCall('claimDailyLogin', { user_id: user.id }, 'POST');
+
+    if (bonus && !bonus.alreadyClaimed && bonus.bonus > 0) {
+      // ✅ Đã claim thành công
+      localStorage.setItem(lockKey, 'claimed');
+      invalidateUserStatus();
+      setTimeout(async () => {
+        showToast(`🎁 Nhận ${formatVND(bonus.bonus)} đăng nhập hôm nay!`, 'success', 4000);
+        playSound('coin');
+        await loadUserStatus();
+        if (document.getElementById('btn-play')) renderStudentHome();
+      }, 500);
+    } else if (bonus && bonus.alreadyClaimed) {
+      // Server báo đã claim → đánh dấu để skip lần sau
+      localStorage.setItem(lockKey, 'claimed');
+      console.log('[Daily] Server báo đã claim hôm nay');
+    } else if (bonus && bonus.reason) {
+      // Server từ chối (chưa chơi bài) → KHÔNG set lock
+      console.log('[Daily] Server từ chối:', bonus.reason);
+      // Reset throttle để lần sau vào Home thử lại sớm
+      _lastClaimAttempt = 0;
+    }
+  } catch (err) {
+    console.warn('[Daily] Lỗi API:', err);
+    // KHÔNG set lock key
+    _lastClaimAttempt = 0;
+  }
+}
+
+// Override __tryClaimDaily_v32 — gọi sau khi chơi bài đầu tiên
+async function __tryClaimDaily_v32() {
+  // Dùng chung logic với claimDailyBonusBackground
+  _lastClaimAttempt = 0; // Reset throttle để cho phép gọi ngay
+  await claimDailyBonusBackground();
+}
+
+// Override renderStudentHome — gọi claim mỗi khi vào Home
+async function renderStudentHome() {
+  const u = state.currentUser;
+  const app = document.getElementById('app');
+
+  // Refresh status
+  await loadUserStatus();
+
+  // ✅ Gọi claim daily bonus mỗi lần vào Home (đã throttle)
+  if (u && u.role === 'student') {
+    setTimeout(() => claimDailyBonusBackground(), 1000);
+  }
+
+  const s = state.userStatus || {};
+  const totalScore = s.total_score || u.total_score || 0;
+  const streakCount = s.streak_count || 0;
+  const streakScore = s.streak_score || 0;
+  const todayRounds = s.today_rounds || 0;
+  const pendingStreak = s.pending_streak || 0;
+  const pendingDaily = s.pending_daily || 0;
+  const warehouseValue = s.warehouse_value || 0;
+  const warehouseCount = s.warehouse_count || 0;
+  const totalPending = pendingStreak + pendingDaily;
+
+  const streakPct = Math.min((streakCount / 5) * 100, 100);
+  const scorePct = Math.min((streakScore / 45) * 100, 100);
+  const todayPct = Math.min((todayRounds / 30) * 100, 100);
+
+  app.innerHTML = `
+    ${renderNavBar({ showBack: false, showHome: false })}
+    <section class="flex-1 p-4 pt-6">
+      <div class="max-w-2xl mx-auto w-full">
+        <div class="bg-white/90 rounded-3xl shadow-2xl p-6 mb-4 text-center">
+          <div class="text-6xl mb-2">🎓</div>
+          <h2 class="font-baloo text-3xl font-bold text-brand-700">Chào ${u.display_name}!</h2>
+          <p class="text-brand-500 mt-1">Điểm tổng: <span class="font-bold text-sunny text-xl">⭐ ${totalScore}</span></p>
+          <p class="text-xs text-brand-500 mt-1">${state.isOnline ? '🟢 Online' : '🟡 Offline'}</p>
+        </div>
+
+        ${totalPending > 0 ? `
+          <div class="bg-gradient-to-r from-sunny to-coral rounded-3xl shadow-2xl p-5 mb-4 text-white text-center animate-pop cursor-pointer" onclick="renderSpinSelection()">
+            <div class="text-4xl mb-1">🎰</div>
+            <div class="font-baloo text-2xl font-bold">${totalPending} lượt quay đang chờ!</div>
+            <div class="text-sm mt-1">Bấm để quay ngay 🎉</div>
+          </div>
+        ` : ''}
+
+        <div class="bg-white/90 rounded-3xl shadow-lg p-5 mb-4">
+          <h3 class="font-baloo text-lg font-bold text-brand-700 mb-3">📊 Tiến trình thưởng</h3>
+          <div class="mb-3">
+            <div class="flex justify-between text-sm font-bold text-brand-700 mb-1">
+              <span>🔥 Streak 5 vòng</span>
+              <span>${streakCount}/5 vòng • ${streakScore}/45 điểm</span>
+            </div>
+            <div class="w-full bg-brand-100 rounded-full h-3 overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-coral to-sunny" style="width: ${Math.min(streakPct, scorePct)}%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm font-bold text-brand-700 mb-1">
+              <span>📅 Vòng hôm nay</span>
+              <span>${todayRounds}/30 vòng</span>
+            </div>
+            <div class="w-full bg-brand-100 rounded-full h-3 overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-mint to-sky" style="width: ${todayPct}%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-3">
+          <button id="btn-play" class="bg-gradient-to-r from-brand-500 to-brand-700 text-white font-bold py-4 rounded-2xl shadow-lg hover:scale-105 transition text-lg">
+            🎮 Chơi ngay
+          </button>
+          <div class="grid grid-cols-2 gap-3">
+            <button id="btn-warehouse" class="bg-white border-4 border-sunny text-sunny font-bold py-3 rounded-2xl shadow-lg hover:bg-sunny/10 transition">
+              🎁 Kho quà (${warehouseCount})
+            </button>
+            <button id="btn-spin" class="bg-white border-4 border-coral text-coral font-bold py-3 rounded-2xl shadow-lg hover:bg-coral/10 transition">
+              🎰 Quay (${totalPending})
+            </button>
+          </div>
+          <button id="btn-logout" class="bg-coral text-white font-bold py-3 rounded-2xl mt-2">🚪 Đăng xuất</button>
+        </div>
+
+        <p class="text-center text-xs text-brand-500 mt-4">
+          💰 Kho quà: <b>${formatVND(warehouseValue)}</b>
+        </p>
+      </div>
+    </section>`;
+
+  document.getElementById('btn-play').addEventListener('click', () => { playSound('click'); renderSubjectScreen(); });
+  document.getElementById('btn-warehouse').addEventListener('click', () => { playSound('click'); renderWarehouseScreen(); });
+  document.getElementById('btn-spin').addEventListener('click', () => { playSound('click'); renderSpinSelection(); });
+  document.getElementById('btn-logout').addEventListener('click', logout);
+}
+
+console.log('[PATCH v3.3.3] Đã fix daily bonus logic (retry + throttle + lock)');
+// ============================================
+// HẾT PATCH v3.3.3
+// ============================================
 </script>
 
 </body>
